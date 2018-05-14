@@ -1,0 +1,515 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TLFCSModelStoreContainer" CdmEntityContainer="TLFCSEntities">
+    <EntitySetMapping Name="CS_Priority">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_Priority">
+        <MappingFragment StoreEntitySet="CS_Priority">
+          <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+          <ScalarProperty Name="PriorityLevel" ColumnName="PriorityLevel" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customer">
+      <EntityTypeMapping TypeName="TLFCSModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Website" ColumnName="Website" />
+          <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+          <ScalarProperty Name="ContactPersonName" ColumnName="ContactPersonName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CS_DedicatedNumber" ColumnName="CS_DedicatedNumber" />
+          <ScalarProperty Name="CS_DomainName" ColumnName="CS_DomainName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee">
+      <EntityTypeMapping TypeName="TLFCSModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="EmployeeNr" ColumnName="EmployeeNr" />
+          <ScalarProperty Name="FiistName" ColumnName="FiistName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="PresentAddress1" ColumnName="PresentAddress1" />
+          <ScalarProperty Name="PresentAddress2" ColumnName="PresentAddress2" />
+          <ScalarProperty Name="PermanentAddress1" ColumnName="PermanentAddress1" />
+          <ScalarProperty Name="PermanentAddress2" ColumnName="PermanentAddress2" />
+          <ScalarProperty Name="Phone_Mobile" ColumnName="Phone_Mobile" />
+          <ScalarProperty Name="Phone_Home" ColumnName="Phone_Home" />
+          <ScalarProperty Name="Email_Official" ColumnName="Email_Official" />
+          <ScalarProperty Name="Email_Personal" ColumnName="Email_Personal" />
+          <ScalarProperty Name="Skype" ColumnName="Skype" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="DOA" ColumnName="DOA" />
+          <ScalarProperty Name="IdentificationMark" ColumnName="IdentificationMark" />
+          <ScalarProperty Name="PAN" ColumnName="PAN" />
+          <ScalarProperty Name="IsSupervisor" ColumnName="IsSupervisor" />
+          <ScalarProperty Name="PicturePath" ColumnName="PicturePath" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+          <ScalarProperty Name="AccountNr" ColumnName="AccountNr" />
+          <ScalarProperty Name="PassBookName" ColumnName="PassBookName" />
+          <ScalarProperty Name="LeaveOpeningBalance" ColumnName="LeaveOpeningBalance" />
+          <ScalarProperty Name="LeaveBalEffectiveDate" ColumnName="LeaveBalEffectiveDate" />
+          <ScalarProperty Name="GenderId" ColumnName="GenderId" />
+          <ScalarProperty Name="PresentCityId" ColumnName="PresentCityId" />
+          <ScalarProperty Name="PresentStateId" ColumnName="PresentStateId" />
+          <ScalarProperty Name="PresentCountryId" ColumnName="PresentCountryId" />
+          <ScalarProperty Name="PresentPincode" ColumnName="PresentPincode" />
+          <ScalarProperty Name="PermanentCityId" ColumnName="PermanentCityId" />
+          <ScalarProperty Name="PermanentStateId" ColumnName="PermanentStateId" />
+          <ScalarProperty Name="PermanentCountryId" ColumnName="PermanentCountryId" />
+          <ScalarProperty Name="PermanentPincode" ColumnName="PermanentPincode" />
+          <ScalarProperty Name="MaritalStatusId" ColumnName="MaritalStatusId" />
+          <ScalarProperty Name="BirthCountryId" ColumnName="BirthCountryId" />
+          <ScalarProperty Name="SupervisorId" ColumnName="SupervisorId" />
+          <ScalarProperty Name="EmploymentTypeId" ColumnName="EmploymentTypeId" />
+          <ScalarProperty Name="GradeId" ColumnName="GradeId" />
+          <ScalarProperty Name="WorkScheduleId" ColumnName="WorkScheduleId" />
+          <ScalarProperty Name="BankBranchId" ColumnName="BankBranchId" />
+          <ScalarProperty Name="EmploymentStatusId" ColumnName="EmploymentStatusId" />
+          <ScalarProperty Name="BloodGroupId" ColumnName="BloodGroupId" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+          <ScalarProperty Name="OfficeLocationId" ColumnName="OfficeLocationId" />
+          <ScalarProperty Name="MonthlyCredit" ColumnName="MonthlyCredit" />
+          <ScalarProperty Name="VoIP" ColumnName="VoIP" />
+          <ScalarProperty Name="Assignable" ColumnName="Assignable" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="TLFCSModel.Projects">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="CurrentDeadline" ColumnName="CurrentDeadline" />
+          <ScalarProperty Name="InitialDeadline" ColumnName="InitialDeadline" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProjectTypeId" ColumnName="ProjectTypeId" />
+          <ScalarProperty Name="ProjectCategoryId" ColumnName="ProjectCategoryId" />
+          <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+          <ScalarProperty Name="ProjectCode" ColumnName="ProjectCode" />
+          <ScalarProperty Name="ShortCode" ColumnName="ShortCode" />
+          <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+          <ScalarProperty Name="ProjectOwner" ColumnName="ProjectOwner" />
+          <ScalarProperty Name="ProjectManager" ColumnName="ProjectManager" />
+          <ScalarProperty Name="ProjectLead" ColumnName="ProjectLead" />
+          <ScalarProperty Name="ProjectBrief" ColumnName="ProjectBrief" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="QuintiqProjectCode" ColumnName="QuintiqProjectCode" />
+          <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+          <ScalarProperty Name="CustomerLocation" ColumnName="CustomerLocation" />
+          <ScalarProperty Name="InitialEstimatedHrs" ColumnName="InitialEstimatedHrs" />
+          <ScalarProperty Name="ModelingEstimatedHrs" ColumnName="ModelingEstimatedHrs" />
+          <ScalarProperty Name="ProjectStatusId" ColumnName="ProjectStatusId" />
+          <ScalarProperty Name="IsNotification" ColumnName="IsNotification" />
+          <ScalarProperty Name="IsProspect" ColumnName="IsProspect" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="ProjectGroupId" ColumnName="ProjectGroupId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectTeam">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectTeam">
+        <MappingFragment StoreEntitySet="ProjectTeam">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="ProjectRoleId" ColumnName="ProjectRoleId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsCreate" ColumnName="IsCreate" />
+          <ScalarProperty Name="CS_Level" ColumnName="CS_Level" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_EmailTicketLog">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_EmailTicketLog">
+        <MappingFragment StoreEntitySet="CS_EmailTicketLog">
+          <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="EmailFrom" ColumnName="EmailFrom" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="EmailTicketId" ColumnName="EmailTicketId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_Status">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_Status">
+        <MappingFragment StoreEntitySet="CS_Status">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="TLFCSModel.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+          <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+          <ScalarProperty Name="CreateOn" ColumnName="CreateOn" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_Ticket">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_Ticket">
+        <MappingFragment StoreEntitySet="CS_Ticket">
+          <ScalarProperty Name="ForwardToEmployee" ColumnName="ForwardToEmployee" />
+          <ScalarProperty Name="LastComment" ColumnName="LastComment" />
+          <ScalarProperty Name="SLAId" ColumnName="SLAId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="PriorityLevel" ColumnName="PriorityLevel" />
+          <ScalarProperty Name="TicketNumber" ColumnName="TicketNumber" />
+          <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_Log">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_Log">
+        <MappingFragment StoreEntitySet="CS_Log">
+          <ScalarProperty Name="ForwardToEmployee" ColumnName="ForwardToEmployee" />
+          <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
+          <ScalarProperty Name="CustumerId" ColumnName="CustumerId" />
+          <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="LogId" ColumnName="LogId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_SLA">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_SLA">
+        <MappingFragment StoreEntitySet="CS_SLA">
+          <ScalarProperty Name="EscalationTime" ColumnName="EscalationTime" />
+          <ScalarProperty Name="MaximumResolveTime" ColumnName="MaximumResolveTime" />
+          <ScalarProperty Name="MaximumResponseTime" ColumnName="MaximumResponseTime" />
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="PriorityName" ColumnName="PriorityName" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="PriorityLevel" ColumnName="PriorityLevel" />
+          <ScalarProperty Name="SLAId" ColumnName="SLAId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_CallLog">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_CallLog">
+        <MappingFragment StoreEntitySet="CS_CallLog">
+          <ScalarProperty Name="IsTicketGenerated" ColumnName="IsTicketGenerated" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="CallNumber" ColumnName="CallNumber" />
+          <ScalarProperty Name="Trunk" ColumnName="Trunk" />
+          <ScalarProperty Name="ExtensionNumber" ColumnName="ExtensionNumber" />
+          <ScalarProperty Name="CallLogId" ColumnName="CallLogId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_CustomerEmployeeInfo">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_CustomerEmployeeInfo">
+        <MappingFragment StoreEntitySet="CS_CustomerEmployeeInfo">
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+          <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_EmailLink">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_EmailLink">
+        <MappingFragment StoreEntitySet="CS_EmailLink">
+          <ScalarProperty Name="Link" ColumnName="Link" />
+          <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectGroup">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectGroup">
+        <MappingFragment StoreEntitySet="ProjectGroup">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectStatus">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectStatus">
+        <MappingFragment StoreEntitySet="ProjectStatus">
+          <ScalarProperty Name="IconPath" ColumnName="IconPath" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Technology">
+      <EntityTypeMapping TypeName="TLFCSModel.Technology">
+        <MappingFragment StoreEntitySet="Technology">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityType">
+      <EntityTypeMapping TypeName="TLFCSModel.ActivityType">
+        <MappingFragment StoreEntitySet="ActivityType">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Phases">
+      <EntityTypeMapping TypeName="TLFCSModel.Phases">
+        <MappingFragment StoreEntitySet="Phases">
+          <ScalarProperty Name="SeqNr" ColumnName="SeqNr" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSheet">
+      <EntityTypeMapping TypeName="TLFCSModel.TimeSheet">
+        <MappingFragment StoreEntitySet="TimeSheet">
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsExtraHours" ColumnName="IsExtraHours" />
+          <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+          <ScalarProperty Name="EstimatedTime" ColumnName="EstimatedTime" />
+          <ScalarProperty Name="ProjectPhaseId" ColumnName="ProjectPhaseId" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="TimeBillable" ColumnName="TimeBillable" />
+          <ScalarProperty Name="TimeSpent" ColumnName="TimeSpent" />
+          <ScalarProperty Name="ProjectActivityLinkId" ColumnName="ProjectActivityLinkId" />
+          <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+          <ScalarProperty Name="ReferenceIssueNo" ColumnName="ReferenceIssueNo" />
+          <ScalarProperty Name="WeekNo" ColumnName="WeekNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectActivityLink">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectActivityLink">
+        <MappingFragment StoreEntitySet="ProjectActivityLink">
+          <ScalarProperty Name="UpdatedIPAddress" ColumnName="UpdatedIPAddress" />
+          <ScalarProperty Name="CreatedIPAddress" ColumnName="CreatedIPAddress" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ProjectActivityName" ColumnName="ProjectActivityName" />
+          <ScalarProperty Name="ProjectActivityId" ColumnName="ProjectActivityId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectPhases">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectPhases">
+        <MappingFragment StoreEntitySet="ProjectPhases">
+          <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+          <ScalarProperty Name="SeqNr" ColumnName="SeqNr" />
+          <ScalarProperty Name="UpdatedIPAddress" ColumnName="UpdatedIPAddress" />
+          <ScalarProperty Name="CreatedIPAddress" ColumnName="CreatedIPAddress" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="PhaseName" ColumnName="PhaseName" />
+          <ScalarProperty Name="PhaseId" ColumnName="PhaseId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Task">
+      <EntityTypeMapping TypeName="TLFCSModel.Task">
+        <MappingFragment StoreEntitySet="Task">
+          <ScalarProperty Name="LatestStatus" ColumnName="LatestStatus" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="DueDateTime" ColumnName="DueDateTime" />
+          <ScalarProperty Name="TaskPriorityId" ColumnName="TaskPriorityId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="AssignedTo" ColumnName="AssignedTo" />
+          <ScalarProperty Name="SupportTypeId" ColumnName="SupportTypeId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CS_Configuration">
+      <EntityTypeMapping TypeName="TLFCSModel.CS_Configuration">
+        <MappingFragment StoreEntitySet="CS_Configuration">
+          <ScalarProperty Name="SLABreachEmailAddress" ColumnName="SLABreachEmailAddress" />
+          <ScalarProperty Name="MIMEPort" ColumnName="MIMEPort" />
+          <ScalarProperty Name="MIMEHost" ColumnName="MIMEHost" />
+          <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
+          <ScalarProperty Name="SMTPHost" ColumnName="SMTPHost" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="SupportEmailAddress" ColumnName="SupportEmailAddress" />
+          <ScalarProperty Name="PBX_Port" ColumnName="PBX_Port" />
+          <ScalarProperty Name="PBX_IP" ColumnName="PBX_IP" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Country">
+      <EntityTypeMapping TypeName="TLFCSModel.Country">
+        <MappingFragment StoreEntitySet="Country">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectType">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectType">
+        <MappingFragment StoreEntitySet="ProjectType">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectCategory">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectCategory">
+        <MappingFragment StoreEntitySet="ProjectCategory">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRole">
+      <EntityTypeMapping TypeName="TLFCSModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRole">
+          <ScalarProperty Name="Roles_Id" ColumnName="Roles_Id" />
+          <ScalarProperty Name="Users_Id" ColumnName="Users_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeDesignation">
+      <EntityTypeMapping TypeName="TLFCSModel.EmployeeDesignation">
+        <MappingFragment StoreEntitySet="EmployeeDesignation">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+          <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+          <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectActivity">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectActivity">
+        <MappingFragment StoreEntitySet="ProjectActivity">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ActivityTypeId" ColumnName="ActivityTypeId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectCR">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectCR">
+        <MappingFragment StoreEntitySet="ProjectCR">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="ApprovedByClient" ColumnName="ApprovedByClient" />
+          <ScalarProperty Name="EstimatedHrs" ColumnName="EstimatedHrs" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+          <ScalarProperty Name="CRNo" ColumnName="CRNo" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="CRId" ColumnName="CRId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectDeadline">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectDeadline">
+        <MappingFragment StoreEntitySet="ProjectDeadline">
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="RevisedDate" ColumnName="RevisedDate" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectResourceDemand">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectResourceDemand">
+        <MappingFragment StoreEntitySet="ProjectResourceDemand">
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="NoOfWeeks" ColumnName="NoOfWeeks" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="ExpectedHoursPerWeek" ColumnName="ExpectedHoursPerWeek" />
+          <ScalarProperty Name="ExpectedStartWeek" ColumnName="ExpectedStartWeek" />
+          <ScalarProperty Name="ProjectRoleId" ColumnName="ProjectRoleId" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectRole">
+      <EntityTypeMapping TypeName="TLFCSModel.ProjectRole">
+        <MappingFragment StoreEntitySet="ProjectRole">
+          <ScalarProperty Name="IsAssignable" ColumnName="IsAssignable" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TlfmsJiraLink">
+      <EntityTypeMapping TypeName="TLFCSModel.TlfmsJiraLink">
+        <MappingFragment StoreEntitySet="TlfmsJiraLink">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="JiraProjectVerison" ColumnName="JiraProjectVerison" />
+          <ScalarProperty Name="JiraProjectKey" ColumnName="JiraProjectKey" />
+          <ScalarProperty Name="JiraProjectName" ColumnName="JiraProjectName" />
+          <ScalarProperty Name="TlfmsProjectId" ColumnName="TlfmsProjectId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

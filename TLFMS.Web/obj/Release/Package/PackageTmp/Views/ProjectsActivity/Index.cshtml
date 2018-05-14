@@ -1,0 +1,293 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectActivityViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProjectId)
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="form-group col-lg-12">
+            <div class="form-group col-lg-6">
+                <input type="button" value="Delete Selected" name="delete" class="btn btn-primary" onclick="DeleteSelected()" /><br />
+                @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectActivityViewModel>()
+              .Name("ProjectActivityGrid")
+              .Columns(column =>
+              {
+                  column.Template(x => { }).ClientTemplate("<center><input type='checkbox' class='checkbox' /></center>").Title("<center>Select</center>").HtmlAttributes(new { title = "Select To Delete" }).Width(10);
+
+                  column.Command(command =>
+                  {
+                      command.Custom("EditActivity").Text("<span class= 'k-icon k-i-note'></span>").Click("ShowActivityDetails");
+                      command.Custom("DeleteActivity").Text("<span class= 'k-icon k-i-close'></span>").Click("DeleteActivityDetails");
+                  }).Title("<center>Action</center>").Width(80);
+                  column.Bound(emp => emp.Id).Visible(false);
+                  column.Bound(emp => emp.ProjectActivityName).Width(40);
+                  column.Bound(emp => emp.IsActive).Width(20);
+
+              })
+    .Selectable()
+    .Reorderable(reorderable => reorderable.Columns(true))
+    .Resizable(resizable => resizable.Columns(true))
+    .DataSource(data => data.Ajax()
+    .Model(model =>
+     model.Id(emp => emp.Id))
+    .Read(read => read.Action("ViewProjectsActivityDetails", "ProjectsActivity", new { id = Model.ProjectId }))
+    .Destroy(del => del.Action("ProjectActivityDestroy", "ProjectsActivity"))
+    )
+                )
+            </div>
+
+            <div class="col-lg-2">
+                <input id="ActivityAdd" name="ActivityAdd" type="button" value="Add" class="btn btn-primary" onclick="ShowActEdit()" />
+            </div>
+
+            <div class="form-group col-lg-6" id="me">
+
+                <div class="container col-md-12">
+                    <div class="col-md-3">
+                        <label for="Activityname"><b>Name</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.ProjectActivityName, new { @class = "k-textbox s", id = "activityname", style = "width:100%;" })
+                    </div>
+                </div>
+
+                <div class="col-md-12 container">
+                    <div class="col-lg-3">
+                        <label for="active"><b>Is Active ?</b></label>
+                    </div>
+                    <div class="col-lg-1" style="text-align:left;">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "s k-checkbox", id = "ActivityIsActive" })
+                        <input type="hidden" name="auid" id="auid">
+                    </div>
+                </div>
+                <div class="container col-md-12">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <input id="acsave" name="acsave" type="button" value="save" class="btn btn-primary" onclick="ActivitySaveButton()" />
+                        <input id="acupdate" name="acupdate" type="button" value="Update" class="btn btn-primary" onclick="ActivityUpdateButton()" />
+                        <input id="acedit" name="acedit" type="button" value="edit" class="btn btn-primary" onclick="ActivityEditButton()" />
+                        <input id="ActivityAdds" name="ActivityAdds" type="button" value="Add" class="btn btn-primary" onclick="ShowActEdit()" />
+                        <input id="cancel" name="save" type="button" value="cancel" class="btn btn-primary" onclick="Activithideme()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/x-kendo-template" id="DeleteActTemplate">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete Project Activity ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+@(Html.Kendo()
+            .Window()
+            .Name("DeleteActivity")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)
+<script>
+
+    function DeleteSelected(e) {
+
+        var grid = $("#ProjectActivityGrid").data("kendoGrid");
+
+        $("#ProjectActivityGrid").find("input:checked").each(function () {
+
+            grid.removeRow($(this).closest('tr'));
+
+            grid.saveChanges();
+        })
+
+    }
+
+    function DeleteActivityDetails(e) {
+
+        var detailsTemplate = kendo.template($("#DeleteActTemplate").html());
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+
+        var wnd = $("#DeleteActivity").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#ProjectActivityGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+            Activithideme();
+        })
+
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#me").hide();
+        }
+
+        );
+    $(function () {
+        $("form").kendoValidator();
+    });
+    function ShowActEdit() {
+        $("#ActivityAdd").hide();
+        $("#me").show();
+        $("#acsave").show();
+        $("#cancel").show();
+        $("#acedit").hide();
+        $("#acupdate").hide();
+        $("#ActivityAdds").hide();
+
+    }
+    function Activithideme() {
+        $("#ActivityAdd").show();
+        $("#me").hide();
+
+    }
+    function ShowActivityDetails(e) {
+
+        var tr = $(e.target).closest("tr");
+
+        var data = this.dataItem(tr);
+
+        $("#auid").val(data.Id);
+        $('#activityname').val(data.ProjectActivityName);
+        $('#ActivityIsActive').prop("checked", data.IsActive).hide();
+
+        $("label[for=current]").hide();
+        $("label[for=active]").hide();
+
+        $("#ActivityAdd").hide();
+        $("#me").show();
+        $("#acsave").hide();
+        $("#cancel").show();
+        $("#acedit").show();
+        $("#acupdate").hide();
+        $("#ActivityAdds").show();
+
+    }
+    function ActivitySaveButton() {
+
+        var prjactivityname = $('#activityname').val();
+        var isact = $('#ActivityIsActive').is(':checked');
+
+        var pid = @Model.ProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddActivitybyAjax", "ProjectsActivity")',
+            dataType: 'json',
+            data: { id: pid, activityname: prjactivityname, isActive: isact },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectActivityGrid").data("kendoGrid").dataSource.read();
+                Activithideme();
+            },
+            error: function (xhr) {
+            }
+        })
+
+    }
+    function ActivityEditButton() {
+
+        $('#ActivityIsActive').show();
+
+        $("label[for=active]").show();
+
+        $("#ActivityAdd").hide();
+        $("#me").show();
+        $("#acsave").hide();
+        $("#cancel").show();
+        $("#acedit").hide();
+        $("#acupdate").show();
+        $("#ActivityAdds").hide();
+
+    }
+    function ActivityUpdateButton() {
+
+        var uid = $("#auid").val();
+        var prjactivityname = $('#activityname').val();
+
+        var ActivityIsActive = $('#ActivityIsActive').is(':checked');
+
+        var pid = @Model.ProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateActivitybyAjax", "ProjectsActivity")',
+            dataType: 'json',
+            data: { id: pid, activityname: prjactivityname, IsActive: ActivityIsActive, UId: uid },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectActivityGrid").data("kendoGrid").dataSource.read();
+                Activithideme();
+            },
+            error: function (xhr) {
+            }
+        })
+    }
+</script>
+<style>
+    .k-textbox s {
+        max-width: 1000px;
+        min-height: 1000px;
+    }
+
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 1 1 1 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 0px 0px 0px 0px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>

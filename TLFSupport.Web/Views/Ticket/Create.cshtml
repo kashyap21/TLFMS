@@ -1,0 +1,90 @@
+﻿@model TLFSupport.Model.DatabaseModel.CS_Ticket
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Create Ticket";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <h4 class="col-md-offset-1">Ticket Generation</h4>
+        <hr />
+
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-1"><b>Customer</b></div>
+            <div class="col-md-3 k-dropdown">
+                @(Html.Kendo().DropDownListFor(model => model.CustomerId)
+                .BindTo(ViewData["CustId"] as SelectList)
+        .HtmlAttributes(new { style = "width:170%", required = "required", data_required_msg = "Select start time" })
+                     )
+                @Html.ValidationMessageFor(model => model.CustomerId)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-1"><b>Project</b></div>
+            <div class="col-md-3 k-dropdown">
+                @(Html.Kendo().DropDownListFor(model => model.ProjectId)
+                .BindTo(ViewData["Id"] as SelectList)                
+                .HtmlAttributes(new { style = "width:170%" }))
+                @Html.ValidationMessageFor(model => model.ProjectId)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-1"><b>Priority</b></div>
+            <div class="col-md-3 k-dropdown">
+                @(Html.Kendo().DropDownListFor(model => model.SLAId)
+                              .HtmlAttributes(new { style = "width:170%" })
+                              .BindTo(ViewData["SLAId"] as SelectList))
+                @Html.ValidationMessageFor(model => model.SLAId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-1">
+                <b>@Html.LabelFor(model => model.Title, Lable.TicketTitle)</b><span style="color:red;">*</span>
+            </div>
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Title, new { @class = "k-textbox", style = "width:100%;", required = "required", validationmessage = "please enter valid title", })
+                @Html.ValidationMessageFor(model => model.Title)               
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-1">
+                <b>@Html.LabelFor(model => model.Description, Lable.TicketDescription)<span style="color:red;">*</span></b>
+            </div>
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Description, new { @class = "k-textbox", style = "width:100%;", required = "required", validationmessage = "please enter valid description", })
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-6">
+                <input type="submit" value="Generate" class="btn btn-primary" />
+                <a href="~/CallLog/Index" style="margin:0px;padding:0px;"><input type="button" value="Cancel" class="btn btn-danger" /></a>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+</script>
+<style>
+    .k-textbox{
+        max-width:1000px;
+    }
+
+</style>

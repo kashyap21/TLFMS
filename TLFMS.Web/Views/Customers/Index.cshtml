@@ -1,0 +1,149 @@
+﻿@model TLFSupport.Model.CustomeModel.CustomerViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Customer List";
+}
+
+<title>Customer View - TLFMS</title>
+
+<style>
+    .containers {
+        margin-top: 2%;
+    }
+
+    .Tlf_H4 span {
+        background-color: rgb(248,147,066);
+        color: #ffffff;
+        width: 100%;
+        font-family: Century Gothic;
+        font-size: 25px;
+        padding: 2px 4px 2px 4px;
+        margin-top: 100px;
+        background: -webkit-gradient(linear, left top, left bottom, from(#F8AE42), to(#F5852B));
+    }
+
+    .k-button {
+        margin-left: 2px;
+        color: white;
+        background-color: #269DC0;
+        border-color: #269DC0;
+    }
+</style>
+
+
+<div class="containers">
+    @*<center class="Tlf_H4"><span>Customer List</span></center>*@
+</div><br />
+<div class=" col-lg-12">
+    <div class="col-lg-6">
+        <a href="#" onclick="onClick()"><i class="btn btn-primary fa fa-plus" style="font-size:20px;" title="Add new Customer"></i></a>
+    </div>
+    <div class="col-lg-6" align="right">
+        @(Html.Kendo().CheckBox().Name("showAll").Label("Show All"))
+        @*@(Html.Kendo().Button().Name("btnAddCustomer").Content("Add New Customer"))*@
+    </div>
+</div>
+<br /><br />
+<div class="col-lg-12">
+    @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.CustomerViewModel>()
+              .Name("customerGrid")
+              .Columns(column =>
+              {
+                  column.Bound(customer => customer.Id).Visible(false);
+                  column.Bound(customer => customer.Name).Filterable(filterable => filterable.UI("customerNameFilter")).Title("Customer Name").ClientTemplate("<a href='" + Url.Action("Edit", "Customers") + "/#=Id#'" + ">#=Name#</a>");
+                  //.ClientTemplate("<a href='" + Url.Action("Edit") + "/?#= Name #'></a>");//.Template(@<text>@Html.ActionLink("Edit", "Project", new { id = @item.Id } )></text>);
+                  column.Bound(customer => customer.ShortName).Filterable(false);
+                  column.Bound(customer => customer.City).Filterable(false);
+                  column.Bound(customer => customer.State).Filterable(false);
+                  column.Bound(customer => customer.CountryName).Filterable(false).Title("Country");
+                  column.Bound(customer => customer.OwnerName).Filterable(filterable => filterable.UI("employeeNameFilter")).Title("Owner");
+                  column.Bound(customer => customer.IsActive).ClientTemplate("# if(IsActive) {# <center><i class='fa fa-circle' title='Active' style = ' font-size:15px ;color:green;'></i></center> #}  else {# <center><i class='fa fa-circle' title='Not Active' style = ' font-size:15px ;color:orange;'></i></center>  #}  #");
+                  //.Filterable(f => f.Messages(m => m.Info("Is Active or not").IsFalse("Not Active").IsTrue("Active")));
+              })
+              .Pageable(pageable => pageable.PageSizes(true))
+              .Reorderable(reorderable => reorderable.Columns(true))
+              .Resizable(resizable => resizable.Columns(true))
+                   .Filterable(filterable => filterable.Extra(false)
+                                           .Operators(operators => operators
+                                                .ForString(str => str.Clear()
+                                                   .StartsWith("Starts with")
+                                                   .IsEqualTo("Is equal to")
+                                                       .Contains("Contains")
+                                                   .IsNotEqualTo("Is not equal to")
+                                                 )
+                                             )
+                              )
+              .DataSource(data => data.Ajax()
+              .Model(model => model.Id(customer => customer.Id))
+                  .Read(read => read.Action("ViewCustomers", ControllerName.Customer, new { id = 1 }))
+              )
+    )
+
+</div>
+
+<script type="text/javascript">
+
+    function onClick(e) {
+        window.location.href = '@Url.Action("Create", ControllerName.Customer)';
+    }
+
+    $("#showAll").click(function () {
+        
+        var checkboxGrid = $("#showAll").is(':checked');
+        var tick = 1;
+        if (checkboxGrid) {
+            tick = 0;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ViewCustomersById", "Customers")',
+            dataType: 'json',
+            data: { id: tick },
+            async: true,
+            success: function (data) {
+                var dataSource = new kendo.data.DataSource({
+                    data: data,
+                    pageSize: 10
+                });
+                $("#customerGrid").data("kendoGrid").setDataSource(dataSource);
+            },
+            error: function (xhr) {
+            }
+        })
+    });
+
+
+    function customerNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.FMSSLAFilterByCustomerName, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function employeeNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByEmployee, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+</script>
+<style>
+    .col-lg-6 {
+        padding-left: 00px;
+    }   
+</style>
+

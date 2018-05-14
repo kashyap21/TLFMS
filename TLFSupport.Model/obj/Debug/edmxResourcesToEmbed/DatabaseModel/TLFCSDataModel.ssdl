@@ -1,0 +1,1512 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TLFCSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActivityType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_CallLog">
+    <Key>
+      <PropertyRef Name="CallLogId" />
+    </Key>
+    <Property Name="CallLogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ExtensionNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Trunk" Type="nvarchar" MaxLength="10" />
+    <Property Name="CallNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="Time" Type="time" Precision="0" Nullable="false" />
+    <Property Name="Duration" Type="int" Nullable="false" />
+    <Property Name="Action" Type="tinyint" Nullable="false" />
+    <Property Name="IsTicketGenerated" Type="bit" Nullable="false" />
+    <Property Name="TicketId" Type="int" />
+  </EntityType>
+  <EntityType Name="CS_Configuration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PBX_IP" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="PBX_Port" Type="int" Nullable="false" />
+    <Property Name="SupportEmailAddress" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SMTPHost" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="SMTPPort" Type="int" Nullable="false" />
+    <Property Name="MIMEHost" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="MIMEPort" Type="int" Nullable="false" />
+    <Property Name="SLABreachEmailAddress" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_CustomerEmployeeInfo">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="EmployeeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="EmailId" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="ContactNumber" Type="nvarchar" MaxLength="16" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_EmailLink">
+    <Key>
+      <PropertyRef Name="TicketId" />
+    </Key>
+    <Property Name="TicketId" Type="int" Nullable="false" />
+    <Property Name="Link" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_EmailTicketLog">
+    <Key>
+      <PropertyRef Name="EmailTicketId" />
+    </Key>
+    <Property Name="EmailTicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="EmailFrom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="TicketNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_Log">
+    <Key>
+      <PropertyRef Name="LogId" />
+    </Key>
+    <Property Name="LogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="200" />
+    <Property Name="Comment" Type="nvarchar(max)" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="TicketId" Type="int" Nullable="false" />
+    <Property Name="CustumerId" Type="int" Nullable="false" />
+    <Property Name="PriorityName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ForwardToEmployee" Type="int" />
+  </EntityType>
+  <EntityType Name="CS_Priority">
+    <Key>
+      <PropertyRef Name="PriorityId" />
+    </Key>
+    <Property Name="PriorityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PriorityLevel" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_SLA">
+    <Key>
+      <PropertyRef Name="SLAId" />
+    </Key>
+    <Property Name="SLAId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PriorityLevel" Type="tinyint" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+    <Property Name="LastModified" Type="date" Nullable="false" />
+    <Property Name="PriorityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsDefault" Type="bit" />
+    <Property Name="MaximumResponseTime" Type="int" Nullable="false" />
+    <Property Name="MaximumResolveTime" Type="int" Nullable="false" />
+    <Property Name="EscalationTime" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="CS_Status">
+    <Key>
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_Ticket">
+    <Key>
+      <PropertyRef Name="TicketId" />
+    </Key>
+    <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TicketNumber" Type="varchar" MaxLength="50" />
+    <Property Name="PriorityLevel" Type="tinyint" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="SLAId" Type="int" Nullable="false" />
+    <Property Name="LastComment" Type="nvarchar(max)" />
+    <Property Name="ForwardToEmployee" Type="int" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ShortName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Address1" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+    <Property Name="State" Type="nvarchar" MaxLength="50" />
+    <Property Name="CountryId" Type="int" />
+    <Property Name="Pincode" Type="nvarchar" MaxLength="20" />
+    <Property Name="PhoneNo" Type="nvarchar" MaxLength="30" />
+    <Property Name="FaxNo" Type="nvarchar" MaxLength="15" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Website" Type="nvarchar" MaxLength="500" />
+    <Property Name="OwnerId" Type="int" Nullable="false" />
+    <Property Name="ContactPersonName" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="CS_DedicatedNumber" Type="nvarchar" MaxLength="18" />
+    <Property Name="CS_DomainName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeNr" Type="int" Nullable="false" />
+    <Property Name="FiistName" Type="nvarchar" MaxLength="40" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="40" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="PresentAddress1" Type="nvarchar" MaxLength="100" />
+    <Property Name="PresentAddress2" Type="nvarchar" MaxLength="100" />
+    <Property Name="PermanentAddress1" Type="nvarchar" MaxLength="100" />
+    <Property Name="PermanentAddress2" Type="nvarchar" MaxLength="100" />
+    <Property Name="Phone_Mobile" Type="nvarchar" MaxLength="15" />
+    <Property Name="Phone_Home" Type="nvarchar" MaxLength="15" />
+    <Property Name="Email_Official" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email_Personal" Type="nvarchar" MaxLength="50" />
+    <Property Name="Skype" Type="nvarchar" MaxLength="50" />
+    <Property Name="DOB" Type="datetime" Nullable="false" />
+    <Property Name="DOA" Type="datetime" />
+    <Property Name="IdentificationMark" Type="nvarchar" MaxLength="250" />
+    <Property Name="PAN" Type="nvarchar" MaxLength="15" />
+    <Property Name="IsSupervisor" Type="bit" />
+    <Property Name="PicturePath" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsDeleted" Type="bit" />
+    <Property Name="JoiningDate" Type="datetime" Nullable="false" />
+    <Property Name="AccountNr" Type="nvarchar" MaxLength="20" />
+    <Property Name="PassBookName" Type="nvarchar" MaxLength="40" />
+    <Property Name="LeaveOpeningBalance" Type="float" />
+    <Property Name="LeaveBalEffectiveDate" Type="datetime" />
+    <Property Name="GenderId" Type="int" Nullable="false" />
+    <Property Name="PresentCityId" Type="int" />
+    <Property Name="PresentStateId" Type="int" />
+    <Property Name="PresentCountryId" Type="int" />
+    <Property Name="PresentPincode" Type="nvarchar" MaxLength="15" />
+    <Property Name="PermanentCityId" Type="int" />
+    <Property Name="PermanentStateId" Type="int" />
+    <Property Name="PermanentCountryId" Type="int" />
+    <Property Name="PermanentPincode" Type="nvarchar" MaxLength="15" />
+    <Property Name="MaritalStatusId" Type="int" />
+    <Property Name="BirthCountryId" Type="int" />
+    <Property Name="SupervisorId" Type="int" />
+    <Property Name="EmploymentTypeId" Type="int" />
+    <Property Name="GradeId" Type="int" />
+    <Property Name="WorkScheduleId" Type="int" />
+    <Property Name="BankBranchId" Type="int" />
+    <Property Name="EmploymentStatusId" Type="int" />
+    <Property Name="BloodGroupId" Type="int" />
+    <Property Name="DepartmentId" Type="int" />
+    <Property Name="User_Id" Type="int" />
+    <Property Name="OfficeLocationId" Type="int" />
+    <Property Name="MonthlyCredit" Type="decimal" Precision="6" Scale="2" />
+    <Property Name="VoIP" Type="nvarchar" MaxLength="30" />
+    <Property Name="Assignable" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EmployeeDesignation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="DesignationId" Type="int" Nullable="false" />
+    <Property Name="EffectiveDate" Type="datetime" Nullable="false" />
+    <Property Name="IsCurrent" Type="bit" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Phases">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="SeqNr" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectActivity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ActivityTypeId" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectActivityLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="ProjectActivityId" Type="int" />
+    <Property Name="ProjectActivityName" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedOn" Type="datetime" />
+    <Property Name="CreatedIPAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdatedIPAddress" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ProjectCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectCR">
+    <Key>
+      <PropertyRef Name="CRId" />
+    </Key>
+    <Property Name="CRId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="CRNo" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="CRDate" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="EstimatedHrs" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="ApprovedByClient" Type="bit" Nullable="false" />
+    <Property Name="ApprovedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectDeadline">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RevisedDate" Type="date" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="UpdatedOn" Type="date" Nullable="false" />
+    <Property Name="Reason" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectGroup">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectPhases">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="PhaseId" Type="int" />
+    <Property Name="PhaseName" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="UpdateBy" Type="int" />
+    <Property Name="UpdatedOn" Type="datetime" />
+    <Property Name="CreatedIPAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="UpdatedIPAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="SeqNr" Type="int" />
+    <Property Name="IsCurrent" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectResourceDemand">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="ProjectRoleId" Type="int" Nullable="false" />
+    <Property Name="ExpectedStartWeek" Type="int" Nullable="false" />
+    <Property Name="ExpectedHoursPerWeek" Type="int" />
+    <Property Name="Year" Type="int" Nullable="false" />
+    <Property Name="NoOfWeeks" Type="int" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="ProjectRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="IsAssignable" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Projects">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectTypeId" Type="int" Nullable="false" />
+    <Property Name="ProjectCategoryId" Type="int" Nullable="false" />
+    <Property Name="ProjectName" Type="nvarchar" MaxLength="300" />
+    <Property Name="ProjectCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShortCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="TechnologyId" Type="int" />
+    <Property Name="ProjectOwner" Type="int" Nullable="false" />
+    <Property Name="ProjectManager" Type="int" />
+    <Property Name="ProjectLead" Type="int" />
+    <Property Name="ProjectBrief" Type="nvarchar(max)" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="60" />
+    <Property Name="QuintiqProjectCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerEmail" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerLocation" Type="nvarchar" MaxLength="40" />
+    <Property Name="InitialEstimatedHrs" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ModelingEstimatedHrs" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ProjectStatusId" Type="int" />
+    <Property Name="IsNotification" Type="bit" Nullable="false" />
+    <Property Name="IsProspect" Type="bit" Nullable="false" />
+    <Property Name="CustomerId" Type="int" />
+    <Property Name="ProjectGroupId" Type="int" />
+    <Property Name="InitialDeadline" Type="date" />
+    <Property Name="CurrentDeadline" Type="date" />
+  </EntityType>
+  <EntityType Name="ProjectStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="IconPath" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="ProjectTeam">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="ProjectRoleId" Type="int" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="IsCreate" Type="bit" Nullable="false" />
+    <Property Name="CS_Level" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="ProjectType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Summary" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="SupportTypeId" Type="int" Nullable="false" />
+    <Property Name="AssignedTo" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="TaskPriorityId" Type="int" Nullable="false" />
+    <Property Name="DueDateTime" Type="datetime" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="LatestStatus" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Technology">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TimeSheet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" />
+    <Property Name="TaskId" Type="int" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="WeekNo" Type="smallint" />
+    <Property Name="ReferenceIssueNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="ActivityId" Type="int" />
+    <Property Name="ProjectActivityLinkId" Type="int" />
+    <Property Name="TimeSpent" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+    <Property Name="TimeBillable" Type="decimal" Precision="6" Scale="2" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="800" />
+    <Property Name="ProjectPhaseId" Type="int" />
+    <Property Name="EstimatedTime" Type="decimal" Precision="6" Scale="2" />
+    <Property Name="IsCompleted" Type="bit" Nullable="false" />
+    <Property Name="IsExtraHours" Type="bit" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="800" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="UpdatedOn" Type="datetime" />
+    <Property Name="Year" Type="varchar" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="TlfmsJiraLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TlfmsProjectId" Type="int" Nullable="false" />
+    <Property Name="JiraProjectName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="JiraProjectKey" Type="varchar" MaxLength="50" />
+    <Property Name="JiraProjectVerison" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedOn" Type="date" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="UpdatedOn" Type="date" />
+    <Property Name="UpdatedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="Users_Id" />
+      <PropertyRef Name="Roles_Id" />
+    </Key>
+    <Property Name="Users_Id" Type="int" Nullable="false" />
+    <Property Name="Roles_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CreateOn" Type="datetime" Nullable="false" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="IsLocked" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__ProjectCR__Appro__75035A77">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="ProjectCR" Type="Self.ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Creat__75F77EB0">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ProjectCR" Type="Self.ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Proje__4E739D3B">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectCR" Type="Self.ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Proje__6C6E1476">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectCR" Type="Self.ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TimeSheet__Proje__194BA7E5">
+    <End Role="ProjectPhases" Type="Self.ProjectPhases" Multiplicity="0..1" />
+    <End Role="TimeSheet" Type="Self.TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectPhases">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ProjectPhaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_CallLog_CS_Ticket">
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="0..1" />
+    <End Role="CS_CallLog" Type="Self.CS_CallLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Ticket">
+        <PropertyRef Name="TicketId" />
+      </Principal>
+      <Dependent Role="CS_CallLog">
+        <PropertyRef Name="TicketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_CustomerEmployeeInfo_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="CS_CustomerEmployeeInfo" Type="Self.CS_CustomerEmployeeInfo" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_CustomerEmployeeInfo">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_EmailLink_CS_Ticket">
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="1" />
+    <End Role="CS_EmailLink" Type="Self.CS_EmailLink" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Ticket">
+        <PropertyRef Name="TicketId" />
+      </Principal>
+      <Dependent Role="CS_EmailLink">
+        <PropertyRef Name="TicketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_CS_Status">
+    <End Role="CS_Status" Type="Self.CS_Status" Multiplicity="1" />
+    <End Role="CS_Log" Type="Self.CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_CS_Ticket">
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="1" />
+    <End Role="CS_Log" Type="Self.CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Ticket">
+        <PropertyRef Name="TicketId" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="TicketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="CS_Log" Type="Self.CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="CustumerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="CS_Log" Type="Self.CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_SLA_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="CS_SLA" Type="Self.CS_SLA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_SLA">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_CS_SLA">
+    <End Role="CS_SLA" Type="Self.CS_SLA" Multiplicity="1" />
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_SLA">
+        <PropertyRef Name="SLAId" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="SLAId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_CS_Status1">
+    <End Role="CS_Status" Type="Self.CS_Status" Multiplicity="1" />
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Employee1">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="ForwardToEmployee" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Projects1">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="CS_Ticket" Type="Self.CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_Country">
+    <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="OwnerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_CountryBirth">
+    <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="BirthCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_CountryPermanent">
+    <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PermanentCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_CountryPresent">
+    <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PresentCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="SupervisorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeDesignation_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="EmployeeDesignation" Type="Self.EmployeeDesignation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EmployeeDesignation">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivity_ActivityType">
+    <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="1" />
+    <End Role="ProjectActivity" Type="Self.ProjectActivity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivity">
+        <PropertyRef Name="ActivityTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_CreatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="ProjectActivityLink" Type="Self.ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_ProjectActivity">
+    <End Role="ProjectActivity" Type="Self.ProjectActivity" Multiplicity="0..1" />
+    <End Role="ProjectActivityLink" Type="Self.ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectActivity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="ProjectActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectActivityLink" Type="Self.ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_UpdatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="ProjectActivityLink" Type="Self.ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectDeadline_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="ProjectDeadline" Type="Self.ProjectDeadline" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectDeadline">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectDeadline_Project">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectDeadline" Type="Self.ProjectDeadline" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectDeadline">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_CreatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="ProjectPhases" Type="Self.ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_Phases">
+    <End Role="Phases" Type="Self.Phases" Multiplicity="0..1" />
+    <End Role="ProjectPhases" Type="Self.ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phases">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="PhaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectPhases" Type="Self.ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_UpdatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="ProjectPhases" Type="Self.ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="UpdateBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectResourceDemand_ProjectRole">
+    <End Role="ProjectRole" Type="Self.ProjectRole" Multiplicity="1" />
+    <End Role="ProjectResourceDemand" Type="Self.ProjectResourceDemand" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectResourceDemand">
+        <PropertyRef Name="ProjectRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectResourceDemand_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectResourceDemand" Type="Self.ProjectResourceDemand" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectResourceDemand">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectCategory">
+    <End Role="ProjectCategory" Type="Self.ProjectCategory" Multiplicity="1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectGroup">
+    <End Role="ProjectGroup" Type="Self.ProjectGroup" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectGroup">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectLeader">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectLead" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectOwner">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectOwner" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectsManager">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectManager" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectStatus">
+    <End Role="ProjectStatus" Type="Self.ProjectStatus" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectType">
+    <End Role="ProjectType" Type="Self.ProjectType" Multiplicity="1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_Technology">
+    <End Role="Technology" Type="Self.Technology" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Technology">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="TechnologyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectTeam_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="ProjectTeam" Type="Self.ProjectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectTeam">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectTeam_ProjectRole">
+    <End Role="ProjectRole" Type="Self.ProjectRole" Multiplicity="1" />
+    <End Role="ProjectTeam" Type="Self.ProjectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectTeam">
+        <PropertyRef Name="ProjectRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectTeam_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectTeam" Type="Self.ProjectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectTeam">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_AssignedTo">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="AssignedTo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_CreatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Task" Type="Self.Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="TimeSheet" Type="Self.TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_ProjectActivity">
+    <End Role="ProjectActivity" Type="Self.ProjectActivity" Multiplicity="0..1" />
+    <End Role="TimeSheet" Type="Self.TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectActivity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_ProjectActivityLink">
+    <End Role="ProjectActivityLink" Type="Self.ProjectActivityLink" Multiplicity="0..1" />
+    <End Role="TimeSheet" Type="Self.TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectActivityLink">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ProjectActivityLinkId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="0..1" />
+    <End Role="TimeSheet" Type="Self.TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TlfmsJiraLink_CreatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="TlfmsJiraLink" Type="Self.TlfmsJiraLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TlfmsJiraLink">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TlfmsJiraLink_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="TlfmsJiraLink" Type="Self.TlfmsJiraLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TlfmsJiraLink">
+        <PropertyRef Name="TlfmsProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TlfmsJiraLink_UpdatedBy">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="TlfmsJiraLink" Type="Self.TlfmsJiraLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TlfmsJiraLink">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserEmployee">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserRole_User">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="Users_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TLFCSModelStoreContainer">
+    <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_CallLog" EntityType="Self.CS_CallLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_Configuration" EntityType="Self.CS_Configuration" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_CustomerEmployeeInfo" EntityType="Self.CS_CustomerEmployeeInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_EmailLink" EntityType="Self.CS_EmailLink" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_EmailTicketLog" EntityType="Self.CS_EmailTicketLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_Log" EntityType="Self.CS_Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_Priority" EntityType="Self.CS_Priority" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_SLA" EntityType="Self.CS_SLA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_Status" EntityType="Self.CS_Status" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CS_Ticket" EntityType="Self.CS_Ticket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EmployeeDesignation" EntityType="Self.EmployeeDesignation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Phases" EntityType="Self.Phases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectActivity" EntityType="Self.ProjectActivity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectActivityLink" EntityType="Self.ProjectActivityLink" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectCategory" EntityType="Self.ProjectCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectCR" EntityType="Self.ProjectCR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectDeadline" EntityType="Self.ProjectDeadline" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectGroup" EntityType="Self.ProjectGroup" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectPhases" EntityType="Self.ProjectPhases" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectResourceDemand" EntityType="Self.ProjectResourceDemand" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectRole" EntityType="Self.ProjectRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectStatus" EntityType="Self.ProjectStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectTeam" EntityType="Self.ProjectTeam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectType" EntityType="Self.ProjectType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Technology" EntityType="Self.Technology" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TimeSheet" EntityType="Self.TimeSheet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TlfmsJiraLink" EntityType="Self.TlfmsJiraLink" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ProjectCR__Appro__75035A77" Association="Self.FK__ProjectCR__Appro__75035A77">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Creat__75F77EB0" Association="Self.FK__ProjectCR__Creat__75F77EB0">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Proje__4E739D3B" Association="Self.FK__ProjectCR__Proje__4E739D3B">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Proje__6C6E1476" Association="Self.FK__ProjectCR__Proje__6C6E1476">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TimeSheet__Proje__194BA7E5" Association="Self.FK__TimeSheet__Proje__194BA7E5">
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_CallLog_CS_Ticket" Association="Self.FK_CS_CallLog_CS_Ticket">
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+      <End Role="CS_CallLog" EntitySet="CS_CallLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_CustomerEmployeeInfo_Customer" Association="Self.FK_CS_CustomerEmployeeInfo_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CS_CustomerEmployeeInfo" EntitySet="CS_CustomerEmployeeInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_EmailLink_CS_Ticket" Association="Self.FK_CS_EmailLink_CS_Ticket">
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+      <End Role="CS_EmailLink" EntitySet="CS_EmailLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_CS_Status" Association="Self.FK_CS_Log_CS_Status">
+      <End Role="CS_Status" EntitySet="CS_Status" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_CS_Ticket" Association="Self.FK_CS_Log_CS_Ticket">
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_Customer" Association="Self.FK_CS_Log_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_Employee" Association="Self.FK_CS_Log_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_SLA_Projects" Association="Self.FK_CS_SLA_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="CS_SLA" EntitySet="CS_SLA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_CS_SLA" Association="Self.FK_CS_Ticket_CS_SLA">
+      <End Role="CS_SLA" EntitySet="CS_SLA" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_CS_Status1" Association="Self.FK_CS_Ticket_CS_Status1">
+      <End Role="CS_Status" EntitySet="CS_Status" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Customer" Association="Self.FK_CS_Ticket_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Employee" Association="Self.FK_CS_Ticket_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Employee1" Association="Self.FK_CS_Ticket_Employee1">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Projects1" Association="Self.FK_CS_Ticket_Projects1">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_Country" Association="Self.FK_Customer_Country">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_Employee" Association="Self.FK_Customer_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_CountryBirth" Association="Self.FK_Employee_CountryBirth">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_CountryPermanent" Association="Self.FK_Employee_CountryPermanent">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_CountryPresent" Association="Self.FK_Employee_CountryPresent">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Employee" Association="Self.FK_Employee_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeDesignation_Employee" Association="Self.FK_EmployeeDesignation_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="EmployeeDesignation" EntitySet="EmployeeDesignation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivity_ActivityType" Association="Self.FK_ProjectActivity_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityType" />
+      <End Role="ProjectActivity" EntitySet="ProjectActivity" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_CreatedBy" Association="Self.FK_ProjectActivityLink_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_ProjectActivity" Association="Self.FK_ProjectActivityLink_ProjectActivity">
+      <End Role="ProjectActivity" EntitySet="ProjectActivity" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_Projects" Association="Self.FK_ProjectActivityLink_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_UpdatedBy" Association="Self.FK_ProjectActivityLink_UpdatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectDeadline_Employee" Association="Self.FK_ProjectDeadline_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectDeadline" EntitySet="ProjectDeadline" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectDeadline_Project" Association="Self.FK_ProjectDeadline_Project">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectDeadline" EntitySet="ProjectDeadline" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_CreatedBy" Association="Self.FK_ProjectPhases_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_Phases" Association="Self.FK_ProjectPhases_Phases">
+      <End Role="Phases" EntitySet="Phases" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_Projects" Association="Self.FK_ProjectPhases_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_UpdatedBy" Association="Self.FK_ProjectPhases_UpdatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectResourceDemand_ProjectRole" Association="Self.FK_ProjectResourceDemand_ProjectRole">
+      <End Role="ProjectRole" EntitySet="ProjectRole" />
+      <End Role="ProjectResourceDemand" EntitySet="ProjectResourceDemand" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectResourceDemand_Projects" Association="Self.FK_ProjectResourceDemand_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectResourceDemand" EntitySet="ProjectResourceDemand" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_Customer" Association="Self.FK_Projects_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectCategory" Association="Self.FK_Projects_ProjectCategory">
+      <End Role="ProjectCategory" EntitySet="ProjectCategory" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectGroup" Association="Self.FK_Projects_ProjectGroup">
+      <End Role="ProjectGroup" EntitySet="ProjectGroup" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectLeader" Association="Self.FK_Projects_ProjectLeader">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectOwner" Association="Self.FK_Projects_ProjectOwner">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectsManager" Association="Self.FK_Projects_ProjectsManager">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectStatus" Association="Self.FK_Projects_ProjectStatus">
+      <End Role="ProjectStatus" EntitySet="ProjectStatus" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectType" Association="Self.FK_Projects_ProjectType">
+      <End Role="ProjectType" EntitySet="ProjectType" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_Technology" Association="Self.FK_Projects_Technology">
+      <End Role="Technology" EntitySet="Technology" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectTeam_Employee" Association="Self.FK_ProjectTeam_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectTeam" EntitySet="ProjectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectTeam_ProjectRole" Association="Self.FK_ProjectTeam_ProjectRole">
+      <End Role="ProjectRole" EntitySet="ProjectRole" />
+      <End Role="ProjectTeam" EntitySet="ProjectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectTeam_Projects" Association="Self.FK_ProjectTeam_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectTeam" EntitySet="ProjectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_AssignedTo" Association="Self.FK_Task_AssignedTo">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Task" EntitySet="Task" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_CreatedBy" Association="Self.FK_Task_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Task" EntitySet="Task" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_Employee" Association="Self.FK_TimeSheet_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_ProjectActivity" Association="Self.FK_TimeSheet_ProjectActivity">
+      <End Role="ProjectActivity" EntitySet="ProjectActivity" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_ProjectActivityLink" Association="Self.FK_TimeSheet_ProjectActivityLink">
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_Projects" Association="Self.FK_TimeSheet_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TlfmsJiraLink_CreatedBy" Association="Self.FK_TlfmsJiraLink_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="TlfmsJiraLink" EntitySet="TlfmsJiraLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TlfmsJiraLink_Projects" Association="Self.FK_TlfmsJiraLink_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="TlfmsJiraLink" EntitySet="TlfmsJiraLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TlfmsJiraLink_UpdatedBy" Association="Self.FK_TlfmsJiraLink_UpdatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="TlfmsJiraLink" EntitySet="TlfmsJiraLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserEmployee" Association="Self.FK_UserEmployee">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

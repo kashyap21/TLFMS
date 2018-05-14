@@ -1,0 +1,1616 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TLFCSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CS_Priority">
+    <Key>
+      <PropertyRef Name="PriorityId" />
+    </Key>
+    <Property Name="PriorityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PriorityLevel" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CountryId" Type="Int32" />
+    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="FaxNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Website" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="OwnerId" Type="Int32" Nullable="false" />
+    <Property Name="ContactPersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CS_DedicatedNumber" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="CS_DomainName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Customer_Employee" FromRole="Customer" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="Self.FK_Projects_Customer" FromRole="Customer" ToRole="Projects" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_Ticket_Customer" FromRole="Customer" ToRole="CS_Ticket" />
+    <NavigationProperty Name="CS_Log" Relationship="TLFCSModel.FK_CS_Log_Customer" FromRole="Customer" ToRole="CS_Log" />
+    <NavigationProperty Name="CS_CustomerEmployeeInfo" Relationship="TLFCSModel.FK_CS_CustomerEmployeeInfo_Customer" FromRole="Customer" ToRole="CS_CustomerEmployeeInfo" />
+    <NavigationProperty Name="Country" Relationship="TLFCSModel.FK_Customer_Country" FromRole="Customer" ToRole="Country" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeNr" Type="Int32" Nullable="false" />
+    <Property Name="FiistName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PresentAddress1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PresentAddress2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PermanentAddress1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PermanentAddress2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone_Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Phone_Home" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Email_Official" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email_Personal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Skype" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DOA" Type="DateTime" Precision="3" />
+    <Property Name="IdentificationMark" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="PAN" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="IsSupervisor" Type="Boolean" />
+    <Property Name="PicturePath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <Property Name="JoiningDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="AccountNr" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PassBookName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="LeaveOpeningBalance" Type="Double" />
+    <Property Name="LeaveBalEffectiveDate" Type="DateTime" Precision="3" />
+    <Property Name="GenderId" Type="Int32" Nullable="false" />
+    <Property Name="PresentCityId" Type="Int32" />
+    <Property Name="PresentStateId" Type="Int32" />
+    <Property Name="PresentCountryId" Type="Int32" />
+    <Property Name="PresentPincode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="PermanentCityId" Type="Int32" />
+    <Property Name="PermanentStateId" Type="Int32" />
+    <Property Name="PermanentCountryId" Type="Int32" />
+    <Property Name="PermanentPincode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="MaritalStatusId" Type="Int32" />
+    <Property Name="BirthCountryId" Type="Int32" />
+    <Property Name="SupervisorId" Type="Int32" />
+    <Property Name="EmploymentTypeId" Type="Int32" />
+    <Property Name="GradeId" Type="Int32" />
+    <Property Name="WorkScheduleId" Type="Int32" />
+    <Property Name="BankBranchId" Type="Int32" />
+    <Property Name="EmploymentStatusId" Type="Int32" />
+    <Property Name="BloodGroupId" Type="Int32" />
+    <Property Name="DepartmentId" Type="Int32" />
+    <Property Name="User_Id" Type="Int32" />
+    <Property Name="OfficeLocationId" Type="Int32" />
+    <Property Name="MonthlyCredit" Type="Decimal" Precision="6" Scale="2" />
+    <Property Name="VoIP" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Assignable" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_Customer_Employee" FromRole="Employee" ToRole="Customer" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Employee_Employee" FromRole="Employee" ToRole="Employee1" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK_Employee_Employee" FromRole="Employee1" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="Self.FK_Projects_ProjectLeader" FromRole="Employee" ToRole="Projects" />
+    <NavigationProperty Name="Projects1" Relationship="Self.FK_Projects_ProjectOwner" FromRole="Employee" ToRole="Projects" />
+    <NavigationProperty Name="Projects2" Relationship="Self.FK_Projects_ProjectsManager" FromRole="Employee" ToRole="Projects" />
+    <NavigationProperty Name="ProjectTeam" Relationship="Self.FK_ProjectTeam_Employee" FromRole="Employee" ToRole="ProjectTeam" />
+    <NavigationProperty Name="Users" Relationship="TLFCSModel.FK_UserEmployee" FromRole="Employee" ToRole="Users" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_Ticket_Employee" FromRole="Employee" ToRole="CS_Ticket" />
+    <NavigationProperty Name="CS_Log" Relationship="TLFCSModel.FK_CS_Log_Employee" FromRole="Employee" ToRole="CS_Log" />
+    <NavigationProperty Name="CS_Ticket1" Relationship="TLFCSModel.FK_CS_Ticket_Employee1" FromRole="Employee" ToRole="CS_Ticket" />
+    <NavigationProperty Name="TimeSheet" Relationship="TLFCSModel.FK_TimeSheet_Employee" FromRole="Employee" ToRole="TimeSheet" />
+    <NavigationProperty Name="ProjectActivityLink" Relationship="TLFCSModel.FK_ProjectActivityLink_CreatedBy" FromRole="Employee" ToRole="ProjectActivityLink" />
+    <NavigationProperty Name="ProjectActivityLink1" Relationship="TLFCSModel.FK_ProjectActivityLink_UpdatedBy" FromRole="Employee" ToRole="ProjectActivityLink" />
+    <NavigationProperty Name="ProjectPhases" Relationship="TLFCSModel.FK_ProjectPhases_CreatedBy" FromRole="Employee" ToRole="ProjectPhases" />
+    <NavigationProperty Name="ProjectPhases1" Relationship="TLFCSModel.FK_ProjectPhases_UpdatedBy" FromRole="Employee" ToRole="ProjectPhases" />
+    <NavigationProperty Name="Task" Relationship="TLFCSModel.FK_Task_AssignedTo" FromRole="Employee" ToRole="Task" />
+    <NavigationProperty Name="Task1" Relationship="TLFCSModel.FK_Task_CreatedBy" FromRole="Employee" ToRole="Task" />
+    <NavigationProperty Name="Country" Relationship="TLFCSModel.FK_Employee_CountryBirth" FromRole="Employee" ToRole="Country" />
+    <NavigationProperty Name="Country1" Relationship="TLFCSModel.FK_Employee_CountryPermanent" FromRole="Employee" ToRole="Country" />
+    <NavigationProperty Name="Country2" Relationship="TLFCSModel.FK_Employee_CountryPresent" FromRole="Employee" ToRole="Country" />
+    <NavigationProperty Name="EmployeeDesignation" Relationship="TLFCSModel.FK_EmployeeDesignation_Employee" FromRole="Employee" ToRole="EmployeeDesignation" />
+    <NavigationProperty Name="ProjectCR" Relationship="TLFCSModel.FK__ProjectCR__Appro__75035A77" FromRole="Employee" ToRole="ProjectCR" />
+    <NavigationProperty Name="ProjectDeadline" Relationship="TLFCSModel.FK_ProjectDeadline_Employee" FromRole="Employee" ToRole="ProjectDeadline" />
+    <NavigationProperty Name="TlfmsJiraLink" Relationship="TLFCSModel.FK_TlfmsJiraLink_CreatedBy" FromRole="Employee" ToRole="TlfmsJiraLink" />
+    <NavigationProperty Name="TlfmsJiraLink1" Relationship="TLFCSModel.FK_TlfmsJiraLink_UpdatedBy" FromRole="Employee" ToRole="TlfmsJiraLink" />
+  </EntityType>
+  <EntityType Name="Projects">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectTypeId" Type="Int32" Nullable="false" />
+    <Property Name="ProjectCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="ProjectName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="ProjectCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShortCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="TechnologyId" Type="Int32" />
+    <Property Name="ProjectOwner" Type="Int32" Nullable="false" />
+    <Property Name="ProjectManager" Type="Int32" />
+    <Property Name="ProjectLead" Type="Int32" />
+    <Property Name="ProjectBrief" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="QuintiqProjectCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerLocation" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="InitialEstimatedHrs" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ModelingEstimatedHrs" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ProjectStatusId" Type="Int32" />
+    <Property Name="IsNotification" Type="Boolean" Nullable="false" />
+    <Property Name="IsProspect" Type="Boolean" Nullable="false" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="ProjectGroupId" Type="Int32" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_Projects_Customer" FromRole="Projects" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Projects_ProjectLeader" FromRole="Projects" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Projects_ProjectOwner" FromRole="Projects" ToRole="Employee" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK_Projects_ProjectsManager" FromRole="Projects" ToRole="Employee" />
+    <NavigationProperty Name="ProjectTeam" Relationship="Self.FK_ProjectTeam_Projects" FromRole="Projects" ToRole="ProjectTeam" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_Ticket_Projects1" FromRole="Projects" ToRole="CS_Ticket" />
+    <NavigationProperty Name="CS_SLA" Relationship="TLFCSModel.FK_CS_SLA_Projects" FromRole="Projects" ToRole="CS_SLA" />
+    <Property Name="InitialDeadline" Type="DateTime" Precision="0" />
+    <Property Name="CurrentDeadline" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="ProjectGroup" Relationship="TLFCSModel.FK_Projects_ProjectGroup" FromRole="Projects" ToRole="ProjectGroup" />
+    <NavigationProperty Name="ProjectStatus" Relationship="TLFCSModel.FK_Projects_ProjectStatus" FromRole="Projects" ToRole="ProjectStatus" />
+    <NavigationProperty Name="Technology" Relationship="TLFCSModel.FK_Projects_Technology" FromRole="Projects" ToRole="Technology" />
+    <NavigationProperty Name="TimeSheet" Relationship="TLFCSModel.FK_TimeSheet_Projects" FromRole="Projects" ToRole="TimeSheet" />
+    <NavigationProperty Name="ProjectActivityLink" Relationship="TLFCSModel.FK_ProjectActivityLink_Projects" FromRole="Projects" ToRole="ProjectActivityLink" />
+    <NavigationProperty Name="ProjectPhases" Relationship="TLFCSModel.FK_ProjectPhases_Projects" FromRole="Projects" ToRole="ProjectPhases" />
+    <NavigationProperty Name="ProjectType" Relationship="TLFCSModel.FK_Projects_ProjectType" FromRole="Projects" ToRole="ProjectType" />
+    <NavigationProperty Name="ProjectCategory" Relationship="TLFCSModel.FK_Projects_ProjectCategory" FromRole="Projects" ToRole="ProjectCategory" />
+    <NavigationProperty Name="ProjectCR" Relationship="TLFCSModel.FK__ProjectCR__Proje__4E739D3B" FromRole="Projects" ToRole="ProjectCR" />
+    <NavigationProperty Name="ProjectCR1" Relationship="TLFCSModel.FK__ProjectCR__Proje__6C6E1476" FromRole="Projects" ToRole="ProjectCR" />
+    <NavigationProperty Name="ProjectDeadline" Relationship="TLFCSModel.FK_ProjectDeadline_Project" FromRole="Projects" ToRole="ProjectDeadline" />
+    <NavigationProperty Name="ProjectResourceDemand" Relationship="TLFCSModel.FK_ProjectResourceDemand_Projects" FromRole="Projects" ToRole="ProjectResourceDemand" />
+    <NavigationProperty Name="TlfmsJiraLink" Relationship="TLFCSModel.FK_TlfmsJiraLink_Projects" FromRole="Projects" ToRole="TlfmsJiraLink" />
+  </EntityType>
+  <EntityType Name="ProjectTeam">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="ProjectRoleId" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="IsCreate" Type="Boolean" Nullable="false" />
+    <Property Name="CS_Level" Type="Byte" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_ProjectTeam_Employee" FromRole="ProjectTeam" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="Self.FK_ProjectTeam_Projects" FromRole="ProjectTeam" ToRole="Projects" />
+    <NavigationProperty Name="ProjectRole" Relationship="TLFCSModel.FK_ProjectTeam_ProjectRole" FromRole="ProjectTeam" ToRole="ProjectRole" />
+  </EntityType>
+  <Association Name="FK_Customer_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="OwnerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="SupervisorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectLeader">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectLead" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectOwner">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectOwner" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectsManager">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectManager" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectTeam_Employee">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="ProjectTeam" Type="Self.ProjectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectTeam">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectTeam_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="ProjectTeam" Type="Self.ProjectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectTeam">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TLFCSEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CS_Priority" EntityType="Self.CS_Priority" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" />
+    <EntitySet Name="Projects" EntityType="Self.Projects" />
+    <EntitySet Name="ProjectTeam" EntityType="Self.ProjectTeam" />
+    <AssociationSet Name="FK_Customer_Employee" Association="Self.FK_Customer_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_Customer" Association="Self.FK_Projects_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Employee" Association="Self.FK_Employee_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectLeader" Association="Self.FK_Projects_ProjectLeader">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectOwner" Association="Self.FK_Projects_ProjectOwner">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectsManager" Association="Self.FK_Projects_ProjectsManager">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectTeam_Employee" Association="Self.FK_ProjectTeam_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectTeam" EntitySet="ProjectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectTeam_Projects" Association="Self.FK_ProjectTeam_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectTeam" EntitySet="ProjectTeam" />
+    </AssociationSet>
+    <EntitySet Name="CS_EmailTicketLog" EntityType="TLFCSModel.CS_EmailTicketLog" />
+    <EntitySet Name="CS_Status" EntityType="TLFCSModel.CS_Status" />
+    <EntitySet Name="Users" EntityType="TLFCSModel.Users" />
+    <AssociationSet Name="FK_UserEmployee" Association="TLFCSModel.FK_UserEmployee">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <EntitySet Name="CS_Ticket" EntityType="TLFCSModel.CS_Ticket" />
+    <AssociationSet Name="FK_CS_Ticket_CS_Status1" Association="TLFCSModel.FK_CS_Ticket_CS_Status1">
+      <End Role="CS_Status" EntitySet="CS_Status" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Customer" Association="TLFCSModel.FK_CS_Ticket_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Employee" Association="TLFCSModel.FK_CS_Ticket_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_Projects1" Association="TLFCSModel.FK_CS_Ticket_Projects1">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <EntitySet Name="CS_Log" EntityType="TLFCSModel.CS_Log" />
+    <AssociationSet Name="FK_CS_Log_CS_Status" Association="TLFCSModel.FK_CS_Log_CS_Status">
+      <End Role="CS_Status" EntitySet="CS_Status" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_CS_Ticket" Association="TLFCSModel.FK_CS_Log_CS_Ticket">
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_Customer" Association="TLFCSModel.FK_CS_Log_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Log_Employee" Association="TLFCSModel.FK_CS_Log_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="CS_Log" EntitySet="CS_Log" />
+    </AssociationSet>
+    <EntitySet Name="CS_SLA" EntityType="TLFCSModel.CS_SLA" />
+    <AssociationSet Name="FK_CS_SLA_Projects" Association="TLFCSModel.FK_CS_SLA_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="CS_SLA" EntitySet="CS_SLA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CS_Ticket_CS_SLA" Association="TLFCSModel.FK_CS_Ticket_CS_SLA">
+      <End Role="CS_SLA" EntitySet="CS_SLA" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <EntitySet Name="CS_CallLog" EntityType="TLFCSModel.CS_CallLog" />
+    <AssociationSet Name="FK_CS_Ticket_Employee1" Association="TLFCSModel.FK_CS_Ticket_Employee1">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+    </AssociationSet>
+    <EntitySet Name="CS_CustomerEmployeeInfo" EntityType="TLFCSModel.CS_CustomerEmployeeInfo" />
+    <AssociationSet Name="FK_CS_CustomerEmployeeInfo_Customer" Association="TLFCSModel.FK_CS_CustomerEmployeeInfo_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CS_CustomerEmployeeInfo" EntitySet="CS_CustomerEmployeeInfo" />
+    </AssociationSet>
+    <EntitySet Name="CS_EmailLink" EntityType="TLFCSModel.CS_EmailLink" />
+    <AssociationSet Name="FK_CS_EmailLink_CS_Ticket" Association="TLFCSModel.FK_CS_EmailLink_CS_Ticket">
+      <End Role="CS_Ticket" EntitySet="CS_Ticket" />
+      <End Role="CS_EmailLink" EntitySet="CS_EmailLink" />
+    </AssociationSet>
+    <EntitySet Name="ProjectGroup" EntityType="TLFCSModel.ProjectGroup" />
+    <EntitySet Name="ProjectStatus" EntityType="TLFCSModel.ProjectStatus" />
+    <AssociationSet Name="FK_Projects_ProjectGroup" Association="TLFCSModel.FK_Projects_ProjectGroup">
+      <End Role="ProjectGroup" EntitySet="ProjectGroup" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Projects_ProjectStatus" Association="TLFCSModel.FK_Projects_ProjectStatus">
+      <End Role="ProjectStatus" EntitySet="ProjectStatus" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <EntitySet Name="Technology" EntityType="TLFCSModel.Technology" />
+    <AssociationSet Name="FK_Projects_Technology" Association="TLFCSModel.FK_Projects_Technology">
+      <End Role="Technology" EntitySet="Technology" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <EntitySet Name="ActivityType" EntityType="TLFCSModel.ActivityType" />
+    <EntitySet Name="Phases" EntityType="TLFCSModel.Phases" />
+    <EntitySet Name="TimeSheet" EntityType="TLFCSModel.TimeSheet" />
+    <AssociationSet Name="FK_TimeSheet_Employee" Association="TLFCSModel.FK_TimeSheet_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_Projects" Association="TLFCSModel.FK_TimeSheet_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <EntitySet Name="ProjectActivityLink" EntityType="TLFCSModel.ProjectActivityLink" />
+    <EntitySet Name="ProjectPhases" EntityType="TLFCSModel.ProjectPhases" />
+    <EntitySet Name="Task" EntityType="TLFCSModel.Task" />
+    <AssociationSet Name="FK_ProjectActivityLink_CreatedBy" Association="TLFCSModel.FK_ProjectActivityLink_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_UpdatedBy" Association="TLFCSModel.FK_ProjectActivityLink_UpdatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_CreatedBy" Association="TLFCSModel.FK_ProjectPhases_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_UpdatedBy" Association="TLFCSModel.FK_ProjectPhases_UpdatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_AssignedTo" Association="TLFCSModel.FK_Task_AssignedTo">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Task" EntitySet="Task" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Task_CreatedBy" Association="TLFCSModel.FK_Task_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Task" EntitySet="Task" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_Phases" Association="TLFCSModel.FK_ProjectPhases_Phases">
+      <End Role="Phases" EntitySet="Phases" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_Projects" Association="TLFCSModel.FK_ProjectActivityLink_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_ProjectActivityLink" Association="TLFCSModel.FK_TimeSheet_ProjectActivityLink">
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TimeSheet__Proje__194BA7E5" Association="TLFCSModel.FK__TimeSheet__Proje__194BA7E5">
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectPhases_Projects" Association="TLFCSModel.FK_ProjectPhases_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectPhases" EntitySet="ProjectPhases" />
+    </AssociationSet>
+    <EntitySet Name="CS_Configuration" EntityType="TLFCSModel.CS_Configuration" />
+    <EntitySet Name="Country" EntityType="TLFCSModel.Country" />
+    <AssociationSet Name="FK_Customer_Country" Association="TLFCSModel.FK_Customer_Country">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_CountryBirth" Association="TLFCSModel.FK_Employee_CountryBirth">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_CountryPermanent" Association="TLFCSModel.FK_Employee_CountryPermanent">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_CountryPresent" Association="TLFCSModel.FK_Employee_CountryPresent">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <EntitySet Name="ProjectType" EntityType="TLFCSModel.ProjectType" />
+    <AssociationSet Name="FK_Projects_ProjectType" Association="TLFCSModel.FK_Projects_ProjectType">
+      <End Role="ProjectType" EntitySet="ProjectType" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <EntitySet Name="ProjectCategory" EntityType="TLFCSModel.ProjectCategory" />
+    <AssociationSet Name="FK_Projects_ProjectCategory" Association="TLFCSModel.FK_Projects_ProjectCategory">
+      <End Role="ProjectCategory" EntitySet="ProjectCategory" />
+      <End Role="Projects" EntitySet="Projects" />
+    </AssociationSet>
+    <EntitySet Name="UserRole" EntityType="TLFCSModel.UserRole" />
+    <AssociationSet Name="FK_UserRole_User" Association="TLFCSModel.FK_UserRole_User">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
+    <EntitySet Name="EmployeeDesignation" EntityType="TLFCSModel.EmployeeDesignation" />
+    <AssociationSet Name="FK_EmployeeDesignation_Employee" Association="TLFCSModel.FK_EmployeeDesignation_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="EmployeeDesignation" EntitySet="EmployeeDesignation" />
+    </AssociationSet>
+    <EntitySet Name="ProjectActivity" EntityType="TLFCSModel.ProjectActivity" />
+    <EntitySet Name="ProjectCR" EntityType="TLFCSModel.ProjectCR" />
+    <EntitySet Name="ProjectDeadline" EntityType="TLFCSModel.ProjectDeadline" />
+    <EntitySet Name="ProjectResourceDemand" EntityType="TLFCSModel.ProjectResourceDemand" />
+    <EntitySet Name="ProjectRole" EntityType="TLFCSModel.ProjectRole" />
+    <EntitySet Name="TlfmsJiraLink" EntityType="TLFCSModel.TlfmsJiraLink" />
+    <AssociationSet Name="FK_ProjectActivity_ActivityType" Association="TLFCSModel.FK_ProjectActivity_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityType" />
+      <End Role="ProjectActivity" EntitySet="ProjectActivity" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Appro__75035A77" Association="TLFCSModel.FK__ProjectCR__Appro__75035A77">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectDeadline_Employee" Association="TLFCSModel.FK_ProjectDeadline_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="ProjectDeadline" EntitySet="ProjectDeadline" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TlfmsJiraLink_CreatedBy" Association="TLFCSModel.FK_TlfmsJiraLink_CreatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="TlfmsJiraLink" EntitySet="TlfmsJiraLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TlfmsJiraLink_UpdatedBy" Association="TLFCSModel.FK_TlfmsJiraLink_UpdatedBy">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="TlfmsJiraLink" EntitySet="TlfmsJiraLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectActivityLink_ProjectActivity" Association="TLFCSModel.FK_ProjectActivityLink_ProjectActivity">
+      <End Role="ProjectActivity" EntitySet="ProjectActivity" />
+      <End Role="ProjectActivityLink" EntitySet="ProjectActivityLink" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSheet_ProjectActivity" Association="TLFCSModel.FK_TimeSheet_ProjectActivity">
+      <End Role="ProjectActivity" EntitySet="ProjectActivity" />
+      <End Role="TimeSheet" EntitySet="TimeSheet" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Creat__75F77EB0" Association="TLFCSModel.FK__ProjectCR__Creat__75F77EB0">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Proje__4E739D3B" Association="TLFCSModel.FK__ProjectCR__Proje__4E739D3B">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProjectCR__Proje__6C6E1476" Association="TLFCSModel.FK__ProjectCR__Proje__6C6E1476">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectCR" EntitySet="ProjectCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectDeadline_Project" Association="TLFCSModel.FK_ProjectDeadline_Project">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectDeadline" EntitySet="ProjectDeadline" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectResourceDemand_ProjectRole" Association="TLFCSModel.FK_ProjectResourceDemand_ProjectRole">
+      <End Role="ProjectRole" EntitySet="ProjectRole" />
+      <End Role="ProjectResourceDemand" EntitySet="ProjectResourceDemand" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectResourceDemand_Projects" Association="TLFCSModel.FK_ProjectResourceDemand_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="ProjectResourceDemand" EntitySet="ProjectResourceDemand" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProjectTeam_ProjectRole" Association="TLFCSModel.FK_ProjectTeam_ProjectRole">
+      <End Role="ProjectRole" EntitySet="ProjectRole" />
+      <End Role="ProjectTeam" EntitySet="ProjectTeam" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TlfmsJiraLink_Projects" Association="TLFCSModel.FK_TlfmsJiraLink_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="TlfmsJiraLink" EntitySet="TlfmsJiraLink" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="CS_EmailTicketLog">
+    <Key>
+      <PropertyRef Name="EmailTicketId" />
+    </Key>
+    <Property Name="EmailTicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EmailFrom" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="TicketNumber" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CS_Status">
+    <Key>
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_Ticket_CS_Status1" FromRole="CS_Status" ToRole="CS_Ticket" />
+    <NavigationProperty Name="CS_Log" Relationship="TLFCSModel.FK_CS_Log_CS_Status" FromRole="CS_Status" ToRole="CS_Log" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreateOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastLogin" Type="DateTime" Precision="3" />
+    <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_UserEmployee" FromRole="Users" ToRole="Employee" />
+    <NavigationProperty Name="UserRole" Relationship="TLFCSModel.FK_UserRole_User" FromRole="Users" ToRole="UserRole" />
+    <NavigationProperty Name="ProjectCR" Relationship="TLFCSModel.FK__ProjectCR__Creat__75F77EB0" FromRole="Users" ToRole="ProjectCR" />
+  </EntityType>
+  <Association Name="FK_UserEmployee">
+    <End Type="TLFCSModel.Users" Role="Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_Ticket">
+    <Key>
+      <PropertyRef Name="TicketId" />
+    </Key>
+    <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TicketNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PriorityLevel" Type="Byte" Nullable="false" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+    <Property Name="SLAId" Type="Int32" Nullable="false" />
+    <Property Name="LastComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CS_Status" Relationship="TLFCSModel.FK_CS_Ticket_CS_Status1" FromRole="CS_Ticket" ToRole="CS_Status" />
+    <NavigationProperty Name="Customer" Relationship="TLFCSModel.FK_CS_Ticket_Customer" FromRole="CS_Ticket" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_CS_Ticket_Employee" FromRole="CS_Ticket" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_CS_Ticket_Projects1" FromRole="CS_Ticket" ToRole="Projects" />
+    <NavigationProperty Name="CS_Log" Relationship="TLFCSModel.FK_CS_Log_CS_Ticket" FromRole="CS_Ticket" ToRole="CS_Log" />
+    <NavigationProperty Name="CS_SLA" Relationship="TLFCSModel.FK_CS_Ticket_CS_SLA" FromRole="CS_Ticket" ToRole="CS_SLA" />
+    <Property Name="ForwardToEmployee" Type="Int32" />
+    <NavigationProperty Name="Employee1" Relationship="TLFCSModel.FK_CS_Ticket_Employee1" FromRole="CS_Ticket" ToRole="Employee" />
+    <NavigationProperty Name="CS_EmailLink" Relationship="TLFCSModel.FK_CS_EmailLink_CS_Ticket" FromRole="CS_Ticket" ToRole="CS_EmailLink" />
+  </EntityType>
+  <Association Name="FK_CS_Ticket_CS_Status1">
+    <End Type="TLFCSModel.CS_Status" Role="CS_Status" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Customer">
+    <End Type="TLFCSModel.Customer" Role="Customer" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Employee">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_Projects1">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_Log">
+    <Key>
+      <PropertyRef Name="LogId" />
+    </Key>
+    <Property Name="LogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+    <Property Name="TicketId" Type="Int32" Nullable="false" />
+    <Property Name="CustumerId" Type="Int32" Nullable="false" />
+    <Property Name="PriorityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CS_Status" Relationship="TLFCSModel.FK_CS_Log_CS_Status" FromRole="CS_Log" ToRole="CS_Status" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_Log_CS_Ticket" FromRole="CS_Log" ToRole="CS_Ticket" />
+    <NavigationProperty Name="Customer" Relationship="TLFCSModel.FK_CS_Log_Customer" FromRole="CS_Log" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_CS_Log_Employee" FromRole="CS_Log" ToRole="Employee" />
+    <Property Name="ForwardToEmployee" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_CS_Log_CS_Status">
+    <End Type="TLFCSModel.CS_Status" Role="CS_Status" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Log" Role="CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_CS_Ticket">
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Log" Role="CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Ticket">
+        <PropertyRef Name="TicketId" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="TicketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_Customer">
+    <End Type="TLFCSModel.Customer" Role="Customer" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Log" Role="CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="CustumerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Log_Employee">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Log" Role="CS_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Log">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_SLA">
+    <Key>
+      <PropertyRef Name="SLAId" />
+    </Key>
+    <Property Name="SLAId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PriorityLevel" Type="Byte" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="PriorityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDefault" Type="Boolean" />
+    <Property Name="MaximumResponseTime" Type="Int32" Nullable="false" />
+    <Property Name="MaximumResolveTime" Type="Int32" Nullable="false" />
+    <Property Name="EscalationTime" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_CS_SLA_Projects" FromRole="CS_SLA" ToRole="Projects" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_Ticket_CS_SLA" FromRole="CS_SLA" ToRole="CS_Ticket" />
+  </EntityType>
+  <Association Name="FK_CS_SLA_Projects">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_SLA" Role="CS_SLA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_SLA">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CS_Ticket_CS_SLA">
+    <End Type="TLFCSModel.CS_SLA" Role="CS_SLA" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CS_SLA">
+        <PropertyRef Name="SLAId" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="SLAId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_CallLog">
+    <Key>
+      <PropertyRef Name="CallLogId" />
+    </Key>
+    <Property Name="CallLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ExtensionNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Trunk" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CallNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Time" Type="Time" Nullable="false" Precision="0" />
+    <Property Name="Duration" Type="Int32" Nullable="false" />
+    <Property Name="Action" Type="Byte" Nullable="false" />
+    <Property Name="IsTicketGenerated" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_CS_Ticket_Employee1">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_Ticket">
+        <PropertyRef Name="ForwardToEmployee" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_CustomerEmployeeInfo">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="EmailId" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ContactNumber" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Customer" Relationship="TLFCSModel.FK_CS_CustomerEmployeeInfo_Customer" FromRole="CS_CustomerEmployeeInfo" ToRole="Customer" />
+  </EntityType>
+  <Association Name="FK_CS_CustomerEmployeeInfo_Customer">
+    <End Type="TLFCSModel.Customer" Role="Customer" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_CustomerEmployeeInfo" Role="CS_CustomerEmployeeInfo" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CS_CustomerEmployeeInfo">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_EmailLink">
+    <Key>
+      <PropertyRef Name="TicketId" />
+    </Key>
+    <Property Name="TicketId" Type="Int32" Nullable="false" />
+    <Property Name="Link" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CS_Ticket" Relationship="TLFCSModel.FK_CS_EmailLink_CS_Ticket" FromRole="CS_EmailLink" ToRole="CS_Ticket" />
+  </EntityType>
+  <Association Name="FK_CS_EmailLink_CS_Ticket">
+    <End Type="TLFCSModel.CS_Ticket" Role="CS_Ticket" Multiplicity="1" />
+    <End Type="TLFCSModel.CS_EmailLink" Role="CS_EmailLink" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="CS_Ticket">
+        <PropertyRef Name="TicketId" />
+      </Principal>
+      <Dependent Role="CS_EmailLink">
+        <PropertyRef Name="TicketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProjectGroup">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_Projects_ProjectGroup" FromRole="ProjectGroup" ToRole="Projects" />
+  </EntityType>
+  <EntityType Name="ProjectStatus">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="IconPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_Projects_ProjectStatus" FromRole="ProjectStatus" ToRole="Projects" />
+  </EntityType>
+  <Association Name="FK_Projects_ProjectGroup">
+    <End Type="TLFCSModel.ProjectGroup" Role="ProjectGroup" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectGroup">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Projects_ProjectStatus">
+    <End Type="TLFCSModel.ProjectStatus" Role="ProjectStatus" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectStatus">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Technology">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_Projects_Technology" FromRole="Technology" ToRole="Projects" />
+  </EntityType>
+  <Association Name="FK_Projects_Technology">
+    <End Type="TLFCSModel.Technology" Role="Technology" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Technology">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="TechnologyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ActivityType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ProjectActivity" Relationship="TLFCSModel.FK_ProjectActivity_ActivityType" FromRole="ActivityType" ToRole="ProjectActivity" />
+  </EntityType>
+  <EntityType Name="Phases">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="SeqNr" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ProjectPhases" Relationship="TLFCSModel.FK_ProjectPhases_Phases" FromRole="Phases" ToRole="ProjectPhases" />
+  </EntityType>
+  <EntityType Name="TimeSheet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectId" Type="Int32" />
+    <Property Name="TaskId" Type="Int32" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="WeekNo" Type="Int16" />
+    <Property Name="ReferenceIssueNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ActivityId" Type="Int32" />
+    <Property Name="ProjectActivityLinkId" Type="Int32" />
+    <Property Name="TimeSpent" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
+    <Property Name="TimeBillable" Type="Decimal" Precision="6" Scale="2" />
+    <Property Name="Remarks" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+    <Property Name="ProjectPhaseId" Type="Int32" />
+    <Property Name="EstimatedTime" Type="Decimal" Precision="6" Scale="2" />
+    <Property Name="IsCompleted" Type="Boolean" Nullable="false" />
+    <Property Name="IsExtraHours" Type="Boolean" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+    <Property Name="Year" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_TimeSheet_Employee" FromRole="TimeSheet" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_TimeSheet_Projects" FromRole="TimeSheet" ToRole="Projects" />
+    <NavigationProperty Name="ProjectActivityLink" Relationship="TLFCSModel.FK_TimeSheet_ProjectActivityLink" FromRole="TimeSheet" ToRole="ProjectActivityLink" />
+    <NavigationProperty Name="ProjectPhases" Relationship="TLFCSModel.FK__TimeSheet__Proje__194BA7E5" FromRole="TimeSheet" ToRole="ProjectPhases" />
+    <NavigationProperty Name="ProjectActivity" Relationship="TLFCSModel.FK_TimeSheet_ProjectActivity" FromRole="TimeSheet" ToRole="ProjectActivity" />
+  </EntityType>
+  <Association Name="FK_TimeSheet_Employee">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.TimeSheet" Role="TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_Projects">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="0..1" />
+    <End Type="TLFCSModel.TimeSheet" Role="TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProjectActivityLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="ProjectActivityId" Type="Int32" />
+    <Property Name="ProjectActivityName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+    <Property Name="CreatedIPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedIPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_ProjectActivityLink_CreatedBy" FromRole="ProjectActivityLink" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="TLFCSModel.FK_ProjectActivityLink_UpdatedBy" FromRole="ProjectActivityLink" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_ProjectActivityLink_Projects" FromRole="ProjectActivityLink" ToRole="Projects" />
+    <NavigationProperty Name="TimeSheet" Relationship="TLFCSModel.FK_TimeSheet_ProjectActivityLink" FromRole="ProjectActivityLink" ToRole="TimeSheet" />
+    <NavigationProperty Name="ProjectActivity" Relationship="TLFCSModel.FK_ProjectActivityLink_ProjectActivity" FromRole="ProjectActivityLink" ToRole="ProjectActivity" />
+  </EntityType>
+  <EntityType Name="ProjectPhases">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="PhaseId" Type="Int32" />
+    <Property Name="PhaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdateBy" Type="Int32" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+    <Property Name="CreatedIPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedIPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SeqNr" Type="Int32" />
+    <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_ProjectPhases_CreatedBy" FromRole="ProjectPhases" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="TLFCSModel.FK_ProjectPhases_UpdatedBy" FromRole="ProjectPhases" ToRole="Employee" />
+    <NavigationProperty Name="Phases" Relationship="TLFCSModel.FK_ProjectPhases_Phases" FromRole="ProjectPhases" ToRole="Phases" />
+    <NavigationProperty Name="TimeSheet" Relationship="TLFCSModel.FK__TimeSheet__Proje__194BA7E5" FromRole="ProjectPhases" ToRole="TimeSheet" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_ProjectPhases_Projects" FromRole="ProjectPhases" ToRole="Projects" />
+  </EntityType>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Summary" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="SupportTypeId" Type="Int32" Nullable="false" />
+    <Property Name="AssignedTo" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="TaskPriorityId" Type="Int32" Nullable="false" />
+    <Property Name="DueDateTime" Type="DateTime" Precision="3" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LatestStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_Task_AssignedTo" FromRole="Task" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="TLFCSModel.FK_Task_CreatedBy" FromRole="Task" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_ProjectActivityLink_CreatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectActivityLink" Role="ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_UpdatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="TLFCSModel.ProjectActivityLink" Role="ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_CreatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectPhases" Role="ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_UpdatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="TLFCSModel.ProjectPhases" Role="ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="UpdateBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_AssignedTo">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.Task" Role="Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="AssignedTo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Task_CreatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.Task" Role="Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Task">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_Phases">
+    <End Type="TLFCSModel.Phases" Role="Phases" Multiplicity="0..1" />
+    <End Type="TLFCSModel.ProjectPhases" Role="ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Phases">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="PhaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_Projects">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectActivityLink" Role="ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_ProjectActivityLink">
+    <End Type="TLFCSModel.ProjectActivityLink" Role="ProjectActivityLink" Multiplicity="0..1" />
+    <End Type="TLFCSModel.TimeSheet" Role="TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectActivityLink">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ProjectActivityLinkId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TimeSheet__Proje__194BA7E5">
+    <End Type="TLFCSModel.ProjectPhases" Role="ProjectPhases" Multiplicity="0..1" />
+    <End Type="TLFCSModel.TimeSheet" Role="TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectPhases">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ProjectPhaseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectPhases_Projects">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectPhases" Role="ProjectPhases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectPhases">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CS_Configuration">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PBX_IP" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PBX_Port" Type="Int32" Nullable="false" />
+    <Property Name="SupportEmailAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SMTPHost" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="SMTPPort" Type="Int32" Nullable="false" />
+    <Property Name="MIMEHost" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MIMEPort" Type="Int32" Nullable="false" />
+    <Property Name="SLABreachEmailAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Customer" Relationship="TLFCSModel.FK_Customer_Country" FromRole="Country" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_Employee_CountryBirth" FromRole="Country" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="TLFCSModel.FK_Employee_CountryPermanent" FromRole="Country" ToRole="Employee" />
+    <NavigationProperty Name="Employee2" Relationship="TLFCSModel.FK_Employee_CountryPresent" FromRole="Country" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_Customer_Country">
+    <End Type="TLFCSModel.Country" Role="Country" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Customer" Role="Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_CountryBirth">
+    <End Type="TLFCSModel.Country" Role="Country" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="BirthCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_CountryPermanent">
+    <End Type="TLFCSModel.Country" Role="Country" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PermanentCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_CountryPresent">
+    <End Type="TLFCSModel.Country" Role="Country" Multiplicity="0..1" />
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PresentCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProjectType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_Projects_ProjectType" FromRole="ProjectType" ToRole="Projects" />
+  </EntityType>
+  <Association Name="FK_Projects_ProjectType">
+    <End Type="TLFCSModel.ProjectType" Role="ProjectType" Multiplicity="1" />
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProjectCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_Projects_ProjectCategory" FromRole="ProjectCategory" ToRole="Projects" />
+  </EntityType>
+  <Association Name="FK_Projects_ProjectCategory">
+    <End Type="TLFCSModel.ProjectCategory" Role="ProjectCategory" Multiplicity="1" />
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectCategory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Projects">
+        <PropertyRef Name="ProjectCategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="Users_Id" />
+      <PropertyRef Name="Roles_Id" />
+    </Key>
+    <Property Name="Users_Id" Type="Int32" Nullable="false" />
+    <Property Name="Roles_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="TLFCSModel.FK_UserRole_User" FromRole="UserRole" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_UserRole_User">
+    <End Type="TLFCSModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="TLFCSModel.UserRole" Role="UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="Users_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="EmployeeDesignation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="DesignationId" Type="Int32" Nullable="false" />
+    <Property Name="EffectiveDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_EmployeeDesignation_Employee" FromRole="EmployeeDesignation" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_EmployeeDesignation_Employee">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.EmployeeDesignation" Role="EmployeeDesignation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EmployeeDesignation">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ProjectActivity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ActivityTypeId" Type="Int32" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ActivityType" Relationship="TLFCSModel.FK_ProjectActivity_ActivityType" FromRole="ProjectActivity" ToRole="ActivityType" />
+    <NavigationProperty Name="ProjectActivityLink" Relationship="TLFCSModel.FK_ProjectActivityLink_ProjectActivity" FromRole="ProjectActivity" ToRole="ProjectActivityLink" />
+    <NavigationProperty Name="TimeSheet" Relationship="TLFCSModel.FK_TimeSheet_ProjectActivity" FromRole="ProjectActivity" ToRole="TimeSheet" />
+  </EntityType>
+  <EntityType Name="ProjectCR">
+    <Key>
+      <PropertyRef Name="CRId" />
+    </Key>
+    <Property Name="CRId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="CRNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CRDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="EstimatedHrs" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="ApprovedByClient" Type="Boolean" Nullable="false" />
+    <Property Name="ApprovedBy" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK__ProjectCR__Appro__75035A77" FromRole="ProjectCR" ToRole="Employee" />
+    <NavigationProperty Name="Users" Relationship="TLFCSModel.FK__ProjectCR__Creat__75F77EB0" FromRole="ProjectCR" ToRole="Users" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK__ProjectCR__Proje__4E739D3B" FromRole="ProjectCR" ToRole="Projects" />
+    <NavigationProperty Name="Projects1" Relationship="TLFCSModel.FK__ProjectCR__Proje__6C6E1476" FromRole="ProjectCR" ToRole="Projects" />
+  </EntityType>
+  <EntityType Name="ProjectDeadline">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RevisedDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="UpdatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Reason" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_ProjectDeadline_Employee" FromRole="ProjectDeadline" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_ProjectDeadline_Project" FromRole="ProjectDeadline" ToRole="Projects" />
+  </EntityType>
+  <EntityType Name="ProjectResourceDemand">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProjectId" Type="Int32" Nullable="false" />
+    <Property Name="ProjectRoleId" Type="Int32" Nullable="false" />
+    <Property Name="ExpectedStartWeek" Type="Int32" Nullable="false" />
+    <Property Name="ExpectedHoursPerWeek" Type="Int32" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <Property Name="NoOfWeeks" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ProjectRole" Relationship="TLFCSModel.FK_ProjectResourceDemand_ProjectRole" FromRole="ProjectResourceDemand" ToRole="ProjectRole" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_ProjectResourceDemand_Projects" FromRole="ProjectResourceDemand" ToRole="Projects" />
+  </EntityType>
+  <EntityType Name="ProjectRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+    <Property Name="IsAssignable" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ProjectResourceDemand" Relationship="TLFCSModel.FK_ProjectResourceDemand_ProjectRole" FromRole="ProjectRole" ToRole="ProjectResourceDemand" />
+    <NavigationProperty Name="ProjectTeam" Relationship="TLFCSModel.FK_ProjectTeam_ProjectRole" FromRole="ProjectRole" ToRole="ProjectTeam" />
+  </EntityType>
+  <EntityType Name="TlfmsJiraLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TlfmsProjectId" Type="Int32" Nullable="false" />
+    <Property Name="JiraProjectName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="JiraProjectKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="JiraProjectVerison" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="0" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="TLFCSModel.FK_TlfmsJiraLink_CreatedBy" FromRole="TlfmsJiraLink" ToRole="Employee" />
+    <NavigationProperty Name="Employee1" Relationship="TLFCSModel.FK_TlfmsJiraLink_UpdatedBy" FromRole="TlfmsJiraLink" ToRole="Employee" />
+    <NavigationProperty Name="Projects" Relationship="TLFCSModel.FK_TlfmsJiraLink_Projects" FromRole="TlfmsJiraLink" ToRole="Projects" />
+  </EntityType>
+  <Association Name="FK_ProjectActivity_ActivityType">
+    <End Type="TLFCSModel.ActivityType" Role="ActivityType" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectActivity" Role="ProjectActivity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivity">
+        <PropertyRef Name="ActivityTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Appro__75035A77">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectCR" Role="ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectDeadline_Employee">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectDeadline" Role="ProjectDeadline" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectDeadline">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TlfmsJiraLink_CreatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="TLFCSModel.TlfmsJiraLink" Role="TlfmsJiraLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TlfmsJiraLink">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TlfmsJiraLink_UpdatedBy">
+    <End Type="TLFCSModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="TLFCSModel.TlfmsJiraLink" Role="TlfmsJiraLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TlfmsJiraLink">
+        <PropertyRef Name="UpdatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectActivityLink_ProjectActivity">
+    <End Type="TLFCSModel.ProjectActivity" Role="ProjectActivity" Multiplicity="0..1" />
+    <End Type="TLFCSModel.ProjectActivityLink" Role="ProjectActivityLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectActivity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectActivityLink">
+        <PropertyRef Name="ProjectActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSheet_ProjectActivity">
+    <End Type="TLFCSModel.ProjectActivity" Role="ProjectActivity" Multiplicity="0..1" />
+    <End Type="TLFCSModel.TimeSheet" Role="TimeSheet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectActivity">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSheet">
+        <PropertyRef Name="ActivityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Creat__75F77EB0">
+    <End Type="TLFCSModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectCR" Role="ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Proje__4E739D3B">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectCR" Role="ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProjectCR__Proje__6C6E1476">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectCR" Role="ProjectCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectCR">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectDeadline_Project">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectDeadline" Role="ProjectDeadline" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectDeadline">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectResourceDemand_ProjectRole">
+    <End Type="TLFCSModel.ProjectRole" Role="ProjectRole" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectResourceDemand" Role="ProjectResourceDemand" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectResourceDemand">
+        <PropertyRef Name="ProjectRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectResourceDemand_Projects">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectResourceDemand" Role="ProjectResourceDemand" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectResourceDemand">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProjectTeam_ProjectRole">
+    <End Type="TLFCSModel.ProjectRole" Role="ProjectRole" Multiplicity="1" />
+    <End Type="TLFCSModel.ProjectTeam" Role="ProjectTeam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectTeam">
+        <PropertyRef Name="ProjectRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TlfmsJiraLink_Projects">
+    <End Type="TLFCSModel.Projects" Role="Projects" Multiplicity="1" />
+    <End Type="TLFCSModel.TlfmsJiraLink" Role="TlfmsJiraLink" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TlfmsJiraLink">
+        <PropertyRef Name="TlfmsProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

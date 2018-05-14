@@ -1,0 +1,201 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Project List";
+}
+<script src="http://kendo.cdn.telerik.com/2013.3.1324/js/cultures/kendo.culture.de-DE.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
+<title>Project View - TLFMS</title>
+
+@*<div class="containers">
+    <center class="Tlf_H4"><span>Project Management</span></center>
+</div><br />*@
+<div class="col-lg-12">
+    <div class="col-lg-6">
+        @*@(Html.Kendo().Button().Name("btnExport").Content(@<text><i class="fa fa-file-excel-o"></i></text>))
+            @(Html.Kendo().Button().Name("btnAddnewProject").Content(@<text><i class="fa fa-plus"></i></text>))*@
+        <a href="#" onclick="btnExport()"><i class="btn btn-primary fa fa-file-excel-o" style="font-size:20px;" title="Export To Excel"></i></a>
+        <a href="#" onclick="btnAddnewProject()"><i class="btn btn-primary fa fa-plus" style="font-size:20px;" title="Add new Project"></i></a>
+    </div>
+    <div class="col-lg-6" align="right">
+        @(Html.Kendo().CheckBox().Name("showAll").Label("Show All"))
+    </div>
+</div>
+
+<br /><br />
+<div class="col-lg-12">
+    @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectViewModel>()
+              .Name("projectGrid")
+            //  .ToolBar(toolBar =>{
+            //    toolBar.Custom().Name("Add New Project").Action("Create","Project");
+            //     })
+              .Columns(column =>
+              {
+                  column.Bound(project => project.Id).Visible(false);
+                  column.Bound(project => project.ProjectName).ClientTemplate("<a href='" + Url.Action("Edit", "Project") + "/#=Id#'" + ">#=ProjectName#</a>").Filterable(filterable => filterable.UI("projectNameFilter"));
+                  column.Bound(project => project.ProjectCode).Title("TLF Project Code").Filterable(false);
+                  column.Bound(project => project.QuintiqProjectCode).Title("QPCode").Filterable(false);
+                  column.Bound(project => project.TechnologyName).Title("Tech. Name").Filterable(false);
+                  column.Bound(project => project.ProjectManagerName).Filterable(filterable => filterable.UI("prjProjectManagerFilter")).Title("PM");
+                  column.Bound(project => project.ProjectLeadName).Filterable(filterable => filterable.UI("prjProjectLeadFilter")).Title("PL");
+                  column.Bound(project => project.CustomerName).Filterable(filterable => filterable.UI("prjCustomerFilter")).Title("Customer");
+                  column.Bound(project => project.ProjectGroupName).Title("Group").Filterable(false);
+                  column.Bound(project => project.InitialEstimatedHrs).Title("Esti. Hrs").Filterable(false);
+                  column.Bound(project => project.ProjectStatus).Filterable(filterable => filterable.UI("prjStatusFilter")).Title("Status");
+
+              })
+            //  .ToolBar(tools => tools.Excel())
+            //   .Excel(excel => excel
+            //   .FileName("ProjectDetails.xlsx")
+            //   .Filterable(true)
+            //    .ProxyURL(Url.Action("ExportExcel", ControllerName.Common)))
+            .Pageable(x => x.PageSizes(true))
+            .Excel(x =>
+            {
+                x.AllPages(true);
+                x.Filterable(true);
+                x.FileName("Projects_" + DateTime.Now + ".xlsx");
+            })
+            .Reorderable(reorderable => reorderable.Columns(true))
+            .Resizable(resizable => resizable.Columns(true))
+            .Filterable(filterable => filterable.Extra(false)
+            .Operators(operators => operators
+            .ForString(str => str.Clear()
+            .StartsWith("Starts with")
+            .IsEqualTo("Is equal to")
+                .Contains("Contains")
+            .IsNotEqualTo("Is not equal to")
+            )
+            )
+            )
+            .DataSource(data => data.Ajax()
+            .Model(model => model.Id(project => project.Id))
+            .Read(read => read.Action(ActionName.ProjectMgtView, ControllerName.Project, new { id = 0 }))
+            .Update(read => read.Action(ActionName.ProjectMgtView, ControllerName.Project))
+            ))
+</div>
+<script type="text/javascript">
+
+    function projectNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByProject, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function prjStatusFilter(element) {
+        element.kendoDropDownList(
+            {
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("prjProjectStatus", ControllerName.Common)"
+
+                    }
+                },
+                optionLabel: "--Select Value--"
+            });
+    }
+    function prjProjectManagerFilter(element) {
+        element.kendoDropDownList(
+            {
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("prjProjectManager", ControllerName.Common)"
+
+                    }
+                },
+                optionLabel: "--Select Value--"
+            });
+    }
+    function prjProjectLeadFilter(element) {
+        element.kendoDropDownList(
+            {
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("prjProjectLead", ControllerName.Common)"
+
+                    }
+                },
+                optionLabel: "--Select Value--"
+            });
+    } function prjCustomerFilter(element) {
+        element.kendoDropDownList(
+            {
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("prjProjectCustomer", ControllerName.Common)"
+
+                    }
+                },
+                optionLabel: "--Select Value--"
+            });
+    }
+
+    $("#showAll").click(function () {
+        var checkboxGrid = $("#showAll").is(':checked');
+        var tick = 0;
+        if (checkboxGrid) {
+            tick = 1;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ViewProjectsByFilter", "Project")',
+            dataType: 'json',
+            data: { id: tick },
+            async: true,
+            success: function (data) {
+                var dataSource = new kendo.data.DataSource({
+                    data: data,
+                    pageSize: 10
+                });
+                $("#projectGrid").data("kendoGrid").setDataSource(dataSource);
+            },
+            error: function (xhr) {
+            }
+        })
+    });
+
+    function btnExport() {
+
+        $("#projectGrid").getKendoGrid().saveAsExcel();
+    }
+
+    function btnAddnewProject() {
+
+        window.location.href = '@Url.Action("Create", ControllerName.Project)';
+    }
+</script>
+<style>
+    .containers {
+        margin-top: 2%;
+    }
+
+    .Tlf_H4 span {
+        background-color: rgb(248,147,066);
+        color: #ffffff;
+        width: 100%;
+        font-family: Century Gothic;
+        font-size: 25px;
+        padding: 2px 4px 2px 4px;
+        margin-top: 100px;
+        background: -webkit-gradient(linear, left top, left bottom, from(#F8AE42), to(#F5852B));
+    }
+
+    .k-button {
+        margin-left: 2px;
+        color: white;
+        background-color: #269DC0;
+        border-color: #269DC0;
+    }
+
+    .col-lg-6 {
+        padding-left: 00px;
+    }
+</style>

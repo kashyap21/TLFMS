@@ -1,0 +1,73 @@
+﻿@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI
+@model TLFSupport.Model.CustomeModel.TicketViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TicketTemplate</title>
+</head>
+<body>
+    @Html.HiddenFor(model => model.TicketId)
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <div class="col-md-2" style="margin-left:10px">
+                <b>@Html.LabelFor(model => model.CustomerName, Lable.CustomerName)</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.CustomerName, new { @class = "k-textbox", disabled = "true", style = "border:1px solid #ffffff; margin-top:-6px;" })
+            </div>
+            <div class="col-md-1">
+                <b>@Html.LabelFor(model => model.ProjectName, Lable.ProjectName)</b>
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.ProjectName, new { @class = "k-textbox", disabled = "true", style = "border:1px solid #ffffff; margin-top:-6px;" })
+            </div>
+        </div>
+        <div class="form-group" style="margin-left:10px">
+
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.TicketLogViewModel>()
+        .Name("ticketLogGrid")
+
+        .Columns(column =>
+        {
+            column.Bound(log => log.LogId).Visible(false);
+            column.Bound(log => log.LogTitle).Title("Title").Width("200");
+            column.Bound(log => log.LogCreatedOn).Title("Created On").ClientTemplate("#= kendo.toString(kendo.parseDate(LogCreatedOn, 'yyyy-MM-dd  hh:mm tt'), 'MM/dd/yyyy hh:mm tt') #");
+            column.Bound(log => log.LogComment).Title("Comment");
+            //column.Bound(log => log.TicketNumber);
+            column.Bound(log => log.EmployeeName).Title("Assign To");
+            column.Bound(log => log.ForwardEmployeeName).Title("Forwarded");
+            //column.Bound(log => log.CustomerName);
+            //column.Bound(log => log.ProjectName);
+            column.Bound(log => log.PriorityName);
+            column.Bound(log => log.Status);
+            
+            //column.Bound(sla => sla.SLAPriorityLevel);
+            //column.Bound(sla => sla.MaximumResponseTime).ClientTemplate("#=kendo.toString(MaximumResponseTime.Hours, \"00\") #:#= kendo.toString(MaximumResponseTime.Minutes, \"00\") #");
+            //column.Bound(sla => sla.MaximumResolveTime).ClientTemplate("#=kendo.toString(MaximumResolveTime.Hours, \"00\") #:#= kendo.toString(MaximumResolveTime.Minutes, \"00\") #");
+            //column.Bound(sla => sla.SLADescription);
+        })
+
+        //       .Sortable(sortable => sortable
+                    //            .AllowUnsort(false) )
+                    //.Reorderable(reorderable => reorderable.Columns(true))
+                    //.Resizable(resizable => resizable.Columns(true))
+                           .DataSource(data => data.Ajax()
+                           .Model(model => model.Id(sla => sla.LogId))
+                    // .Read(read => read.Action("ViewSLA", "Ticket", new { id = "ProjectId" }))
+                    )
+            )
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+﻿@model TLFSupport.Model.CustomeModel.CustomerViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "Manage Customer Details";
+}
+
+@*<h2>Edit</h2>*@
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.DisplayFor(model => model.Name)</b>
+            </div>
+            @*<div class="col-md-3 col-md-offset-5">
+
+                    <input type="button" id="btnBackToCustomer" value="Back To Customer List" class="k-button" onclick="Redirect(this)" />
+                </div>*@
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.Name, "Name")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Name, new { @class = "k-textbox", @id = "CustomerName" })
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.ShortName, "Short Name")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ShortName, new { @class = "k-textbox", @id = "CustomerShortName" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.Address1, "Address1")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextAreaFor(model => model.Address1, new { @class = "k-textbox", @id = "Address1" })
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.Address2, "Address2")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextAreaFor(model => model.Address2, new { @class = "k-textbox", @id = "Address2" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.City, "City")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.City, new { @class = "k-textbox", @id = "City" })
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.State, "State")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.State, new { @class = "k-textbox", @id = "State" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.CountryName, "Country")</b>
+            </div>
+            <div class="col-md-3">
+                @*@Html.TextBoxFor(model => model.CountryName, new { @class = "k-textbox" })*@
+                @(Html.Kendo().DropDownListFor(model => model.CountryId)
+          .Name("CountryId")
+                                  .HtmlAttributes(new { @data_value_primitive = "true" })
+                                  .OptionLabel(Lable.OptionLabel)
+                  .DataTextField("CountryName")
+                                  .DataValueField("CountryId")
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                              {
+                                                  read.Action("ViewCountry", ControllerName.Customer);
+                                              });
+                                      })
+                )
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.PinCode, "Pin Code")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PinCode, new { @class = "k-textbox", @id = "PinCode" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.PhoneNo, "Office Phone No")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.PhoneNo, new { @class = "k-textbox", @id = "PhoneNo" })
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.FaxNo, "Fax No")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.FaxNo, new { @class = "k-textbox", @id = "FaxNo" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.Email, "Email")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Email, new { @class = "k-textbox", @id = "Email" })
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.WebSite, "Website")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.WebSite, new { @class = "k-textbox", @id = "WebSite" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.OwnerName, "Owner")</b>
+            </div>
+            <div class="col-md-3">
+                @*@Html.TextBoxFor(model => model.OwnerName, new { @class = "k-textbox" })*@
+                @(Html.Kendo().DropDownListFor(model => model.OwnerId)
+                  .Name("OwnerId")
+                                  .HtmlAttributes(new { @data_value_primitive = "true" })
+                                  .OptionLabel(Lable.OptionLabel)
+                          .DataTextField("OwnerName")
+                                  .DataValueField("OwnerId")
+                                  .Filter(FilterType.Contains)
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                              {
+                                                  read.Action("ViewOwnerName", ControllerName.Customer).Data("filterOwner");
+                                              });
+                                      })
+                )
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.ContactPersonName, "Contact Person Name")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.ContactPersonName, new { @class = "k-textbox" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.CS_DomainName, "Domain Name")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.CS_DomainName, new { @class = "k-textbox", @id = "DomainName" })
+            </div>
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.CS_DedicatedNumber, "Support No")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.CS_DedicatedNumber, new { @class = "k-textbox", @id = "DedicatedNumber" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>@Html.LabelFor(model => model.IsActive, "Is Active")</b>
+            </div>
+            <div class="col-md-3">
+                @Html.CheckBoxFor(model => model.IsActive, new { @class = "k-checkbox", @id = "IsActive" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <input type="submit" id="submit" value="Save" class="btn btn-primary" style="margin-right:20px;" />
+                <input id="Edit" name="Edit" type="button" value="Edit" class="btn btn-primary" onclick="showme()" style="margin-right:20px;" />
+                <input type="button" id="cancel" value="Cancel" class="btn btn-danger" onclick="Redirect(this)" />
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .k-list-filter .k-textbox {
+        width: 89%;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#OwnerId").data("kendoDropDownList").enable(false);
+        $("#CountryId").data("kendoDropDownList").enable(false);
+        $('*', 'form').attr('disabled', 'disabled');
+        $("#Edit").removeAttr('disabled', 'disabled');
+        $("#btnBackToCustomer").removeAttr('disabled', 'disabled');
+        $("#submit").hide();
+        $("#cancel").hide();
+        $("Edit").show();
+    });
+
+    function showme() {
+        $("#OwnerId").data("kendoDropDownList").enable(true);
+        $("#CountryId").data("kendoDropDownList").enable(true);
+        $("#submit").show();
+        $("#cancel").show();
+        $("#Edit").hide();
+        $('*', 'form').removeAttr('disabled', 'disabled');
+    }
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function Redirect(e) {
+        window.location.href = '@Url.Action("Index", ControllerName.Customer)';
+    }
+
+    function filterOwner() {
+        return {
+            filter: $("#OwnerId").data("kendoDropDownList").filterInput.val()
+        };
+    }
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

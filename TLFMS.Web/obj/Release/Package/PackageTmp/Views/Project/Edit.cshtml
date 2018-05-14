@@ -1,0 +1,392 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Edit Ticket";
+}
+
+<body>
+    @using (Html.BeginForm())
+    {
+        {
+            // int index = ViewBag.Index ?? 0;
+
+            @Html.AntiForgeryToken()
+            <div class="containers">
+                <center class="Tlf_H4" style="color:white;"><span>Manage Project Details</span></center>
+            </div>
+
+            <br />
+            @Html.HiddenFor(model => model.InitialEstimatedHrs)
+            @Html.HiddenFor(model => model.InitialDeadline)
+            @Html.HiddenFor(model => model.ProjectCode)
+            @Html.HiddenFor(model => model.ShortCode)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ProjectGroupId)
+            @Html.HiddenFor(model => model.CustomerId)
+            @Html.HiddenFor(model => model.CustomerName)
+            @Html.HiddenFor(model => model.ProjectName)
+
+            <div class="form-horizontal">
+                <div class="containers">
+                    <h3>@Html.DisplayFor(model => model.ProjectName)</h3>
+                    <h4>@Html.DisplayFor(model => model.ShortCode)</h4>
+                </div>
+                <br />
+                <div class="form-group col-md-12">
+
+                    <div class="col-md-1">
+                        <label><b>Type</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().DropDownListFor(model => model.ProjectTypeId)
+                            .Name("ProjectTypeId")
+                            .OptionLabel("Select type")
+                            .DataTextField("ProjectTypeName")
+                            .DataValueField("ProjectTypeId")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetProjectType", ControllerName.Project);
+                                })
+                             .ServerFiltering(true);
+                            })
+                            .HtmlAttributes(new { style = "width: 100%" })
+                        )
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Category</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3 ">
+                        @(Html.Kendo().DropDownListFor(model => model.ProjectCategoryId)
+                        .Name("ProjectCategoryId")
+                        .OptionLabel("Select category")
+                        .DataTextField("ProjectCategoryName")
+                        .DataValueField("ProjectCategoryId")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                          {
+                              read.Action("GetAllProjectCategory", ControllerName.Project);
+                          })
+                        .ServerFiltering(true);
+                        })
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        )
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>TechnoLogy</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().DropDownListFor(model => model.TechnologyId)
+                                  .Name("TechnologyId")
+                                  .OptionLabel("Select Technology")
+                                  .DataTextField("TechnologyName")
+                                  .DataValueField("TechnologyId")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetAllTechnology", ControllerName.Project);
+                                      })
+                                  .ServerFiltering(true);
+                                  })
+                                .HtmlAttributes(new { style = "width: 100%" })
+                        )
+                    </div>
+                </div>
+
+                <div class="col-md-12 form-group">
+
+                    <div class="col-md-1">
+                        <label><b>Project Owner</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().DropDownListFor(model => model.ProjectOwner)
+                      .Name("ProjectOwner")
+                      .OptionLabel(Lable.OptionLabel)
+                      .DataTextField("ProjectManagerName")
+                      .DataValueField("ProjectOwner")
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("GetProjectOwner", ControllerName.Project);
+                          })
+                        .ServerFiltering(true);
+
+                      })
+                      .HtmlAttributes(new { style = "width: 100%" })
+                        )
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Estisimated Hr.</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3 ">
+                        @Html.TextBoxFor(model => model.InitialEstimatedHrs, new { @class = "k-textbox", style = "width:100%;" })
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Status</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().DropDownListFor(model => model.ProjectStatusId)
+                              .Name("ProjectStatusId")
+                              .OptionLabel(Lable.OptionLabel)
+                              .DataTextField("ProjectStatus")
+                              .DataValueField("ProjectStatusId")
+                              .DataSource(source =>
+                              {
+                                  source.Read(read =>
+                                  {
+                                      read.Action("GetAllStatus", ControllerName.Project);
+                                  })
+                                .ServerFiltering(true);
+                              })
+                              .HtmlAttributes(new { style = "width: 100%" })
+                        )
+
+                        @Html.ValidationMessageFor(model => model.ProjectStatusId)
+                    </div>
+                </div>
+
+                <div class="col-md-12 form-group">
+                    <div class="col-md-1">
+                        <label><b>Project Manager</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3 ">
+                        @(Html.Kendo().DropDownListFor(model => model.ProjectManager)
+                          .Name("ProjectManager")
+                          .OptionLabel("Select Manager")
+                          .DataTextField("ProjectManagerName")
+                          .DataValueField("ProjectManager")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetAllProjectManager", ControllerName.Project);
+                              })
+                            .ServerFiltering(true);
+                          })
+                         .HtmlAttributes(new { style = "width: 100%" })
+                        )
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Project Leader</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().DropDownListFor(model => model.ProjectLead)
+                          .Name("ProjectLead")
+                          .OptionLabel("Select Leader")
+                          .DataTextField("ProjectLeadName")
+                          .DataValueField("ProjectLead")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetAllProjectLeader", ControllerName.Project);
+                              })
+                            .ServerFiltering(true);
+                          })
+                          .HtmlAttributes(new { style = "width: 100%" })
+                        )
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Modeling Esti.</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3 ">
+                        @Html.TextBoxFor(model => model.ModelingEstimatedHrs, new { @class = "k-textbox", style = "width:100%;" })
+                    </div>
+                </div>
+                <div class="col-md-12 form-group ">
+
+                    <div class="col-md-1">
+                        <label><b>Initial Deadline</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3 ">
+                        @Html.TextBoxFor(model => model.InitialDeadline, new { @id = "dis", @class = "k-textbox e", disabled = "true", style = "width:100%; " })
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Current Deadline</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-3 ">
+                        @Html.TextBoxFor(model => model.CurrentDeadline, new { @id = "diss", @class = "k-textbox e", style = "width:100%; " })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <div class="col-md-1">
+                        <label><b>Quintiq Code</b><span style="color:red;"></span>*</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.QuintiqProjectCode, new { @class = "k-textbox", style = "width:100%;" })
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Tlf Code</b><span style="color:red;"></span>*</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.ProjectCode, new { @id = "disss", @class = "k-textbox", style = "width:100%;" })
+                    </div>
+
+                    <div class="col-md-1">
+                        <label><b>Short Code</b><span style="color:red;"></span>*</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.ShortCode, new { @class = "k-textbox", style = "width:100%;" })
+                    </div>
+                </div>
+                <div class="col-md-12 form-group">
+
+                    <div class="col-md-1">
+                        <label><b>Brief</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.ProjectBrief, new { @class = "k-textbox", style = "width:100%;" })
+                        @Html.ValidationMessageFor(model => model.ProjectBrief)
+                    </div>
+                    <div class="col-md-2">
+                        @Html.CheckBoxFor(model => model.IsNotification, new { @class = "k-checkbox" })
+                        <label><b>Is Notification?</b><span style="color:red;"></span>*</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-1 col-md-3">
+                    <input id="submit" name="submit" type="submit" value="Update" class="btn btn-primary" />
+                    <input id="eEdit" name="eEdit" type="button" value="Edit" class="btn btn-primary" onclick="showme()" />
+
+                    <a href="~/Project" style="margin-left:2vw; padding:0px;"><input name="cancel" type="button" id="EditCancel" value="Cancel" class="btn btn-danger" /></a>
+                </div>
+            </div>
+            <br />
+
+            <div class="form-group col-lg-12">
+
+                @(Html.Kendo().TabStrip()
+              .Name("tabstrip")
+              .Items(tabstrip =>
+              {
+                  tabstrip.Add().Text("Demand")
+                       .LoadContentFrom("Index", "ProjectsRDemand", new { id = Model.Id });
+                  tabstrip.Add().Text("Project Team")
+                      .LoadContentFrom("Index", "ProjectsTeam", new { id = Model.Id });
+                  tabstrip.Add().Text("Project Phase")
+                      .LoadContentFrom("Index", "ProjectsPhase", new { id = Model.Id });
+                  tabstrip.Add().Text("Activity")
+                 .LoadContentFrom("Index", "ProjectsActivity", new { id = Model.Id });
+                  tabstrip.Add().Text("Project Deadline")
+                      .LoadContentFrom("Index", "ProjectsDeadline", new { id = Model.Id });
+                  tabstrip.Add().Text("Project CR's")
+                      .LoadContentFrom("Index", "ProjectsCRs", new { id = Model.Id });
+                  tabstrip.Add().Text("Jira")
+                      .LoadContentFrom("Index", "ProjectsJira", new { id = Model.Id });
+
+              })
+              .SelectedIndex(-1)
+                )
+            </div>
+
+        }
+    }
+</body>
+
+<style>
+    .k-textbox {
+        max-width: 1000px;
+    }
+</style>
+
+<script type='text/javascript'>
+
+    $(document).ready(function () {
+
+        //$("#tabstrip").data("kendoTabStrip").select(2);
+
+        $("#ProjectTypeId").data("kendoDropDownList").enable(false);
+        $("#ProjectCategoryId").data("kendoDropDownList").enable(false);
+        $("#TechnologyId").data("kendoDropDownList").enable(false);
+        $("#ProjectOwner").data("kendoDropDownList").enable(false);
+        $("#ProjectManager").data("kendoDropDownList").enable(false);
+        $("#ProjectLead").data("kendoDropDownList").enable(false);
+        $("#ProjectStatusId").data("kendoDropDownList").enable(false);
+        $('*', 'form').attr('disabled', 'disabled');
+        $("#eEdit").removeAttr('disabled', 'disabled');
+        $("#submit").hide();
+        $("#EditCancel").hide();
+        $("eEdit").show();
+    });
+    function showme() {
+
+        $("#ProjectTypeId").data("kendoDropDownList").enable(true);
+        $("#ProjectCategoryId").data("kendoDropDownList").enable(true);
+        $("#TechnologyId").data("kendoDropDownList").enable(true);
+        $("#ProjectOwner").data("kendoDropDownList").enable(true);
+        $("#ProjectManager").data("kendoDropDownList").enable(true);
+        $("#ProjectStatusId").data("kendoDropDownList").enable(true);
+        $("#ProjectLead").data("kendoDropDownList").enable(true);
+        $("#submit").show();
+        $("#EditCancel").show();
+        $("#eEdit").hide();
+        $('*', 'form').removeAttr('disabled', 'disabled');
+        $('#dis').attr('disabled', 'disabled');
+        $('#diss').attr('disabled', 'disabled');
+        $('#disss').attr('disabled', 'disabled');
+    }
+</script>
+
+<style>
+    .wrapper {
+        height: 455px;
+        margin: 20px auto;
+        padding: 20px 0 0 0;
+    }
+
+    #tabstrip {
+        max-width: 1000px;
+        float: none;
+        margin-bottom: 20px;
+    }
+
+        #tabstrip .k-content {
+            height: 320px;
+            overflow: auto;
+        }
+
+    .specification {
+        max-width: 670px;
+        margin: 10px 0;
+        padding: 0;
+    }
+
+        .specification dt, dd {
+            max-width: 140px;
+            float: right;
+            margin: 0;
+            padding: 5px 0 8px 0;
+        }
+
+        .specification dt {
+            clear: left;
+            width: 100px;
+            margin-right: 7px;
+            padding-right: 0;
+            opacity: 0.7;
+        }
+
+        .specification:after, .wrapper:after {
+            content: ".";
+            display: block;
+            clear: both;
+            height: 0;
+            visibility: hidden;
+        }
+</style>

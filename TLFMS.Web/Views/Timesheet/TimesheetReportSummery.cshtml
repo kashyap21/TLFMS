@@ -1,0 +1,193 @@
+﻿@model TLFSupport.Model.CustomeModel.TimesheetSummaryReportViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Timesheet Report Summery";
+}
+
+<html>
+@Html.AntiForgeryToken()
+<body>
+    @Html.ValidationSummary(true)
+
+    @* Container for Input *@
+    <div class="col-md-12 form-group container" style="margin-top:5%;">
+        <div class="col-md-1">
+            Week No <p id="data" style="margin:1px;padding:1px;color:black;"></p>
+        </div>
+        @* Input for Week No *@
+        <div class="col-md-1">
+            @Html.TextBoxFor(model => model.WeekNo, new { @class = "k-textbox", style = "min-width:20px !important; width:100%;", id = "txtid", @onchange = "onchangforWeek();" })
+            @Html.ValidationMessageFor(model => model.WeekNo)
+        </div>
+        <div class="col-md-2">
+            EmployeeName
+        </div>
+        @* Dropdown Menu for Employee *@
+        <div class="col-md-3">
+            @(Html.Kendo().DropDownListFor(model => model.EmployeeId)
+                          .Name("EmployeeId")
+                          .OptionLabel(Lable.OptionLabel)
+                          .DataTextField("EmployeeName")
+                          .DataValueField("EmployeeId")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action(ActionName.GetAllEmployee, ControllerName.Timesheet);
+                              })
+                            .ServerFiltering(true);
+                          })
+            )
+
+            @Html.ValidationMessageFor(model => model.EmployeeId)
+        </div>
+        <div class="col-md-2">Project Name</div>
+        @* Dropdown Menu for ProjectId *@
+        <div class="col-md-3">
+            @(Html.Kendo().DropDownListFor(model => model.ProjectId)
+                            .Name("projectId")
+                            .OptionLabel(Lable.OptionLabel)
+                            .DataTextField("ProjectName")
+                            .DataValueField("ProjectId")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action(ActionName.GetProjectForEmployee, ControllerName.Timesheet)
+                                        .Data("filterProjects");
+                                })
+                                .ServerFiltering(true);
+                            })
+                            .Enable(false)
+                            .AutoBind(false)
+                            .CascadeFrom("EmployeeId"))
+
+            @Html.ValidationMessageFor(model => model.ProjectId)
+        </div>
+    </div>
+
+    @* Container for Submit and cancle button *@
+    <div class="col-md-12 container">
+        <div class="col-md-3 col-md-offset-4">
+            <style>
+                .col-md-offset-4 input{
+                    margin-right:20px;
+                }
+            </style>
+            <input type="submit" name="submit" value="submit" class="btn btn-primary" id="submitbutton" />
+            <button id="clear" class="btn btn-primary">Clear</button>
+        </div>
+    </div>
+
+    @* Container for Grid *@
+    <div class="col-md-12" style="margin-top:4%;">
+        @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.TimesheetSummaryReportViewModel>()
+                        .Name("AjaxGrid")
+                        .AutoBind(false)
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.EmployeeName);
+                            columns.Bound(p => p.WeekNo);
+                            columns.Bound(p => p.Date).ClientTemplate("#= kendo.toString(kendo.parseDate(Date, 'yyyy-MM-dd  hh:mm tt'), 'MM/dd/yyyy hh:mm tt') #");
+                            columns.Bound(p => p.shortcode);
+                            columns.Bound(p => p.TotalHour);
+                        })
+                        .Reorderable(reorderable => reorderable.Columns(true))
+                        .Resizable(resizable => resizable.Columns(true))
+                        .Pageable(pageable => pageable
+                        .Refresh(true)
+                        .PageSizes(true)
+                        .ButtonCount(5))
+                        .Sortable()
+                        .Filterable(filterable => filterable.Extra(false)
+                                        .Operators(operators => operators
+                                            .ForString(str => str.Clear()
+                                                .StartsWith("Starts with")
+                                                .IsEqualTo("Is equal to")
+                                                .IsNotEqualTo("Is not equal to")
+                                                )
+                                            )
+                            )
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Read(read => read.Action("GetTimesheetSummeryGrid", ControllerName.Timesheet).Data("AdditionalInfo"))
+                        ))
+        @* To hide grid *@
+        <style>
+            #AjaxGrid {
+                display: none;
+            }
+        </style>
+    </div>
+</body>
+</html>
+
+@* To display grid when submit button press *@
+<script>
+    $("#submitbutton").click(function () {
+        $("#AjaxGrid").data("kendoGrid").dataSource.read();
+        $("#AjaxGrid").css("display", "block");
+    });
+</script>
+
+@* Script for validations *@
+<script>
+    function onchangforWeek() {
+        var value = document.getElementById('txtid').value;
+        if (value > 52 || value == null || value == 0) {
+            document.getElementById("submitbutton").disabled = true;
+        }
+        else {
+            document.getElementById("submitbutton").disabled = false;
+        }
+    }
+</script>
+
+@* Script for kendo dropdown *@
+<script>
+    function filterProjects() {
+        return {
+            employeeid: $("#EmployeeId").val()
+        };
+    }
+</script>
+
+@* Script for buttons *@
+<script>
+    $('#clear').click(function () {
+        document.getElementById('txtid').value = "";
+        $("#EmployeeId").val("").data("kendoDropDownList").text("");
+    });
+</script>
+
+@* Script for grid *@
+<script>
+    function AdditionalInfo() {
+        var value = document.getElementById('txtid').value;
+        var employee = document.getElementById('EmployeeId').value;
+        var project = document.getElementById('projectId').value;
+        if (employee == "") {
+            return {
+                week: value,
+                EmployeeId: 0,
+                ProjectId: 0
+            };
+        }
+        else if (project == "") {
+            return {
+                week: value,
+                EmployeeId: employee,
+                ProjectId: 0
+            };
+        }
+        else {
+            return {
+                week: value,
+                EmployeeId: employee,
+                ProjectId: project
+            };
+        }
+    }
+</script>

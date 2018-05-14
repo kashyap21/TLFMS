@@ -1,0 +1,338 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectJiraViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Partial_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.TlfmsProjectId)
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="form-group col-lg-12">
+            <div class="form-group col-lg-6">
+                @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectJiraViewModel>()
+              .Name("ProjectJiraGrid")
+              .Columns(column =>
+              {
+                  column.Command(command =>
+                  {
+                      command.Custom("Edit").Text("<span class= 'k-icon k-i-note'></span>").Click("ShowJiraDetail");
+                      command.Custom("Delete").Text("<span class= 'k-icon k-i-close'></span>").Click("deleteJiraDetail");
+                  }).Width(80);
+                  column.Bound(emp => emp.Id).Visible(false);
+                  column.Bound(emp => emp.JiraProjectName);
+                  column.Bound(emp => emp.JiraProjectKey);
+                  column.Bound(emp => emp.JiraProjectVerison);
+              })
+            .Selectable()
+
+            .Reorderable(reorderable => reorderable.Columns(true))
+            .Resizable(resizable => resizable.Columns(true))
+            .DataSource(data => data.Ajax()
+            .Model(model =>
+             model.Id(emp => emp.Id))
+            .Read(read => read.Action("ViewProjectsJiraDetails", "ProjectsJira", new { id = Model.TlfmsProjectId }))
+            .Destroy(del => del.Action("ProjectJiraDestroy", "ProjectsJira"))
+
+            )
+                )
+            </div>
+
+            <div class="col-lg-2">
+                <input id="Add" name="Add" type="button" value="Add" class="btn btn-primary" onclick="ShowmeJira()" />
+            </div>
+
+            <div id="jirame" class="form-group col-lg-6">
+
+                <div class="container col-md-12">
+                    <div class="col-md-3">
+                        <label for="name"><b>Name</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.JiraProjectName, new { @class = "k-textbox s", id = "projectjiranamename", style = "width:100%;" })
+                    </div>
+                </div>
+
+                <div class="col-md-12 container">
+                    <div class="col-lg-3">
+                        <label for="active"><b>Key</b></label>
+                    </div>
+                    <div class="col-lg-7" style="text-align:left;">
+                        @Html.TextBoxFor(model => model.JiraProjectKey, new { @class = "k-textbox s", id = "projectkey", style = "width:100%;" })
+                    </div>
+                </div>
+
+                <div class="container col-md-12">
+                    <div class="col-lg-3">
+                        <label for="current"><b>Version</b></label>
+                    </div>
+                    <div class="col-lg-7">
+                        @Html.TextBoxFor(model => model.JiraProjectVerison, new { @class = "k-textbox s", id = "projectversion", style = "width:100%;" })
+                        <input type="hidden" name="uid" id="uid">
+                    </div>
+                </div>
+
+                <div class="container col-md-12">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <input id="jirasave" name="phasesave" type="button" value="save" class="btn btn-primary" onclick="SaveButton()" />
+                        <input id="jiraupdate" name="phaseupdate" type="button" value="Update" class="btn btn-primary" onclick="UpdatebuttonJira()" />
+                        <input id="jiraedit" name="phaseedit" type="button" value="edit" class="btn btn-primary" onclick="EditButton()" />
+                        <input id="jiraAdds" name="Add" type="button" value="Add" class="btn btn-primary" onclick="ShowmeJira()" />
+                        <input id="jiracancel" name="save" type="button" value="cancel" class="btn btn-primary" onclick="hideme()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/x-kendo-template" id="jiraDeleteTemplate">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete Project Jira ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+@(Html.Kendo()
+            .Window()
+            .Name("Deletejirawnd")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)
+<script>
+
+    function deleteJiraDetail(e) {
+
+        var detailsTemplate = kendo.template($("#jiraDeleteTemplate").html());
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+
+        var wnd = $("#Deletejirawnd").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#ProjectJiraGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+            hideme();
+        })
+
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+
+            $("#jirame").hide();
+        }
+
+        );
+    $(function () {
+        $("form").kendoValidator();
+    });
+    function ShowmeJira() {
+        $("#Add").hide();
+        $("#jirame").show();
+        $("#jirasave").show();
+        $("#jiracancel").show();
+        $("#jiraedit").hide();
+        $("#jiraupdate").hide();
+        $("#jiraAdds").hide();
+
+        $('#projectjiranamename').val(" ");
+        $('#projectkey').val(" ");
+        $('#projectversion').val(" ");
+
+    }
+    function hideme() {
+        $("#Add").show();
+        $("#jirame").hide();
+
+    }
+    function ShowJiraDetail(e) {
+
+        var tr = $(e.target).closest("tr");
+
+        var data = this.dataItem(tr);
+
+        $("#uid").val(data.Id);
+        $('#projectjiranamename').val(data.JiraProjectName);
+        $('#projectkey').val(data.JiraProjectVerison);
+        $('#projectversion').val(data.JiraProjectKey);
+
+        $("label[for=current]").hide();
+        $("label[for=active]").hide();
+
+        $("#Add").hide();
+        $("#jirame").show();
+        $("#jirasave").hide();
+        $("#jiracancel").show();
+        $("#jiraedit").show();
+        $("#jiraupdate").hide();
+        $("#jiraAdds").show();
+
+    }
+    function SaveButton() {
+
+        var jname = $('#projectjiranamename').val();
+        var jkey = $('#projectkey').val();
+        var jversion = $('#projectversion').val();
+
+        var pid = @Model.TlfmsProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddJirabyAjax", "ProjectsJira")',
+            dataType: 'json',
+            data: { id: pid, name: jname, Key: jkey, version: jversion },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectJiraGrid").data("kendoGrid").dataSource.read();
+                hideme();
+            },
+            error: function (xhr) {
+            }
+        })
+
+    }
+    function EditButton() {
+
+        $("#Add").hide();
+        $("#jirame").show();
+        $("#jirasave").hide();
+        $("#jiracancel").show();
+        $("#jiraedit").hide();
+        $("#jiraupdate").show();
+        $("#jiraAdds").hide();
+
+    }
+    function UpdatebuttonJira() {
+
+        var uid = $("#uid").val();
+        var jname = $('#projectjiranamename').val();
+        var jkey = $('#projectkey').val();
+        var jversion = $('#projectversion').val();
+
+        var pid = @Model.TlfmsProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateJirabyAjax", "ProjectsJira")',
+            dataType: 'json',
+            data: { id: pid, name: jname, Key: jkey, version: jversion, UId: uid },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectJiraGrid").data("kendoGrid").dataSource.read();
+                hideme();
+            },
+            error: function (xhr) {
+            }
+        })
+    }
+</script>
+<style>
+    .k-textbox s {
+        max-width: 1000px;
+        min-height: 1000px;
+    }
+
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 1 1 1 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 0px 0px 0px 0px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

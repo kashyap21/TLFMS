@@ -1,0 +1,333 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Create";
+}
+<script src="http://kendo.cdn.telerik.com/2013.3.1324/js/cultures/kendo.culture.de-DE.min.js"></script>
+<title>Create Project - TLFMS</title>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="containers">
+            <center class="Tlf_H4" style="color:white;"><span>Add New Project</span></center>
+        </div>
+        <hr />
+
+        <div class="center_div col-md-12">
+            <div class="form-group col-md-12">
+                <div class="col-md-1">
+                    <label><b>Name</b><span style="color:red;">*</span></label>
+                </div>
+                <div class="col-md-11">
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "k-textbox", style = "width:100%;" })
+                    @Html.ValidationMessageFor(model => model.ProjectName)
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <div class="col-md-1">
+                    <label><b>Type</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3">
+
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectTypeId)
+                            .Name("ProjectTypeId")
+                            .OptionLabel("Select type")
+                            .DataTextField("ProjectTypeName")
+                            .DataValueField("ProjectTypeId")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetProjectType", ControllerName.Project);
+                                })
+                             .ServerFiltering(true);
+                            })
+                            .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectTypeId)
+                </div>
+
+                <div class="col-md-1">
+                    <label><b>Category</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3 ">
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectCategoryId)
+                        .Name("ProjectCategoryId")
+                        .OptionLabel("Select category")
+                        .DataTextField("ProjectCategoryName")
+                        .DataValueField("ProjectCategoryId")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                          {
+                              read.Action("GetAllProjectCategory", ControllerName.Project);
+                          })
+                        .ServerFiltering(true);
+                        })
+                        .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectCategoryId)
+                </div>
+
+                <div class="col-md-1">
+                    <label><b>TechnoLogy</b></label>
+                </div>
+
+                <div class="col-md-3">
+                    @(Html.Kendo().DropDownListFor(model => model.TechnologyId)
+                                  .Name("TechnologyId")
+                                  .OptionLabel("Select Technology")
+                                  .DataTextField("TechnologyName")
+                                  .DataValueField("TechnologyId")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetAllTechnology", ControllerName.Project);
+                                      })
+                                  .ServerFiltering(true);
+                                  })
+                                .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @*@Html.ValidationMessageFor(model => model.TechnologyId)*@
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+
+                <div class="col-md-1">
+                    <label><b>Owner</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3 ">
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectOwner)
+                      .Name("ProjectOwner")
+                      .OptionLabel(Lable.OptionLabel)
+                      .DataTextField("ProjectManagerName")
+                      .DataValueField("ProjectOwner")
+                      .DataSource(source =>
+                      {
+                          source.Read(read =>
+                          {
+                              read.Action("GetProjectOwner", ControllerName.Project);
+                          })
+                        .ServerFiltering(true);
+
+                      })
+                      .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectOwner)
+                </div>
+
+                <div class="col-md-1">
+                    <label><b>Manager</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3">
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectManager)
+                          .Name("ProjectManager")
+                          .OptionLabel("Select Manager")
+                          .DataTextField("ProjectManagerName")
+                          .DataValueField("ProjectManager")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetAllProjectManager", ControllerName.Project);
+                              })
+                            .ServerFiltering(true);
+                          })
+                         .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectManager)
+                </div>
+
+                <div class="col-md-1">
+                    <label><b>Leader</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3">
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectLead)
+                          .Name("ProjectLead")
+                          .OptionLabel("Select Leader")
+                          .DataTextField("ProjectLeadName")
+                          .DataValueField("ProjectLead")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetAllProjectLeader", ControllerName.Project);
+                              })
+                            .ServerFiltering(true);
+                          })
+                          .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectLead)
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+
+                <div class="col-md-1">
+                    <label><b>Estisimated Hr.</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3 ">
+                    @Html.TextBoxFor(model => model.InitialEstimatedHrs, new { @class = "k-textbox", style = "width:100%;" })
+                    @Html.ValidationMessageFor(model => model.InitialEstimatedHrs)
+                </div>
+
+                <div class="col-md-1">
+                    <label><b>InitialDeadLine</b></label>
+                </div>
+
+                <div class="col-md-3">
+                    @(Html.Kendo().DatePickerFor(model => model.InitialDeadline)
+                           .Name("InitialDeadline")
+                           .Value(DateTime.Now)
+                           .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @*@Html.ValidationMessageFor(model => model.InitialDeadline)*@
+                </div>
+
+                <div class="col-md-1">                    
+                    <label><b>Short Code</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.ShortCode, new { @class = "k-textbox", style = "width:100%;" })
+                    @Html.ValidationMessageFor(model => model.ShortCode)
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+
+                <div class="col-md-1">
+                    <label><b>Customer</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3 ">
+                    @(Html.Kendo().DropDownListFor(model => model.CustomerId)
+                          .Name("CustomerId")
+                          .OptionLabel("Select Customer")
+                          .DataTextField("CustomerName")
+                          .DataValueField("CustomerId")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetAllCustomer", ControllerName.Project);
+                              })
+                            .ServerFiltering(true);
+                          })
+                         .HtmlAttributes(new { style = "width: 49%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.CustomerId)
+                    <input type="button" id="open" value="Add Customer" class="k-button" onclick="onClick(this)" />
+                    @(Html.Kendo().Window()
+                                  .Name("window")
+                                  .Width(800)
+                                  .Height(300)
+                                  .Iframe(true)
+                                  .Draggable()
+                                  .Resizable()
+                                  .Visible(false)
+                                  .Modal(true)
+                                  .Actions(actions => actions.Minimize()
+                                                             .Maximize()
+                                                             .Close())
+                                  .LoadContentFrom("Create", "Customers"))
+                </div>
+                <div class="col-md-1">
+                    <label><b>Group</b><span style="color:red;">*</span></label>
+                </div>
+
+                <div class="col-md-3">
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectGroupId)
+                          .Name("ProjectGroupId")
+                          .OptionLabel("Select Group")
+                          .DataTextField("ProjectGroupName")
+                          .DataValueField("ProjectGroupId")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("GetProjectGroup", ControllerName.Project);
+                              })
+                            .ServerFiltering(true);
+                          })
+                          .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectGroupId)
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+
+                <div class="col-md-1">
+                    <label><b>Brief</b></label>
+                </div>
+
+                <div class="col-md-11 ">
+                    @Html.TextAreaFor(model => model.ProjectBrief, new { @class = "k-textbox", style = "min-width:100% !important;" })
+                    @*@Html.ValidationMessageFor(model => model.ProjectBrief)*@
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <div class="col-md-offset-1 col-md-3">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+
+                    <a href="Index" style="margin-left:2vw; padding:0px;"><input type="button" value="Cancel" class="btn btn-danger" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .k-textbox {
+        max-width: 1000px;
+    }
+
+    .containers {
+        margin-top: 2%;
+    }
+
+    .Tlf_H4 span {
+        background-color: rgb(248,147,066);
+        color: #ffffff;
+        width: 100%;
+        font-family: Century Gothic;
+        font-size: 25px;
+        padding: 2px 4px 2px 4px;
+        margin-top: 100px;
+        background: -webkit-gradient(linear, left top, left bottom, from(#F8AE42), to(#F5852B));
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function Redirect(e) {
+        window.location.href = '@Url.Action("Index", ControllerName.Customer)';
+    }
+</script>
+
+<script>
+
+    function onClick(e) {
+        $(".k-window-title").text("Create New Customer");
+        var myWindow = $("#window").css("Layout", "Null");
+        myWindow.data("kendoWindow").center().open();
+
+    }
+</script>

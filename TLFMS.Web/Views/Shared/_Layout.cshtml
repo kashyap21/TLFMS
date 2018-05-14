@@ -1,0 +1,277 @@
+﻿@using TLFSupport.Resources;
+@using TLFSupport.Common;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TLFMS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/bootstrap.min.css")" />*@
+    <link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/kendo.bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/kendo.custom.css")" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="@Url.Content("~/Content/CustomTlf.css")" />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/KendoTheme/kendo")
+    <script src="@Url.Content("~/Scripts/KendoTheme/kendo.custom.js")"></script>
+</head>
+<body>
+  
+    <style>
+        .navbar-inverse::selection{
+            background-color:#010101;
+        }
+    </style>
+   
+    <nav class="navbar navbar-inverse sidebar" role="navigation" style="background-color:#010101">
+      
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TLFMS</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="~/Ticket">Ticket<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                    <li><a href="~/Ticket/Generate">Generate Ticket<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-plus"></span></a></li>
+                    <li><a href="~/CallLog">CallLog<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon glyphicon-phone-alt"></span></a></li>
+                    <li><a href="~/FMSSLA">SLA<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-briefcase"></span></a>
+                        <ul class="dropdown-menu forAnimate" role="menu">
+                            <li><a href="~/Project">Project Management</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Customers">Customer Management</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Timesheet">Timesheet India</a></li>
+                            <li><a href="~/Timesheet/NLIndex">Timesheet NL</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="~/Authentication/Logout">Logout<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-log-out"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <style>
+        body, html {
+            height: 100%;
+            padding-top: 0px;
+            
+            
+        }
+
+        /* remove outer padding */
+        .main .row {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        /*Remove rounded coners*/
+
+        nav.sidebar.navbar {
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            /*border-radius: 0px;*/
+        }
+
+        nav.sidebar, .main {
+            -webkit-transition: margin 200ms ease-out;
+            -moz-transition: margin 200ms ease-out;
+            -o-transition: margin 200ms ease-out;
+            transition: margin 200ms ease-out;
+        }
+
+        /* Add gap to nav and right windows.*/
+        .main {
+            padding: 10px 10px 0 10px;
+          
+        }
+
+        /* .....NavBar: Icon only with coloring/layout.....*/
+
+        /*small/medium side display*/
+        @@media (min-width: 768px) {
+            /*Allow main to be next to Nav*/
+            .main {
+                position: absolute;
+                width: calc(100% - 40px); /*keeps 100% minus nav size*/
+                margin-left: 40px;
+                float: right;
+            }
+            /*lets nav bar to be showed on mouseover*/
+            nav.sidebar:hover + .main {
+                margin-left: 200px;
+            }
+            /*Center Brand*/
+            nav.sidebar.navbar.sidebar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+                margin-left: 0px;
+            }
+            /*Center Brand*/
+            nav.sidebar .navbar-brand, nav.sidebar .navbar-header {
+                text-align: center;
+                width: 100%;
+                margin-left: 0px;
+                /*border-top-right-radius: 20px;*/
+               
+            }
+            /*Center Icons*/
+            nav.sidebar a {
+                padding-right: 13px;
+            }
+            /*adds border top to first nav box */
+            nav.sidebar .navbar-nav > li:first-child {
+                border-top: 1px #e5e5e5 solid;
+            }
+            /*adds border to bottom nav boxes*/
+            nav.sidebar .navbar-nav > li {
+                border-bottom: 1px #e5e5e5 solid;
+            }
+            /* Colors/style dropdown box*/
+            nav.sidebar .navbar-nav .open .dropdown-menu {
+                position: static;
+                float: none;
+                width: auto;
+                margin-top: 0;
+                background-color: transparent;
+                border: 0;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+            /*allows nav box to use 100% width*/
+            nav.sidebar .navbar-collapse, nav.sidebar .container-fluid {
+                padding: 0 0px 0 0px;
+            }
+            /*colors dropdown box text */
+            .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+                color: #777;
+            }
+            /*gives sidebar width/height*/
+            nav.sidebar {
+                width: 200px;
+                height: 100%;
+                margin-left: -160px;
+                float: left;
+                z-index: 8000;
+                margin-bottom: 0px;
+            }
+                /*give sidebar 100% width;*/
+                nav.sidebar li {
+                    width: 100%;
+                }
+                /* Move nav to full on mouse over*/
+                nav.sidebar:hover {
+                    margin-left: 0px;
+                    /*border-radius: 20px;*/
+                }
+            /*for hiden things when navbar hidden*/
+            .forAnimate {
+                opacity: 0;
+            }
+        }
+
+        /* .....NavBar: Fully showing nav bar..... */
+
+        @@media (min-width: 4130px) {
+            /*Allow main to be next to Nav*/
+            .main {
+                width: calc(100% - 200px); /*keeps 100% minus nav size*/
+                margin-left: 200px;
+            }
+            /*Show all nav*/
+            nav.sidebar {
+                margin-left: 0px;
+                float: left;
+            }
+                /*Show hidden items on nav*/
+                nav.sidebar .forAnimate {
+                    opacity: 1;
+                }
+        }
+
+        nav.sidebar .navbar-nav .open .dropdown-menu > li > a:hover, nav.sidebar .navbar-nav .open .dropdown-menu > li > a:focus {
+            color: #CCC;
+            background-color: transparent;
+        }
+
+        nav:hover .forAnimate {
+            opacity: 1;
+        }
+
+        section {
+            padding-left: 15px;
+        }
+
+        .navbar-nav > li > a:hover {
+            color: #f57a18 !important;
+        }
+    </style>
+    
+    <div class="main">
+        <script type="text/javascript">
+            function htmlbodyHeightUpdate() {
+                var height3 = $(window).height()
+                var height1 = $('.nav').height() + 50
+                height2 = $('.main').height()
+                if (height2 > height3) {
+                    $('html').height(Math.max(height1, height3, height2) + 10);
+                    $('body').height(Math.max(height1, height3, height2) + 10);
+                }
+                else {
+                    $('html').height(Math.max(height1, height3, height2));
+                    $('body').height(Math.max(height1, height3, height2));
+                }
+
+            }
+            $(document).ready(function () {
+                htmlbodyHeightUpdate()
+                $(window).resize(function () {
+                    htmlbodyHeightUpdate()
+                });
+                $(window).scroll(function () {
+                    height2 = $('.main').height()
+                    htmlbodyHeightUpdate()
+                });
+            });
+            
+               $(document).ready(function() {
+                   kendo.culture().calendar.firstDay= 1               
+              
+               });
+            
+        </script>
+        <!-- Content Here rgb(38,157,192) -->
+        <div class="form-control" style="height: 50px; border-color: grey;border-width:medium;border-radius:20px;" >
+            <img src="/Content/Img/logo.png" /><center><h3 style="margin-top:-25px;color:#333">@*@Request.Url.LocalPath.Replace('/',' ')*@ @ViewBag.Title </h3></center>
+            <div style="margin-top:-25px;"align="right">Welcome @Session["userName"]</div>  
+        </div>
+        <br />
+        <div class="form-control" style="height: inherit; border-color: grey; border-width: medium; border-radius: 20px;">
+        
+            @RenderBody()
+        
+        </div>
+        <br/>
+        <div class="form-control" style="background-color: rgb(38,157,192); height: 50px;font-size:medium; color: white; border-color: grey; border-width: medium; border-radius: 20px; ">
+            <footer>
+
+                <center style="color:white !important;">©Copyright @DateTime.Now.Year The Logic Factory.All Rights Reserved @*<img src="/Content/Img/logo.png" />*@</center>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

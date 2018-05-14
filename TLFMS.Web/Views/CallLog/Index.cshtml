@@ -1,0 +1,88 @@
+﻿@model IEnumerable<TLFSupport.Model.CustomeModel.CallLogViewModel>
+@using Kendo.Mvc.UI
+@using TLFSupport.Common
+@using TLFSupport.Resources
+
+@{
+    ViewBag.Title = "CallLog";
+}
+
+<div class=" col-lg-12">
+    @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.CallLogViewModel>()
+              .Name("calllogGrid")
+              .Columns(column =>
+              {
+                  column.Bound(calllog => calllog.IsTicketGenerated).ClientTemplate("# if(IsTicketGenerated) { if(TicketId == null){# #}else{# <center><a href='" + Url.Action(ActionName.TicketEdit, ControllerName.Ticket) + "/#= TicketId #'" + "> #=TicketNumber #</a></center> #} } else {#  <div><center><a style = 'min-width:30px;'  class='k-button fa fa-rocket' href='" + Url.Action(ActionName.TicketGenerate, ControllerName.Ticket) + "/#= CallLogId #'" + "></a></center></div> #}#").Title("Generate").Width(80).HtmlAttributes(new { title = "Generate Ticket" }).Filterable(f => f.Messages(m => m.Info("Ticket generated or not").IsFalse("Not Generated").IsTrue("Generated")));
+                  column.Bound(calllog => calllog.TicketId).Visible(false);
+                  //column.Bound(calllog => calllog.Action).ClientTemplate("# if(Action) {# <center><i class='fa fa-phone' title='Attended' style = ' font-size:22px ;color:green;'></i></center> #} else {#  <center><i class='fa fa-phone fa-rotate-180' title='Missed call' style = 'font-size:22px;color:red'></i></center> #}#").Width(95).Filterable(ftb => ftb.Multi(true));
+                  column.Bound(calllog => calllog.Action).ClientTemplate("# if(Action == 'Attended') {# <center><i class='fa fa-phone' title='Attended' style = ' font-size:22px ;color:green;'></i></center> #} else {#  <center><i class='fa fa-phone fa-rotate-180' title='Missed call' style = 'font-size:22px;color:red'></i></center> #}#").Width(95).Filterable(ftb => ftb.Multi(true));
+                  column.Bound(calllog => calllog.ExtensionNumber).Title("Customer").Width(400).Filterable(filterable => filterable.UI("customerNameFilter"));
+                  // column.Bound(calllog => calllog.CallNumber);
+                  column.Bound(calllog => calllog.Date).ClientTemplate("#=kendo.toString(Date,'dd-MM-yyyy')#");
+                  // column.Bound(calllog => calllog.Time).ClientTemplate("#=kendo.toString(Time.Hours,'hh') #:#= kendo.toString(Time.Minutes, \"mm:ss tt\") #:#= kendo.toString(Time.Seconds, \"mm:ss tt\") #:#= kendo.toString(Time, \"tt\") #").Width(110);
+                  column.Bound(calllog => calllog.Time).ClientTemplate("#= formatAMPM(Time) #").Filterable(false).Title("Start Time");
+                  column.Bound(calllog => calllog.Duration).Title("Call Duration").Width(170).ClientTemplate("#= Convert(Duration) #").Filterable(false);
+                  // HaHA
+              })
+              .Pageable()
+              .Sortable()
+              .Filterable(filterable => filterable.Extra(false)
+                                           .Operators(operators => operators
+                                           .ForString(str => str.Clear()
+                                           .StartsWith("Starts with")
+                                           .IsEqualTo("Is equal to")
+                                               .Contains("Contains")
+                                           .IsNotEqualTo("Is not equal to")
+                                                     )
+                                                     )
+                         )
+              .DataSource(data => data.Ajax()
+              .Read(read => read.Action(ActionName.CallLogView, ControllerName.CallLog))
+              ))
+</div>
+
+<script type="text/javascript">
+
+    function customerNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.FMSSLAFilterByCustomerName, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+    }
+
+    function DateFilter(element) {
+        element.kendoDatePicker();
+    }
+
+    
+</script>
+
+<script>
+    function Convert(date) {
+
+        var totalSec = date;
+
+        var hours = parseInt(totalSec / 3600) % 24;
+        var minutes = parseInt(totalSec / 60) % 60;
+        var seconds = totalSec % 60;
+
+        var result = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+
+        return result;
+
+    };
+
+    function formatAMPM(Time) {
+
+        var ampm = Time.Hours >= 12 ? 'pm' : 'am';
+
+        var hours = Time.Hours % 12 ? Time.Hours % 12 : 12; // the hour '0' should be '12'
+        var minutes = Time.Minutes < 10 ? '0' + Time.Minutes : Time.Minutes;
+        var strTime = hours + ':' + minutes + ':' + Time.Seconds + ' ' + ampm;
+        return strTime;
+    }
+</script>

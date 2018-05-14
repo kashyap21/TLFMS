@@ -1,0 +1,170 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectCRViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+
+@{
+    Layout = "~/Views/Shared/_Partial_Layout.cshtml";
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model=>model.ProjectId)
+        <div class="form-group">
+            <div class="col-md-2 col-xs-2">
+
+                <b>@Html.LabelFor(model => model.CRNo, "CR No")</b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                @Html.TextBoxFor(model => model.CRNo, new { @class = "k-textbox" })
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <b>@Html.LabelFor(model => model.CRDate, "CR Date")</b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                @Html.Kendo().DatePickerFor(model => model.CRDate).Value(DateTime.Now)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2 col-xs-2">
+                <b>@Html.LabelFor(model => model.EstimatedHrs, "Estimated Hrs")</b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                @Html.TextBoxFor(model => model.EstimatedHrs, new { @class = "k-textbox" })
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <b>@Html.LabelFor(model => model.Description, "Description")</b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                @Html.TextAreaFor(model => model.Description, new { @class = "k-textbox" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2 col-xs-2">
+                <b>@Html.LabelFor(model => model.ApprovedByClient, "Approved By Client")</b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+
+                @Html.Kendo().RadioButtonFor(m => m.ApprovedByClient).Label("Yes")
+                @Html.Kendo().RadioButtonFor(m => m.ApprovedByClient).Label("No")
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <b>@Html.LabelFor(model => model.ApprovedBy, "Approver")</b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+
+                @(Html.Kendo().DropDownListFor(model => model.ApprovedBy)
+                 .HtmlAttributes(new { @data_value_primitive = "true" })
+                 .OptionLabel(Lable.OptionLabel)
+         .DataTextField("ApprovedByName")
+                 .DataValueField("ApprovedBy")
+                 .DataSource(source =>
+                 {
+                     source.Read(read =>
+                     {
+                         read.Action("ViewProjectApprover", "ProjectsCRs", new { Id = Model.ProjectId });
+                     });
+                 })
+                )
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-8 col-xs-8 col-md-offset-2">
+                <input type="submit" value="Save" class="btn btn-primary" style="margin-right:20px;" />
+               
+            </div>
+        </div>
+        <div class="form-group col-lg-12">
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectCRViewModel>()
+              .Name("ProjectJiraGrid")
+              .Columns(column =>
+              {
+                  //column.Command(command =>
+                  //{
+                  //    command.Custom("Edit").Text("<span class= 'k-icon k-i-note'></span>").Click("ShowJiraDetail");
+                  //    command.Custom("Delete").Text("<span class= 'k-icon k-i-close'></span>").Click("deleteJiraDetail");
+                  //}).Width(80);
+                  column.Bound(emp => emp.CRId).Visible(false);
+                  column.Bound(emp => emp.CRNo);
+                  column.Bound(emp => emp.CRDate);
+                  column.Bound(emp => emp.Description);
+                  column.Bound(emp => emp.EstimatedHrs);
+                  column.Bound(emp => emp.ApprovedBy);
+                  column.Bound(emp => emp.Status);
+              })
+            .Selectable()
+
+            .Reorderable(reorderable => reorderable.Columns(true))
+            .Resizable(resizable => resizable.Columns(true))
+            .DataSource(data => data.Ajax()
+            .Model(model =>
+             model.Id(emp => emp.CRId))
+            .Read(read => read.Action("ViewProjectsCRsDetails", "ProjectsCRs", new { id = Model.ProjectId }))
+            .Destroy(del => del.Action("ProjectsCRSDestroy", "ProjectsCRs"))
+
+            )
+            )
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+  
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

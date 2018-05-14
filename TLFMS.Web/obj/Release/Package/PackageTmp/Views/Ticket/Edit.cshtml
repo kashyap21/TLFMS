@@ -1,0 +1,303 @@
+﻿@model TLFSupport.Model.CustomeModel.TicketViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Edit Ticket";
+}
+
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <h3>Edit # @Html.DisplayFor(model => model.TicketNumber)</h3>
+        <hr />
+
+        <div>
+            @Html.HiddenFor(model => model.ProjectId)
+            @Html.HiddenFor(model => model.CustomerId)
+            @Html.HiddenFor(model => model.TicketNumber)
+            @*@Html.HiddenFor(model => model.EmployeeId)*@
+            @*@Html.HiddenFor(model => model.Title)*@
+            @Html.HiddenFor(model => model.CreatedOn)
+            @*@Html.HiddenFor(model => model.IDSLA)*@
+            @Html.HiddenFor(model => model.TicketId)
+            @*  @Html.HiddenFor(model => model.ForwardTo)*@
+        </div>
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    <b>@Html.LabelFor(model => model.CustomerName, Lable.CustomerName)</b>
+                </div>
+                <div class="col-md-3">
+                    @*@Html.DisplayFor(model => model.CustomerName, new { disabled = "true", style = "width:100%; font-weight:700;margin-top:1px;" })*@
+                    @Html.TextBoxFor(model => model.CustomerName, new { @class = "k-textbox", disabled = "true", style = "border:1px solid #ffffff;margin-top:-6px;margin-left:-10px;" })
+                </div>
+                <div class="col-md-1 col-md-offset-2">
+                    <b>@Html.LabelFor(model => model.ProjectName, Lable.ProjectName)</b>
+                </div>
+                <div class="col-md-3">
+                    @*@Html.DisplayFor(model => model.ProjectName, new { @class = "k-textbox", disabled = "true", style = "font-weight:700;" , @name = "lblProjectName"})*@
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "k-textbox", disabled = "true", style = "border:1px solid #ffffff;margin-top:-6px;", @id = "lblProjectName" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    <b>@Html.LabelFor(model => model.Title, Lable.TicketTitle)<span style="color:red;">*</span></b>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextAreaFor(model => model.Title, new { @class = "k-textbox", rows = "2", style = "width:100%;" })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">
+                    <b>@Html.LabelFor(model => model.Description, Lable.TicketDescription)</b>
+                </div>
+                <div class="col-md-9">
+                    @(Html.Kendo().EditorFor(model => model.Description).HtmlAttributes(new { @data_value_primitive = "true" })
+                        .Name("Description")
+                        .Tools(tools => tools.Clear()))                @*//remove all tools*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <b>@Html.Label("", Lable.TicketComment)<span style="color:red;">*</span></b>
+                    </div>
+                    <div class="col-md-9">
+                        @*<textarea style="width:100%;" class="k-textbox" data-bind="value:Comment" id="Comment" name="Comment" rows="3"></textarea>*@
+                        @Html.TextAreaFor(model => model.Comment, new { @class = "k-textbox", style = "width:100%;" })
+                        @Html.ValidationMessageFor(model => model.Comment)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <b>@Html.Label("", "Assigned")</b>
+                    </div>
+                    <div class="col-md-9">
+                        @*<textarea style="width:100%;" class="k-textbox" data-bind="value:Comment" id="Comment" name="Comment" rows="3"></textarea>*@
+                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "k-textbox", disabled = "true", style = "border:1px solid #ffffff;margin-top:-6px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    @{
+        if (Model.ForwardTo != Convert.ToInt32(Session["user"] as string))
+        {
+                        <div class="col-md-2 ">
+                            <b>@Html.LabelFor(model => model.EmployeeName, "Forward To")</b>
+                        </div>
+                        <div class="col-md-2">
+                            @(Html.Kendo().DropDownListFor(model => model.ForwardTo)
+                                  .Name("ForwardTo")
+                                  .HtmlAttributes(new { @data_value_primitive = "true" })
+                                  .OptionLabel(Lable.OptionLabel)
+                                          .DataTextField("ForwardEmployeeName")
+                                          .DataValueField("ForwardTo")
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                              {
+                                                  read.Action(ActionName.TicketGetEmployeeForProject, ControllerName.Ticket, new { id = Model.ProjectId });
+                                              });
+                                      })
+                            )
+                        </div>
+
+        }
+        else
+        {
+                        <div class="col-md-2 ">
+                            <b><span style="color:green;">@Html.LabelFor(model => model.EmployeeName, "Assigned Action")</span><span style="color:red;">*</span></b>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="button" id="btnAccept" value="Accept" class="btn btn-primary" onclick="onAccept(@Model.ForwardTo,@Model.TicketId)" />
+                        </div>
+        }
+                    }
+
+                    <div class="col-md-2 col-md-offset-1">
+                        <b>@Html.LabelFor(model => model.Priority, Lable.PriorityName)<span style="color:red;">*</span></b>
+                    </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().DropDownListFor(model => model.IDSLA)
+                                  .Name("IDSLA")
+                                  .HtmlAttributes(new { @data_value_primitive = "true" })
+                                  .OptionLabel(Lable.OptionLabel)
+                                  .DataTextField("Priority")
+                                  .DataValueField("IDSLA")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action(ActionName.TicketGetPriorityForProject, ControllerName.Ticket, new { id = Model.ProjectId });
+                                      });
+                                  }))
+
+                        @Html.ValidationMessageFor(model => model.IDSLA)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2 ">
+                        <b>@Html.LabelFor(model => model.Status, Lable.TicketStatus)<span style="color:red;">*</span></b>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().DropDownListFor(model => model.StatusId)
+                                  .Name("StatusId")
+                                  .OptionLabel(Lable.OptionLabel)
+                                  .HtmlAttributes(new { @data_value_primitive = "true" })
+                                  .DataTextField("Status")
+
+                                  .DataValueField("StatusId")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action(ActionName.TicketGetStatus, ControllerName.Ticket);
+                                      });
+                                  }))
+
+                        @Html.ValidationMessageFor(model => model.StatusId)
+                    </div>
+
+                    <div class="col-md-1 col-md-offset-2 Custombutton">
+                        <input type="button" id="open" value="View SLA" class="k-button" onclick="onClick(this)" />
+
+                        @(Html.Kendo().Window()
+                                  .Name("window")
+                                  .Width(800)
+                                   .Height(300)
+            //.HtmlAttributes(new { style = "height:auto;width:auto;" })
+                                  .Iframe(true)
+                                  .Draggable()
+
+                                  .Resizable()
+                                  .Visible(false)
+                                  .Modal(true)
+            //.Title(Lable.SLAForProject)
+                                  .Actions(actions => actions.Minimize()
+                                                             .Maximize()
+                                                             .Close())
+                                  .LoadContentFrom(ActionName.SlaDetail, ControllerName.SLA, new { id = Model.ProjectId }))
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-md-8">
+                        @{
+        if (Model.ForwardTo == null)
+        {
+            int[] userRoleForSearchTimesheet = { 1, 2, 9 };
+            int[] sessionRole = Session["userRole"] as int[];
+            bool isAdmin = userRoleForSearchTimesheet.Intersect(sessionRole).Any();
+            if (Model.EmployeeId == Convert.ToInt32(Session["user"] as string )|| isAdmin)
+            {
+                            <input type="submit" value="Save" class="btn btn-primary" />
+            }
+        }
+                        }
+                        <input type="button" value="Cancel" class="btn btn-danger" onclick="Redirect(this)" />
+                    </div>
+                </div>
+            </div>
+    }
+</body>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function onClick(e) {
+        var projectName = document.getElementById('lblProjectName').value;
+
+        $(".k-window-title").text("SLA For ").append(projectName);
+        var myWindow = $("#window");
+        myWindow.data("kendoWindow").center().open();
+    }
+
+    function Redirect(e) {
+        window.location.href = '@Url.Action(ActionName.TicketIndex, ControllerName.Ticket)';
+    }
+</script>
+
+<script>
+    $(function () {
+        $($('#Description').data().kendoEditor.body).attr('contenteditable', false);
+    })
+</script>
+
+<script>
+
+    function onAccept(f, t) {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AcceptUpdate", "Ticket")',
+            dataType: 'json',
+            data: { Ticketid: t, FEmpId: f },
+            async: true,
+            success: function (data) {
+                if (data) {
+                    window.location.href = '@Url.Action(ActionName.TicketEdit, ControllerName.Ticket ,new {id=@Model.TicketId})';
+                }
+
+            },
+            error: function (xhr) {
+            }
+        })
+
+    }
+
+    //var timer;
+    //jQuery(function ($) {
+    //    timer = setTimeout(blnk, 0);
+    //});
+
+    //function blnk() {
+    //    $("#btnAccept").css({ opacity: 0 }).
+    //        animate({ opacity: 1 }, 300, "linear").
+    //        animate({ opacity: 0 }, 300, "linear",
+    //        function () {
+    //            timer = setTimeout(blnk, 0);
+    //        });
+    //}
+</script>
+
+<style>
+    #btnAccept {
+        border: 1px solid #900;
+        max-width: 1000px;
+        line-height: 18px;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-shadow: 0 0 1px #000;
+        box-shadow: 0 2px 2px #aaa;
+        -moz-box-shadow: 0 2px 2px #aaa;
+        -webkit-box-shadow: 0 2px 2px #aaa;
+    }
+
+    .k-textbox {
+        max-width: 1000px;
+        line-height: 18px;
+    }
+</style>
+<style>
+    @@media all and (max-width:450px) {
+        .Custombutton {
+            margin-top: 20px;
+        }
+    }
+</style>
+@*  *@

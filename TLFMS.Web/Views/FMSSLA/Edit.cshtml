@@ -1,0 +1,330 @@
+﻿@model TLFSupport.Model.CustomeModel.SLAViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Manage SLA Details";
+}
+
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid-delete .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 1px 1px 1px 1px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+
+    tr {
+        text-align: center;
+    }
+
+    text-area {
+        width: 100% !important;
+        max-width: 500px !important;
+    }
+</style>
+<body>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div align="center">
+            @*<h3>SLA</h3>*@
+        </div><hr />
+        @Html.HiddenFor(model => model.ProjId)
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-1"><b> @Html.LabelFor(model => model.CustName, "Customer:")</b></div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.CustName, new { @class = "k-textbox", disabled = "true", @data_value_primitive = "true", style = "width:100%;border:1px solid #ffffff; margin-top:-6px;font-weight:800;" })
+                </div>
+                <div class="col-md-1 col-lg-offset-0"> <b>@Html.LabelFor(model => model.ProjName, "Project:")</b> </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.ProjName, new { @class = "k-textbox", disabled = "true", @data_value_primitive = "true", style = "width:100%;border:1px solid #ffffff; margin-top:-6px;font-weight:800;" })
+                </div>
+            </div>
+            @*<div class="form-group">
+
+                    <div class="col-md-10">
+                        @Html.Kendo().Button().Name("priority").Content("Add Next Priority")
+                     </div>
+                </div>*@
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.PopupSLAViewModel>()
+        .Name("fmsslaGrid")
+        .Columns(column =>
+        {
+            column.Command(command => command.Edit().Text("<i class='fa fa-pencil' data-toggle='tooltip' title = 'Edit' data-placement='top' style = 'margin-left:-15px;font-size:16px;'></i>").HtmlAttributes(new { title = "Edit Row" })).Width(30).Title("<center>Action</center>");
+            column.Bound(sla => sla.PriorityName);
+            column.Bound(sla => sla.SLAPriorityLevel).Title("<center>Priority Level</center>");
+            column.Bound(sla => sla.SLADescription).Title("<center>Description</center>");
+            column.Bound(sla => sla.tempResponse).EditorTemplateName("MaskedTextBoxEditor").Title("Max Response Time");
+            column.Bound(sla => sla.tempResolve).EditorTemplateName("MaskedTextBoxEditor").Title("Max Resolve Time");
+            column.Bound(sla => sla.tempEscalationTime).Title("<center>EscalationTime</center>");
+            column.Bound(sla => sla.IsDefaultPriority);
+            column.Bound(sla => sla.IsActive).Width(20).ClientTemplate("# if(IsActive) {# <a onclick='changeStatus(#=SLAId #)'> <center><i class='fa fa-circle' title='Active' style = ' font-size:15px ;color:green;'></i></center> </a> #}  else {# <a onclick='changeStatus(#=SLAId #)'> <center><i class='fa fa-circle' title='In Active' style = ' font-size:15px ;color:red;'></i></center> </a> #}  #");
+        })
+        .ToolBar(toolbar => toolbar.Create().Text(Lable.FMSSLAAddNext))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).Window(w => w.Name("EditWindow").Width(550)))
+        .Events(ev => ev.Edit("OnEdit"))
+        .Sortable()
+        .DataSource(data => data.Ajax()
+                            .Model(model =>
+                            {
+                                model.Id(sla => sla.SLAId);
+                                model.Field(x => x.ProjId).DefaultValue(@Model.ProjId);
+                            })
+                            .Read(read => read.Action(ActionName.FMSSLAGetSLAByProjectId, ControllerName.FMSSLA, new { id = Model.ProjId }))
+                                .Create(update => update.Action("dummy", "dummy"))
+                                .Update(update => update.Action("dummy", "dummy"))
+            //.Destroy(update => update.Action(ActionName.FMSSLAInlineDelete, ControllerName.FMSSLA))
+                    )
+            )
+        </div>
+
+        @(Html.Kendo().Window().Name("Details")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+        )
+
+    }
+</body>
+<script type="text/x-kendo-template" id="template">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete <strong>#= PriorityName #</strong> for Project ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+
+<script>
+    function changeStatus(SLAId) {
+        $.ajax({
+
+            type: 'POST',
+            url: '@Url.Action("ChnageStatusbyAjax", "FMSSLA")',
+            dataType: 'json',
+            data: { id: SLAId },
+            async: true,
+            success: function (data) {
+
+                $("#fmsslaGrid").data("kendoGrid").dataSource.read();
+
+            },
+            error: function (xhr) {
+
+            }
+        })
+    }
+</script>
+
+<style>
+    #PriorityName {
+    }
+</style>
+
+<script type="text/javascript">
+
+    var detailsTemplate = kendo.template($("#template").html());
+
+    function showDetails(e) {
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+        var wnd = $("#Details").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#fmsslaGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+        })
+    }
+</script>
+
+<script type="text/javascript">
+
+    //function HideLabels() {
+
+    //}
+
+    function OnEdit(e) {
+
+        e.preventDefault();
+
+        $(".k-grid-update").click(function (event) {
+
+            HideLabels();
+
+            event.preventDefault();
+
+            var isg = e.model.IsDefaultPriority;
+            var pname = e.model.PriorityName;
+            var pid = e.model.ProjId;
+            var sid = e.model.SLAId;
+            var priolevel = e.model.SLAPriorityLevel;
+            var respTime = e.model.tempResponse;
+            var resTime = e.model.tempResolve;
+            var escTime = e.model.tempEscalationTime;
+            var dec = e.model.SLADescription;
+            var act = e.model.IsActive;
+
+            //   alert(sid + "  " + pid + " " + priolevel + pname + des + respTime + resTime + escTime + isg + act);
+            // alert(resTime);
+           
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SLASave", "FMSSLA")',
+                dataType: 'json',
+                data: { slaId: sid, prjid: pid, pl: priolevel, pn: pname, res: respTime, resolved: resTime, escalation: escTime, isdefault: isg, Isactive: act, description: dec },
+                async: true,
+                success: function (result) {
+
+                    
+
+                    if (result == 1) {
+
+                        $(".k-edit-form-container").find("[data-valmsg-for=IsDefaultPriority],[data-val-msg-for=IsDefaultPriority]")
+                                .replaceWith("<k1 style='color:red;'type:'hidden'>Default Priority already exist</k1>").show(); $("k1").show();
+                       
+
+                    }
+                    else if (result == 2) {
+                        $(".k-edit-form-container").find("[data-valmsg-for=PriorityName],[data-val-msg-for=PriorityName]")
+                                .replaceWith("<k2 style='color:red'>Priority name already exist</kk>"); $("k2").show(); $("k2").show();
+                    }
+                    else if (result == 3) {
+
+                        $(".k-edit-form-container").find("[data-valmsg-for=SLAPriorityLevel],[data-val-msg-for=SLAPriorityLevel]")
+                               .replaceWith("<k3 style='color:red'>Priority level already exist</kk>"); $("k3").show(); $("k3").show();
+                     
+                    }
+                    else if (result == 4) {
+                        $(".k-edit-form-container").find("[data-valmsg-for=tempResponse],[data-val-msg-for=tempResponse]")
+                                .replaceWith("<k4 style='color:red'>Response Time Invalid input!! It should follow: H < = 23, M < = 59</k4>"); $("kk").show(); $("k4").show();
+                    }
+                    else if (result == 5) {
+                        $(".k-edit-form-container").find("[data-valmsg-for=tempResolve],[data-val-msg-for=tempResolve]")
+                                 .replaceWith("<k5 style='color:red'>Resolved Time Invalid input!! It should follow: H < = 23, M < = 59</k5>"); $("kk").show(); $("k5").show();
+                    }
+                    else if (result == 6) {
+                        $(".k-edit-form-container").find("[data-valmsg-for=tempEscalationTime],[data-val-msg-for=tempEscalationTime]")
+                                 .replaceWith("<k6 style='color:red'>Escalation Time Invalid input!! It should follow: H < = 23, M < = 59</k6>"); $("kk").show(); $("k6").show();
+                    }
+                    else {
+                        
+                        $('span.k-i-close').click();
+                        $("#fmsslaGrid").data("kendoGrid").dataSource.read();
+                    }
+
+                },
+                error: function (result) {
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Oops!!! something went wrong !!</label></div>").hide();
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Oops!!! something went wrong !!</label></div>").show();
+                }
+            })
+
+        });
+
+    }
+    function HideLabels() {
+
+        $("k1").hide();
+        $("k2").hide();
+        $("k3").hide();
+        $("k4").hide();
+        $("k5").hide();
+        $("k6").hide();
+    }
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

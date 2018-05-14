@@ -1,0 +1,270 @@
+﻿@model IEnumerable<TLFSupport.Model.CustomeModel.TicketViewModel>
+@using Kendo.Mvc.UI
+@using TLFSupport.Common
+
+@{
+    ViewBag.Title = "Home";
+}
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 0px 0px 0px 0px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+
+    tr {
+        text-align: center;
+    }
+
+    .k-reorderable {
+        min-width: 700px !important;
+    }
+</style>
+
+<div class="container">
+    <h3>Ticket</h3>
+
+    <div align="right">
+        @(Html.Kendo().CheckBox().Name("showAll").Label("Show All"))
+    </div>
+</div><br />
+
+@(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.TicketViewModel>()
+              .Name("ticketGrid")
+              .Columns(column =>
+              {
+
+                  column.Bound(ticket => ticket.TicketId).Visible(false);
+                  column.Template(x => { }).ClientTemplate("<a class='k-button' href='" + Url.Action(ActionName.TicketEdit, ControllerName.Ticket) + "/#= TicketId #'" + "><center><span  class='k-icon k-i-pencil'></span></center></a>").Title("<center>Edit</center>").HtmlAttributes(new { title = "Edit Ticket" });
+                  column.Command(command => { command.Edit().Text("<i class='fa fa-history' data-placement='top' style = 'margin-left:-15px;font-size:16px;'></i>"); }).Width(50).Title("<center>History</center>").HtmlAttributes(new { title = "Ticket History" });
+                  column.Bound(ticket => ticket.Priority).Filterable(filterable => filterable.UI("priorityFilter")).Width(110);
+                  column.Bound(ticket => ticket.TicketNumber).Title("Ticket Nr.").Filterable(filterable => filterable.UI("ticketNumderFilter")).Width(170);
+                  column.Bound(ticket => ticket.Title).Filterable(filterable => filterable.UI("ticketTitleFilter")).Width(250).Title("<center>Title</center>").ClientTemplate("#if(Title.length>15){# # var myContent =Title; #  # var dcontent = myContent.substring(0,15); # <span>#=kendo.toString(dcontent)#</span> #}else{# <span>#=Title#</span> #}#");
+                  //column.Bound(ticket => ticket.Description).Width(150).ClientTemplate("<div>#= Description #</div>");
+                  column.Bound(ticket => ticket.CreatedOn).ClientTemplate("#= kendo.toString(kendo.parseDate(CreatedOn, 'yyyy-MM-dd  hh:mm tt'), 'MM/dd/yyyy hh:mm tt') #").Filterable(filterable => filterable.UI("createdOnFilter")).Width(130);
+                  // column.Bound(ticket => ticket.CreatedOn).ClientTemplate("#=kendo.toString(CreatedOn,'dd-MM-yyyy hh:mm:ss tt')#").Filterable(filterable => filterable.UI("createdOnFilter")).Width(130);
+                  column.Bound(ticket => ticket.CustomerName).Filterable(filterable => filterable.UI("customerNameFilter")).Width(200).Title("<center>Customer</center>");
+                  column.Bound(ticket => ticket.ProjectId).Visible(false);
+                  column.Bound(ticket => ticket.EmployeeId).Visible(false);
+                  column.Bound(ticket => ticket.ProjectName).Filterable(filterable => filterable.UI("projectNameFilter")).Title("<center>Project</center>").Width(320);
+                  column.Bound(ticket => ticket.EmployeeName).Filterable(filterable => filterable.UI("employeeNameFilter")).Width(130).Title("Employee");
+                  //column.Bound(ticket => ticket.ForwardTo).Width(50).Title("ForWardedTo");
+                  column.Bound(ticket => ticket.ForwardEmployeeName).Width(50).Title("Forwarded To");
+                  column.Bound(ticket => ticket.Status).Filterable(filterable => filterable.UI("statusFilter")).Width(110);
+
+              })
+              .Pageable()
+                      .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TicketTemplate"))
+                      .Events(ev => ev.Edit("Edit"))
+              .Sortable()
+              .Reorderable(reorderable => reorderable.Columns(true))
+              .Resizable(resizable => resizable.Columns(true))
+              .Filterable(filterable => filterable.Extra(false)
+                                       .Operators(operators => operators
+                                            .ForString(str => str.Clear()
+                                               .StartsWith("Starts with")
+                                               .IsEqualTo("Is equal to")
+                                               .Contains("Contains")
+                                               .IsNotEqualTo("Is not equal to")
+                                             )
+                                         )
+                          )
+              .DataSource(data => data.Ajax()
+              .Model(model => model.Id(ticket => ticket.TicketId))
+              .Read(read => read.Action(ActionName.TicketView, ControllerName.Ticket, new { id = 1 }))
+              .Update(read => read.Action(ActionName.TicketView, ControllerName.Ticket))
+              ))
+
+<script type="text/javascript">
+
+    $("#showAll").click(function () {
+        var checkboxGrid = $("#showAll").is(':checked');
+        //var selected = $(this).is(':checked');
+        //var statusIdTrue = 1;
+        //var statusIdFalse = 0;
+        if (checkboxGrid) {
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ViewTicketByAjax", "Ticket")',
+                dataType: 'json',
+                data: { id: 0 },
+                async: true,
+                success: function (data) {
+                    var dataSource = new kendo.data.DataSource({
+                        data: data,
+                        pageSize: 10
+                    });
+                    $("#ticketGrid").data("kendoGrid").setDataSource(dataSource);
+                },
+                error: function (xhr) {
+                }
+            })
+        }
+        else {
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ViewTicketByAjax", "Ticket")',
+                dataType: 'json',
+                data: { id: 1 },
+                async: true,
+                success: function (data) {
+                    var dataSource = new kendo.data.DataSource({
+                        data: data,
+                        pageSize: 10
+                    });
+                    $("#ticketGrid").data("kendoGrid").setDataSource(dataSource);
+                },
+                error: function (xhr) {
+                }
+            })
+        }
+
+    });
+
+    function statusFilter(element) {
+        element.kendoDropDownList(
+            {
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action(ActionName.TicketFilterByStauts, ControllerName.Common)"
+                    }
+                },
+                optionLabel: "--Select Value--"
+            });
+    }
+
+    function priorityFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByPriority, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function ticketNumderFilter(element) {
+        element.kendoAutoComplete(
+        {
+            dataSource: {
+                transport: {
+                    read: "@Url.Action("GetTicketnumberForFilter", ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+    }
+    function customerNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.FMSSLAFilterByCustomerName, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function projectNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByProject, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function employeeNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByEmployee, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function ticketTitleFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByTicketTitle, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+
+    }
+
+    function createdOnFilter(element) {
+        element.kendoDateTimePicker();
+    }
+
+    function Edit(e) {
+
+        var ticketNumber = e.model.TicketNumber;
+        $(".k-window-title").text("History for ticket:- #").append(ticketNumber);
+        //k-edit-buttons k-state-default
+        $(".k-edit-buttons").hide();
+        $(".k-grid-update").hide();
+        $(".k-grid-cancel").hide();
+
+        var pid = e.model.TicketId;
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ViewTicketLogById", "Ticket")',
+            dataType: 'json',
+            data: { id: pid },
+            async: true,
+            success: function (data) {
+
+                $("#ticketLogGrid").data("kendoGrid").dataSource.data(data);
+
+            },
+            error: function (xhr) {
+
+            }
+        })
+
+    }
+</script>
+<style>
+    .k-edit-form-container{
+        width:700px !important;
+        margin-left:5px;
+        margin-right:5px;
+        max-height:400px;
+        overflow:scroll;
+    }
+    .form-horizontal .form-group{
+        margin-right:0px !important;
+    }
+</style>

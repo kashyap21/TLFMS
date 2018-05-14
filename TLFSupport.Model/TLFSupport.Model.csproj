@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{22E334FA-E774-4381-9A12-0EACB3FEE60C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TLFSupport.Model</RootNamespace>
+    <AssemblyName>TLFSupport.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseContext.cs" />
+    <Compile Include="CustomeModel\CallLogViewModel.cs" />
+    <Compile Include="CustomeModel\ConfigurationViewModel.cs" />
+    <Compile Include="CustomeModel\CustomerViewModel.cs" />
+    <Compile Include="CustomeModel\NLTimesheetViewModel.cs" />
+    <Compile Include="CustomeModel\PopupSLAViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectActivityViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectCRViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectDeadlineViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectDemandViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectJiraViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectPhaseViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectSLAViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectTeamsViewModel.cs" />
+    <Compile Include="CustomeModel\ProjectViewModel.cs" />
+    <Compile Include="CustomeModel\SLAViewModel.cs" />
+    <Compile Include="CustomeModel\TicketLogViewModel.cs" />
+    <Compile Include="CustomeModel\TicketViewModel.cs" />
+    <Compile Include="CustomeModel\TimesheetReportViewModel.cs" />
+    <Compile Include="CustomeModel\TimesheetSummaryReportViewModel.cs" />
+    <Compile Include="CustomeModel\TimesheetViewModel.cs" />
+    <Compile Include="DatabaseModel\ActivityType.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Country.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_CallLog.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_Configuration.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_CustomerEmployeeInfo.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_EmailLink.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_EmailTicketLog.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_Log.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_Priority.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_SLA.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_Status.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\CS_Ticket.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Customer.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Employee.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\EmployeeDesignation.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Phases.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectActivity.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectActivityLink.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectCategory.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectCR.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectDeadline.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectGroup.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectPhases.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectResourceDemand.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectRole.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Projects.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectStatus.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectTeam.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\ProjectType.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Repositories\GenericRepository.cs" />
+    <Compile Include="DatabaseModel\Task.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Technology.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\TimeSheet.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\TLFCSDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TLFCSDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\TLFCSDataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\TLFCSDataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TLFCSDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\TlfmsJiraLink.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\UserRole.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\Users.cs">
+      <DependentUpon>TLFCSDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="DatabaseModel\TLFCSDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TLFCSDataModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DatabaseModel\TLFCSDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TLFCSDataModel.edmx</DependentUpon>
+      <LastGenOutput>TLFCSDataModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DatabaseModel\TLFCSDataModel.edmx.diagram">
+      <DependentUpon>TLFCSDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="DatabaseModel\TLFCSDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TLFCSDataModel.edmx</DependentUpon>
+      <LastGenOutput>TLFCSDataModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

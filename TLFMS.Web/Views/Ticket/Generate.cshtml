@@ -1,0 +1,373 @@
+﻿@model TLFSupport.Model.CustomeModel.TicketViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Generate Ticket";
+}
+
+<style>
+    html, body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .dropdownwrap {
+        height: auto;
+        float: left;
+        margin: 0px 0px 20px 0px;       
+        display: none;
+        padding: 20px;
+    }
+
+   
+    .dropdownwrap h3 {
+        width: 100%;
+        float: left;
+        padding: 40px 0px;
+        margin: 0;
+        text-align: center;
+        font-family: 'Patrick Hand SC', cursive;
+        font-size: 36px;
+        color: white;
+    }
+
+  
+
+    .dropdownwrap p {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 10pt;
+        color: white;
+        text-align: center;
+        padding-bottom: 50px;
+    }
+
+   
+
+     
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+
+        @*<center><h3 style="color:rgb(51,51,51)">Ticket Generation</h3></center>
+        <hr />*@
+
+        <div class="form-group center_div">
+            <div class="col-md-offset-1 col-md-2 required"><b>Customer<span style="color:red;">*</span></b></div>
+            <div class="k-dropdown col-md-5">
+                @{string currentURL = Request.Url.PathAndQuery;
+
+                string dirName = Path.GetFileName(currentURL.TrimEnd(Path.DirectorySeparatorChar));
+
+                // If result is true then request come from callLog List
+                // If result is false then request come directly
+                bool result = (dirName.All(Char.IsDigit) && dirName.Length > 0);
+
+                if (!result)  // Generated from callLog List
+                {
+
+              @(Html.Kendo().DropDownListFor(model => model.CustomerId)
+              .Name("CustomerId")
+              .HtmlAttributes(new { @data_value_primitive = "true", @style = "width:170%;" })
+              .OptionLabel(Lable.OptionLabel)
+              .DataTextField("Name")
+              .DataValueField("Id")
+              .Filter(FilterType.Contains)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action(ActionName.TicketGetCustomer, ControllerName.Ticket).Data("FilterCustomer");
+                  });
+                //.ServerFiltering(true);
+              }))
+
+                    @Html.ValidationMessageFor(model => model.CustomerId)
+                }
+                else
+                {
+                    @(Html.Kendo().DropDownListFor(model => model.CustomerId)
+                   .Name("CustomerId")
+                   .BindTo(ViewData["CustId"] as SelectList)
+                   .HtmlAttributes(new { style = "width:170%", required = "required", data_required_msg = "Select start time" })
+                    )
+                    @Html.ValidationMessageFor(model => model.CustomerId)
+                }
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-2"><b>Project<span style="color:red;">*</span></b></div>
+            <div class="col-md-4 k-dropdown">
+
+                @(Html.Kendo().DropDownListFor(model => model.ProjectId)
+              .Name("ProjectId")
+              .HtmlAttributes(new {@style = "width:170%;" })
+              .OptionLabel(Lable.OptionLabel)
+              .DataTextField("ProjectName")
+              .DataValueField("Id")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action(ActionName.FMSSLAGetCascadeProjects, ControllerName.Ticket)
+                          .Data("filterProjects");
+                  })
+                  .ServerFiltering(true);
+              })
+              .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom("CustomerId")
+                )
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0px;">
+            <div class="col-md-offset-1 col-md-2"><b><span style="color:red;"></span></b></div>
+            <div class="col-md-9 k-grid-content-locked">
+                <div class="dropdownwrap">
+                    @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.TicketViewModel>()
+                 .Name("AjaxGrid")
+                 .AutoBind(false)
+                 .NoRecords("<center>No SLA Defined for Selected Project.</center>")
+                 .Columns(columns =>
+                 {
+                     columns.Bound(e => e.Priority);
+                     columns.Bound(e => e.MaximumResolveTime);
+                     columns.Bound(e => e.MaximumResponseTime);
+                     columns.Bound(e => e.Description);
+                 })
+               .DataSource(ds => ds
+               .Ajax()
+               .Read(read => read.Action(ActionName.SlaDetailView, ControllerName.SLA).Data("additionalInfo"))
+
+                )
+
+                    )
+                    <style>
+                        #AjaxGrid {
+                            display: none;
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-2"><b>Priority<span style="color:red;">*</span></b></div>
+            <div class="col-md-4 k-dropdown">
+                @(Html.Kendo().DropDownListFor(model => model.IDSLA)
+               .Name("IDSLA")
+              .HtmlAttributes(new { style = "width:170%" })
+              .OptionLabel(Lable.OptionLabel)
+              .DataTextField("PriorityName")
+              .DataValueField("SLAId")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action(ActionName.TicketGetPriority, ControllerName.Ticket)
+                          .Data("filterPri");
+                  })
+                  .ServerFiltering(true);
+              })
+               .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom("ProjectId")
+                )
+
+                @Html.ValidationMessageFor(model => model.IDSLA)
+                <input id="showbtn" type="button" value="!" class="btn btn-primary"  onclick="showSLA()" />
+            </div>
+            <div class="col-lg-offset-6 alert-danger">
+                <h5>* No SLA Defined for this Project</h5>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-2">
+                <label><b>Title</b><span style="color:red;">*</span></label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Title, new { @class = "k-textbox", style = "width:100%;" })
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-2">
+                <label><b>Description</b><span style="color:red;">*</span></label>
+            </div>
+            <div class="col-md-5">
+                @Html.TextAreaFor(model => model.Description, new { @class = "k-textbox", style = "width:100%; height:14vh;" })
+                @*@Html.ValidationMessageFor(model => model.Description)*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-6">
+                <input type="submit" value="Create" class="btn btn-primary" style="margin-right:20px;" />
+                @if (!result)
+                {
+                    <a href="Index" style="margin-left:0vw; padding:0px;"><input type="button" value="Cancel" class="btn btn-danger" /></a>
+                }
+                else
+                {
+                    <a href="~/CallLog" style="margin-left:0vw; padding:0px;"><input type="button" value="Cancel" class="btn btn-danger" /></a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function filterProjects() {
+        return {
+            categories: $("#CustomerId").val()
+        };
+    }
+</script>
+
+<script>
+  
+
+    function filterPri() {
+        return {
+            proj: $("#ProjectId").val()
+        };
+    }
+</script>
+<script>
+    $("h5").hide();
+</script>
+
+<script>
+    $("#ProjectId").change(function () {
+        var proj = $("#ProjectId").val()
+
+        if (proj == "") {
+            $("#AjaxGrid").data("kendoGrid").dataSource.read();
+            $("#AjaxGrid").css("display", "none");
+            $('#showbtn').hide();
+           
+        }
+        else {
+            $("#AjaxGrid").data("kendoGrid").dataSource.read();
+            $('#showbtn').show();
+          
+
+        }
+    });
+
+    function showSLA()
+    {
+        $("#AjaxGrid").css("display", "block");
+
+        $('.dropdownwrap').slideToggle();
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#showbtn').hide();
+    });
+    function additionalInfo() {
+        var value = $("#ProjectId").val()
+
+        return {
+            id: value
+        }
+    }
+
+
+</script>
+
+<style>
+    .k-readonly {
+        color: gray;
+    }
+
+    .k-textbox {
+        max-width: 1000px;
+    }
+
+    .required {
+        content: "*";
+    }
+
+     center {
+        color: red;
+    }
+</style>
+
+<script>
+    function FilterCustomer() {
+        return {
+            filter: $("#CustomerId").data("kendoDropDownList").filterInput.val()
+        };
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        background-color: lightgray !important;
+       
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        background-color: lightgray !important;
+       
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        background-color: lightgray !important;
+       
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

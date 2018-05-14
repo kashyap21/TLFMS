@@ -1,0 +1,295 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectTeamsViewModel
+@using Kendo.Mvc.UI
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0px;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        font-size: 16px;
+        margin: 0px 0px 0px 0px;
+        padding: 3px 1px 1px 1px;
+        min-width: 29px;
+        width: 34px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProjectId)
+
+    <div class="form-horizontal">
+
+        <div class="form-group col-md-12">
+            <div class="col-md-1 col-xs-1">
+                <b>@Html.LabelFor(model => model.EmployeeName, "Name")</b>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                @(Html.Kendo().DropDownListFor(model => model.EmployeeId)
+                     .Name("EmployeeId")
+                     .HtmlAttributes(new { @data_value_primitive = "true" })
+                     .OptionLabel(Lable.OptionLabel)
+                     .DataTextField("EmployeeName")
+                     .DataValueField("EmployeeId")
+                     .DataSource(source =>
+                    {
+                        source.Read(read =>
+                            {
+                                read.Action("ViewEmployee", "ProjectsTeam");
+                            });
+                    })
+                   .HtmlAttributes(new { style = "width: 100%" })
+
+                )
+            </div>
+            <div class="col-md-1 col-xs-1">
+                <b>@Html.LabelFor(model => model.ProjectRoleName, "Role")</b>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                @(Html.Kendo().DropDownListFor(model => model.ProjectRoleId)
+                     .Name("ProjectRoleId")
+                     .HtmlAttributes(new { @data_value_primitive = "true" })
+                     .OptionLabel(Lable.OptionLabel)
+                     .DataTextField("ProjectRoleName")
+                     .DataValueField("ProjectRoleId")
+                     .DataSource(source =>
+                    {
+                        source.Read(read =>
+                            {
+                                read.Action("ViewProjectRole", "ProjectsTeam");
+                            });
+                    })
+                    .HtmlAttributes(new { style = "width: 100%" })
+                )
+            </div>
+            <div class="col-md-1"><b><label>Level</label></b></div>
+            <div class="col-lg-1">
+                @Html.TextBoxFor(model => model.CS_Level, new { @class = "k-textbox", id = "emplevel", style = "width:100%;" })
+            </div>
+            <input id="Add" name="Add" type="button" value="Add" class="btn btn-primary" onclick="AddTeam()" />
+        </div>
+        <div class="form-group col-lg-12">
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectTeamsViewModel>()
+                        .Name("ProjectTeamGrid")
+                        .Columns(column =>
+                        {
+                            column.Command(command => command.Custom(" ").Text("<i class='fa fa-trash-o' data-placement='top' style = 'margin-left:-0px;font-size:16px;'></i>").Click("DeleteTeamRow").HtmlAttributes(new { title = "Delete Row" }));
+                            column.Bound(emp => emp.Id).Visible(false);
+                            column.Bound(emp => emp.EmployeeId).Visible(false);
+                            column.Bound(emp => emp.EmployeeName);
+                            column.Bound(emp => emp.ProjectRoleName);
+                            column.Bound(emp => emp.CS_Level);                           
+                            column.Bound(emp => emp.IsActive).ClientTemplate("# if(IsActive) {# <a onclick='showOrderDetail(#=Id #)'> <center><i class='fa fa-circle' title='Attended' style = ' font-size:15px ;color:green;'></i></center> </a> #}  else {# <a onclick='showOrderDetail(#=Id #)'> <center><i class='fa fa-circle' title='Attended' style = ' font-size:15px ;color:black;'></i></center> </a> #}  #");
+                        })
+                        .Editable(edit => edit.Mode(GridEditMode.InLine))
+                        .Sortable()
+                        .Pageable()
+                        .Reorderable(reorderable => reorderable.Columns(true))
+                        .Resizable(resizable => resizable.Columns(true))
+                        .DataSource(data =>
+                        data.Ajax()
+                        .Model(model => model.Id(prjteam => prjteam.Id))
+                        .Read(read => read.Action("ViewProjectsTeamDetails", "ProjectsTeam", new { id = Model.ProjectId }))
+                            // .Update(update => update.Action("InlineEditProjectTeam", "ProjectsTeam"))
+                        .Destroy(update => update.Action("ProjectTeamDestroy", "ProjectsTeam"))
+
+                        ))
+        </div>
+    </div>
+
+}
+
+@(Html.Kendo()
+            .Window()
+            .Name("TEAM")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)
+
+<script type="text/x-kendo-template" id="StatusChange">
+
+    <div id="details-container">
+        <h6>Are you sure you want to Change Status ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+
+
+</script>
+
+
+<script type="text/x-kendo-template" id="cannotDeleteTemplate">
+
+    <div id="details-container">
+        <h6>Can Not Delete Member :Owner,Leader,Manager ?</h6>     
+    </div>
+
+</script>
+
+<script type="text/x-kendo-template" id="DeleteTeamTemplate">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete Project Team Member ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+
+
+</script>
+
+
+<script type="text/javascript">
+
+  
+
+    function DeleteTeamRow(e) {
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+
+      
+
+        var prjRoleIdS = dataItem1.ProjectRoleName;
+
+        
+
+        if (prjRoleIdS == "Project Owner" || prjRoleIdS == "Project Leader" || prjRoleIdS == "Project Manager")
+        {
+            var detailsTemplate = kendo.template($("#cannotDeleteTemplate").html());
+            var wnd = $("#TEAM").data("kendoWindow");
+
+            wnd.content(detailsTemplate(dataItem1));
+
+            wnd.center().open();
+
+        }
+        else
+        {
+            var detailsTemplate = kendo.template($("#DeleteTeamTemplate").html());
+           
+            var wnd = $("#TEAM").data("kendoWindow");
+
+            wnd.content(detailsTemplate(dataItem1));
+
+            wnd.center().open();
+
+            $("#yesButton").click(function () {
+
+                var grid = $("#ProjectTeamGrid").data("kendoGrid").dataSource;
+                grid.remove(dataItem1)  //prepare a "destroy" request
+                grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+                wnd.close();
+            })
+
+            $("#noButton").click(function () {
+                wnd.close();
+            })
+        }
+     
+
+    }
+
+    function showOrderDetail(Id) {
+
+        var detailsTemplate = kendo.template($("#StatusChange").html());
+
+        var wnd = $("#TEAM").data("kendoWindow");
+
+        wnd.content(detailsTemplate);
+
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("ChnageStatusbyAjax", "ProjectsTeam")',
+                dataType: 'json',
+                data: { id: Id },
+                async: true,
+                success: function (data) {
+
+                    $("#ProjectTeamGrid").data("kendoGrid").dataSource.read();
+                },
+                error: function (xhr) {
+
+                }
+            })
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+        })
+
+
+
+    }
+
+</script>
+<script type="text/javascript">
+    function AddTeam() {
+        
+        empId = $("#EmployeeId").val();
+        prjRoleId = $("#ProjectRoleId").val();
+        Emplevel = $('#emplevel').val();
+
+        var pid = @Model.ProjectId      
+
+        $.ajax({
+
+            type: 'POST',
+            url: '@Url.Action("AddTeambyAjax", "ProjectsTeam")',
+            dataType: 'json',
+            data: { id: pid, empid: empId, ProjectRId: prjRoleId, empLevel: Emplevel },
+            async: true,
+            success: function (data) {
+
+              
+
+                $("#ProjectTeamGrid").data("kendoGrid").dataSource.read();
+            },
+            error: function (xhr) {
+
+            }
+        })
+    }
+
+   
+
+</script>
+

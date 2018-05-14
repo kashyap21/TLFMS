@@ -1,0 +1,90 @@
+﻿@model TLFSupport.Model.CustomeModel.TimesheetReportViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="custom-TimesheetReport">
+            <div class="container">
+                <div class="col-md-3">From 
+                    @(Html.Kendo().DatePickerFor(model => model.FromDate)
+                                    .Name("datepicker")
+                                    .Value(@DateTime.Now.Date)
+                                    .HtmlAttributes(new { style = "width: 80%;margin-left:3px;" }))
+                </div>
+                <div class="col-md-3">
+                    To
+                    @(Html.Kendo().DatePickerFor(model => model.ToDate)
+                                    .Name("Todatepicker")
+                                    .Value(@DateTime.Now.Date)
+                                    .HtmlAttributes(new { style = "width: 80%;margin-left:3px;" }))
+                </div>
+                <div class="col-md-3">
+                    Employee @(Html.Kendo().DropDownListFor(model => model.EmployeeId)
+                          .Name("EmployeeId")
+                          .OptionLabel(Lable.OptionLabel)
+                          .DataTextField("EmployeeName")
+                          .DataValueField("EmployeeId")
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action(ActionName.GetAllEmployee, ControllerName.Timesheet);
+                              })
+                            .ServerFiltering(true);
+                          }))
+                    @Html.ValidationMessageFor(model => model.EmployeeId)
+                </div>
+                <div class="col-md-3">
+                    Projects 
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectId)
+                            .Name("projectId")
+                            .OptionLabel(Lable.OptionLabel)
+                            .DataTextField("ProjectName")
+                            .DataValueField("ProjectId")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action(ActionName.GetProjectForEmployee, ControllerName.Timesheet)
+                                        .Data("filterProjects");
+                                })
+                                .ServerFiltering(true);
+                            })
+                            .Enable(false)
+                            .AutoBind(false)
+                            .CascadeFrom("EmployeeId"))
+                    @Html.ValidationMessageFor(model => model.ProjectId)
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="col-md-3">
+                    Type
+                    @Html.Kendo().DropDownListFor(model=>model.TypeId)
+                </div>
+                <div class="col-md-3">@Html.Kendo().CheckBoxFor(model=>model.IncludeExtra) Extra hours</div>
+                <div class="col-md-3"><input type="submit" name="submit" value="submit" class="k-button" id="submitbutton" /></div>
+                <div class="col-md-3"><input type="button" name="cancel" value="cancel" class="k-button" id="cancelbutton"></div>
+            </div>
+        </div>    
+    </div>
+}
+<script>
+@* Script for kendo dropdown *@
+    function filterProjects() {
+        return {
+        employeeid: $("#EmployeeId").val()
+};
+}
+</script>

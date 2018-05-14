@@ -1,0 +1,472 @@
+﻿@model TLFSupport.Model.CustomeModel.NLTimesheetViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<body>
+@using (Html.BeginForm())
+{
+    int[] userRoleForSearchTimesheet = { 1, 2, 9 };
+    int[] sessionRole = Session["userRole"] as int[];
+    bool isAdmin = userRoleForSearchTimesheet.Intersect(sessionRole).Any();
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.TimesheetId, new { @Value = "0", id ="timeId" })
+    <div>
+        @*@Html.ValidationSummary(true)*@
+        @* Class for Title *@
+        <div class="containers">
+            <center class="Tlf_H4"><span>Timesheet Management</span></center>
+        </div>
+        <br />
+        @* Container for Calender & form *@
+        <div class="col-md-12 container" style="margin-top:4%;">
+            <div class="col-md-3">
+                @(Html.Kendo().Calendar()
+                                .Name("calendar")
+                                .HtmlAttributes(new { style = "width: 243px;" })
+                                .Events(e => e.Change("change"))
+                )
+            </div>
+            <div class="col-md-9">
+@if (isAdmin == true)
+{ 
+                <div class="col-md-3">
+                    <b>Select Employee</b>
+                </div>
+                <div class="col-md-9">
+                    @(Html.Kendo().DropDownListFor(model => model.EmployeeId)
+                        .Name("EmployeeId")
+                        .OptionLabel(Lable.OptionLabel)
+                        .DataTextField("EmployeeName")
+                        .DataValueField("EmployeeId")
+                        .DataSource(source =>
+                        {
+                            source.Read(read =>
+                            {
+                                read.Action(ActionName.GetAllNLEmployee, ControllerName.Timesheet);
+                            })
+                        .ServerFiltering(true);
+                        })
+                        .Events(e =>
+                        {
+                            e.Change("onChange").Select("onSelect").Open("onOpen").Close("onClose").DataBound("onDataBound").Filtering("onFiltering");
+                        })
+                    )
+
+                    @Html.ValidationMessageFor(model => model.EmployeeId)
+                </div>
+}
+                <div class="col-md-3" style="margin-top:2%;"><b>Week</b></div>
+                <div class="col-md-9" style="margin-top:2%;">@Html.TextBoxFor(model => model.weekno, new { @class = "k-textbox data", id = "week", @readonly = true })</div>
+                <div class="col-md-9" style="margin-left:25%"><p id="error">@DateTime.Today.ToString("MM/dd/yyyy")</p></div>
+            </div>
+        </div>
+
+        <div class="col-md-12 container">
+            <div class="col-md-12">
+            @if (isAdmin == true)
+            {
+                <div class="col-md-3">
+                    <b>Project</b><br />
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectId)
+                                    .Name("projectId")
+                                    .OptionLabel(Lable.OptionLabel)
+                                    .DataTextField("ProjectName")
+                                    .DataValueField("ProjectId")
+                                    .HtmlAttributes(new { style = "width:90%;" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                                read.Action(ActionName.GetProjectForEmployee, ControllerName.Timesheet)
+                                                .Data("filterProjects");
+                                        })
+                                        .ServerFiltering(true);
+                                    })
+                                    .Enable(false)
+                                    .AutoBind(false)
+                                    .CascadeFrom("EmployeeId")
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectId)
+                </div>
+            }
+            else
+            {
+                <div class="col-md-3">
+                    <b>Project</b><br />
+                    @(Html.Kendo().DropDownListFor(model => model.ProjectId)
+                                                    .Name("projectId")
+                                                    .OptionLabel(Lable.OptionLabel)
+                                                    .DataTextField("ProjectName")
+                                                    .DataValueField("ProjectId")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action(ActionName.GetProjectForNLEmployee, ControllerName.Timesheet);
+                                                        })
+                                                        .ServerFiltering(true);
+                                                    })
+                                                    .AutoBind(false)
+                    )
+                    @Html.ValidationMessageFor(model => model.ProjectId)
+                </div>
+            }
+
+
+                <div class="col-md-3">
+                    <b>Phase</b>
+                    <br />
+                    @(Html.Kendo().DropDownListFor(model => model.PhaseId)
+                                    .Name("phaseId")
+                                    .OptionLabel(Lable.OptionLabel)
+                                    .DataTextField("PhaseName")
+                                    .DataValueField("PhaseId")
+                                    .HtmlAttributes(new { style = "width:90%;" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action(ActionName.GetAllPhase, ControllerName.Timesheet)
+                                                .Data("filterPhases");
+                                        })
+                                        .ServerFiltering(true);
+                                    })
+                                    .Enable(false)
+                                    .AutoBind(false)
+                                    .CascadeFrom("projectId"))
+                    @Html.ValidationMessageFor(model => model.PhaseId)
+                </div>
+                <div class="col-md-3">
+                    <b>Activity</b>
+                    <br />
+                    @(Html.Kendo().DropDownListFor(model => model.ActivityId)
+                                    .Name("activityId")
+                                    .OptionLabel(Lable.OptionLabel)
+                                    .DataTextField("ActivityName")
+                                    .DataValueField("ActivityId")
+                                    .HtmlAttributes(new { style = "width:90%;" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action(ActionName.GetActivityByProjectId, ControllerName.Timesheet)
+                                                .Data("filterPhases");
+                                        })
+                                        .ServerFiltering(true);
+                                    })
+                                    .Enable(false)
+                                    .AutoBind(false)
+                                    .CascadeFrom("phaseId")
+                    )
+                    @Html.ValidationMessageFor(model => model.ActivityId)
+                </div>
+                <div class="col-md-3">
+                    <b>Remark</b>
+                    <br />@Html.TextAreaFor(model => model.Remark, new { @class = "k-textbox", id = "remark", style = "width:90%" })
+                </div>
+            </div>
+            <div class="container col-md-12" style="margin-top:5%;">
+                <div class="col-md-1 col-md-offset-1">
+                    <b>Mon</b><br />
+                    @Html.TextBoxFor(model => model.MonActualHrs, new { @class = "k-textbox data", id = "mon", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1">
+                    <b>Tue</b> <br />
+                    @Html.TextBoxFor(model => model.TueActualHrs, new { @class = "k-textbox data", id = "tue", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1">
+                    <b>Wed</b> <br />
+                    @Html.TextBoxFor(model => model.WedActualHrs, new { @class = "k-textbox data", id = "wed", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1">
+                    <b>Thu</b> <br />
+                    @Html.TextBoxFor(model => model.ThuActualHrs, new { @class = "k-textbox data", id = "thu", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1">
+                    <b>Fri</b> <br />
+                    @Html.TextBoxFor(model => model.FriActualHrs, new { @class = "k-textbox data", id = "fri", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1">
+                    <b>Sat</b> <br />
+                    @Html.TextBoxFor(model => model.SatActualHrs, new { @class = "k-textbox data", id = "sat", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1">
+                    <b>Sun</b> <br />
+                    @Html.TextBoxFor(model => model.SunActualHrs, new { @class = "k-textbox data", id = "sun", @Value = "0", style = "width:100%;" })
+                </div>
+                <div class="col-md-1" style="margin-top:2vh;"><input type="submit" value="Save" id="save" class="btn btn-primary" /></div>
+                <div class="col-md-1" style="margin-top:2vh;"><input type="button" class="btn btn-primary" id="cancel" value="Cancel" /></div>
+                @*<div class="col-md-1" style="margin-top:2vh;"><input type="button" value="Save" id="update" class="btn btn-primary" /></div>
+                <div class="col-md-1" style="margin-top:2vh;"><input type="button" class="btn btn-primary" id="clear" value="Cancel" /></div>*@
+            </div>
+            @*<div class="col-md-2 col-md-offset-4" style="margin-top:2vh;"><input type="submit" value="Save" class="btn btn-primary" /></div>
+                <div class="col-md-6" style="margin-top:2vh;"><input type="button" class="btn btn-primary" value="Cancel" /></div>*@
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12 k-grid-content-locked col-md-offset-0" style="margin-top:1%;">
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.NLTimesheetViewModel>()
+                        .Name("AjaxGrid")
+                        .AutoBind(false)
+                        .NoRecords("<center>No Records Found</center>")
+                        .Columns(columns =>
+                        {
+                            columns.Command(command =>
+                                {
+                                    command.Custom("CustomEdit").Text("<i class='fa fa-pencil' data-placement='top' style = 'margin-left:-0px;font-size:16px;'></i>").Click("EditRow").HtmlAttributes(new { title = "Edit" });
+                                    command.Destroy();
+                                }).ClientFooterTemplate("<center>Total:</center>");
+                            columns.Bound(e => e.TimesheetId).Visible(false);
+                            columns.Bound(e => e.ActivityId).Visible(false);
+                            columns.Bound(e => e.EmployeeId).Visible(false);
+                            columns.Bound(e => e.ProjectId).Visible(false);
+                            columns.Bound(e => e.PhaseId).Visible(false);
+                            columns.Bound(e => e.ProjectCode);
+                            columns.Bound(e => e.ProjectName);
+                            columns.Bound(e => e.PhaseName);
+                            columns.Bound(e => e.ActivityName);
+                            columns.Bound(e => e.Remark);
+                            columns.Bound(e => e.MonActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.TueActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.WedActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.ThuActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.FriActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.SatActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.SunActualHrs).ClientFooterTemplate("#=sum#");
+                            columns.Bound(e => e.TotalHrs).ClientFooterTemplate("#=sum#");
+                        })
+                    .DataSource(ds => ds
+                    .Ajax()
+                .Aggregates(aggregates =>
+                {
+                    aggregates.Add(p => p.MonActualHrs).Sum();
+                    aggregates.Add(p => p.TueActualHrs).Sum();
+                    aggregates.Add(p => p.WedActualHrs).Sum();
+                    aggregates.Add(p => p.ThuActualHrs).Sum();
+                    aggregates.Add(p => p.FriActualHrs).Sum();
+                    aggregates.Add(p => p.SatActualHrs).Sum();
+                    aggregates.Add(p => p.SunActualHrs).Sum();
+                    aggregates.Add(p => p.TotalHrs).Sum();
+                })
+                .Events(events => events.Error("error_handler"))
+                .Read(read => read.Action("NLGetTimesheet", ControllerName.Timesheet).Data("additionalInfo"))
+                .Model(model => model.Id(p => p.TimesheetId))
+        .Destroy(update => update.Action("NLInlineDestroy", ControllerName.Timesheet))
+                )
+            )
+            <style>
+                #AjaxGrid {
+                    display: none;
+                }
+            </style>
+        </div>
+    </div>
+    @(Html.Kendo().Window().Name("Details")
+        .Title("Delete")
+        .Visible(false)
+        .Modal(true)
+        .Draggable(true)
+        .Width(300)
+
+    )
+}
+
+</body>
+</html>
+<script>
+    $("#cancel").click(function () {
+        $("#timeId").val(0);
+        $("#mon").val(0);
+        $("#tue").val(0);
+        $("#wed").val(0);
+        $("#thu").val(0);
+        $("#fri").val(0);
+        $("#sat").val(0);
+        $("#sun").val(0);
+        $("#remark").val("");
+        $("#EmployeeId").data('kendoDropDownList').value(0);
+        $("#projectId").data('kendoDropDownList').value(0);
+        $("#phaseId").data('kendoDropDownList').value(0);
+        $("#activityId").data('kendoDropDownList').value(0);
+        $("#AjaxGrid").hide();
+    });
+</script>
+
+<script>
+    function EditRow(e) {
+
+        var tr = $(e.target).closest("tr");
+        var data = this.dataItem(tr);
+
+        $("#activityId").data('kendoDropDownList').value(data.ActivityId);
+        $("#EmployeeId").data('kendoDropDownList').value(data.EmployeeId);
+        $("#projectId").data('kendoDropDownList').value(data.ProjectId);
+        $("#phaseId").data('kendoDropDownList').value(data.PhaseId);
+        $("#mon").val(data.MonActualHrs);
+        $("#tue").val(data.TueActualHrs);
+        $("#wed").val(data.WedActualHrs);
+        $("#thu").val(data.ThuActualHrs);
+        $("#fri").val(data.FriActualHrs);
+        $("#sat").val(data.SatActualHrs);
+        $("#sun").val(data.SunActualHrs);
+        $("#remark").val(data.Remark);
+        $("#timeId").val(data.TimesheetId);
+    }
+</script>
+
+
+<script>
+    function change() {
+        var x = kendo.toString(this.value(), 'd');
+        var dateData = x.toLocaleString()
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("NLGetWeekNo", "Timesheet")',
+            dataType: 'json',
+            data: { date: dateData },
+            async: true,
+            success: function (data) {
+                if (data) {
+                    $("#week").val(data);
+                    $("#error").val(data);
+                }
+            },
+            error: function (xhr) {
+            }
+        })
+
+        document.getElementById("error").innerHTML = x;
+        $("#AjaxGrid").data("kendoGrid").dataSource.read();
+    }
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        //$("#update").hide();
+        //$("#clear").hide();
+
+        var newDate = new Date()
+        var dateData = newDate.toLocaleString()
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("NLGetWeekNo", "Timesheet")',
+        dataType: 'json',
+        data: { date:  dateData},
+        async: true,
+        success: function (data) {
+            if (data) {
+                $("#week").val(data);
+            }
+        },
+        error: function (xhr) {
+        }
+    })
+    })
+
+</script>
+
+<script>
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+
+<script>
+
+    function additionalInfo() {
+        var Datevalue = $('p').text();
+        return {
+            date: Datevalue,
+            id: onChange()
+        };
+    }
+
+    function onOpen() {
+    }
+
+    function onClose() {
+        $("#AjaxGrid").data("kendoGrid").dataSource.read();
+        $("#AjaxGrid").css("display", "block");
+    }
+
+    function onChange() {
+        var a = $("#EmployeeId").val();
+        return a;
+    }
+
+    function onDataBound() {
+    }
+
+    function onFiltering() {
+    }
+
+    function onSelect(e) {
+    }
+</script>
+
+<script>
+    function filterProjects() {
+        return {
+            employeeid: $("#EmployeeId").val()
+        };
+    }
+</script>
+
+<script>
+    function filterPhases() {
+        return {
+            projid: $("#projectId").val()
+        };
+    }
+</script>
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>
+
+<style>
+    .containers {
+        margin-top: 2%;
+    }
+
+    .Tlf_H4 span {
+        background-color: rgb(248,147,066);
+        color: #ffffff;
+        width: 100%;
+        font-family: Century Gothic;
+        font-size: 25px;
+        padding: 2px 4px 2px 4px;
+        margin-top: 100px;
+        background: -webkit-gradient(linear, left top, left bottom, from(#F8AE42), to(#F5852B));
+    }
+
+    .titles {
+        float: left;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 0px 2px 0px 0px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+</style>

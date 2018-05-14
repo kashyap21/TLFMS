@@ -1,0 +1,77 @@
+﻿    img {
+        width: 4%;
+        height: 2%;
+        min-width:100px;
+        min-height:30px;
+    }
+    .custom-menu {
+        /*background-color: rgb(54,57,62);*/
+        background-color:rgb(247,150,73);
+        text-decoration: none;
+    }
+
+    li :hover {
+        /*background-color: #88c5e0 !important;*/
+        /*  background-color:rgb(247,150,73) !important;*/
+    }
+
+    .navbar-brand:hover {
+        color: #222 !important;
+        background-color:rgb(247,150,73) !important;
+    }
+    .custom-menu {
+         background-color:rgb(247,150,73);
+    }
+
+    .navbar-nav > li > a {
+        color:#222 !important;
+    }
+
+
+    table tr:hover {
+        background-color: #323232;
+    }   
+tbody{
+    text-align:left !important;
+}
+td[role = "gridcell"]{
+    text-align:left;
+}
+
+    .navbar-nav:hover{
+        color:white !important;
+    }
+    .navbar-brand {
+    color : white !important;
+    }
+    .k-menu:hover{
+        color:black !important;
+    }
+
+    .k-state-selected{
+     background-color:rgb(247,150,73);
+    }
+
+      .k-pager-nav:hover{
+          background-color:rgb(247,150,73)!important;
+    }
+    .k-state-disabled:hover{
+        background-color:#f3f3f4 !important;
+        border-color:rgb(247,150,73) !important;
+    }
+
+  .btn{
+      background-color:#269DC0 !important;
+      border:none !important;
+  }
+
+  .btn:hover{
+      background-color:rgb(247,150,73)!important;
+  }
+tr[role = "row"]:hover{
+    background-color:#FFA343 !important;
+}
+
+ .search-form:hover {
+        background-color: white !important;
+    }

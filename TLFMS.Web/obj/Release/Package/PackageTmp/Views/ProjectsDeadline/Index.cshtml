@@ -1,0 +1,316 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectDeadlineViewModel
+@using Kendo.Mvc.UI
+@using TLFSupport.Common
+@using TLFSupport.Resources
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>Project Deadline</h4>
+
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0px;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        font-size: 16px;
+        margin: 0px 0px 0px 0px;
+        padding: 3px 1px 1px 1px;
+        min-width: 29px;
+        width: 34px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProjectId)
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="form-group col-lg-12">
+            <div class="form-group col-lg-6">
+                @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectDeadlineViewModel>()
+                        .Name("ProjectDeadlineGrid")
+                        .Columns(column =>
+                        {
+                            //column.Command(command => command.Custom(" ").Text("<i class='fa fa-trash-o' data-placement='top' style = 'margin-left:-0px;font-size:16px;'></i>").Click("DeleteTeamRow").HtmlAttributes(new { title = "Delete Row" }));
+                            column.Command(command =>
+                            {
+                                command.Custom("EditActivity").Text("<span class= 'k-icon k-i-note'></span>").Click("ShowDeadlineDetails");
+                                command.Custom("DeleteActivity").Text("<span class= 'k-icon k-i-close'></span>").Click("DeleteDeadlineDetails");
+                            }).Title("<center>Action</center>").Width(80);
+
+                            column.Bound(deadline => deadline.Id).Visible(false);
+                            column.Bound(deadline => deadline.RevisedDate).ClientTemplate("#=kendo.toString(RevisedDate,'dd-MM-yyyy')#");
+                            column.Bound(deadline => deadline.Reason);
+                            column.Bound(deadline => deadline.CreatedByName);
+                            column.Bound(deadline => deadline.UpdatedOn).ClientTemplate("#=kendo.toString(UpdatedOn,'dd-MM-yyyy')#");
+                        })
+                        .Selectable()
+        //.Editable(edit => edit.Mode(GridEditMode.InLine))
+                        .Sortable()
+                        .Pageable()
+                        .Reorderable(reorderable => reorderable.Columns(true))
+                        .Resizable(resizable => resizable.Columns(true))
+                        .DataSource(data =>
+                        data.Ajax()
+                                .Model(model => model.Id(deadline => deadline.Id))
+                        .Read(read => read.Action("ViewProjectsDeadlineDetails", "ProjectsDeadline", new { id = Model.ProjectId }))
+                            //  .Update(update => update.Action("InlineEditProjectDeadline", "ProjectsDeadline"))
+                        .Destroy(update => update.Action("ProjectDeadlineDestroy", "ProjectsDeadline"))
+
+                        ))
+            </div>
+            <div class="col-lg-2">
+                <input id="Add" name="Add" type="button" value="Add" class="btn btn-primary" onclick="showmeEdit()" />
+            </div>
+            <div class="form-group col-lg-6" id="prjctDeadline">
+                <div class="aaa" id="aaa">
+                    <div class="container col-md-12">
+                        <div class="col-md-3">
+                            <label for="name"><b>Revised Date</b><span style="color:red;">*</span></label>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.Kendo().DatePickerFor(model => model.RevisedDate).Name("datepicker").Value(DateTime.Now)
+                        </div>
+                    </div>
+                    <div class="container col-md-12 ">
+                        <div class="col-lg-3">
+                            <label for=" active"><b>Reason</b></label>
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.TextAreaFor(model => model.Reason, new { @class = "k-textbox", style = "width:100%;", id = "reason" })
+                        </div>
+                    </div>
+
+                    <div id="created" class="container col-md-12 ">
+                        <div class="col-lg-3">
+                            <label for="createlb"><b>Created By</b></label>
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.TextBoxFor(model => model.CreatedByName, new { @class = "k-textbox", style = "width:100%;", id = "createdby" })
+                        </div>
+                    </div>
+
+                    <div id="updated" class="container col-md-12 ">
+                        <div class="col-lg-3">
+                            <label for="updatelb"><b>Updated On</b></label>
+                        </div>
+                        <div class="col-lg-5">
+                            @Html.Kendo().DatePickerFor(model => model.UpdatedOn).Name("updatedonpicker").Value(DateTime.Now)
+                            <input type="hidden" name="dduid" id="dduid">
+                        </div>
+                    </div>
+                </div>
+                <div class="container col-md-12">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-4">
+                        <input id="ddsave" name="save" type="button" value="save" class="btn btn-primary" onclick="SaveButton()" />
+                        <input id="ddupdate" name="ddupdate" type="button" value="Update" class="btn btn-primary" onclick="ddUpdateButton()" />
+                        <input id="ddedit" name="ddedit" type="button" value="edit" class="btn btn-primary" onclick="ddEditButton()" />
+                        <input id="cancel" name="save" type="button" value="cancel" class="btn btn-primary" onclick="hideme()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script type="text/x-kendo-template" id="DeleteDeadlineTemplate">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete Project Activity ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+@(Html.Kendo()
+            .Window()
+            .Name("DeleteDeadLine")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#prjctDeadline").hide();
+        $("#updated").hide();
+        $('#created').hide();
+        $("label[for=updatelb]").hide();
+        $("label[for=createlb]").hide();
+
+    }
+
+        );
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function showmeEdit() {
+
+        $("#Add").hide();
+        $("#prjctDeadline").show();
+        $("#ddedit").hide();
+        $("#ddupdate").hide();
+        $("#ddsave").show();
+
+    }
+
+    function hideme() {
+        $("#Add").show();
+        $("#prjctDeadline").hide();
+
+    }
+
+    function SaveButton() {
+
+        var reas = $('#reason').val();
+        var revised = $("#datepicker").val();
+
+        var pid = @Model.ProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddDeadlinebyAjax", "ProjectsDeadline")',
+            dataType: 'json',
+            data: { id: pid, revisedate: revised, reason: reas },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectDeadlineGrid").data("kendoGrid").dataSource.read();
+                hideme();
+            },
+            error: function (xhr) {
+            }
+        })
+
+    }
+
+    function ShowDeadlineDetails(e) {
+
+        var tr = $(e.target).closest("tr");
+
+        var data = this.dataItem(tr);
+
+        $("#dduid").val(data.Id);
+
+        $("#prjctDeadline").show();
+        $("#Add").hide();
+        $("#dduid").val(data.Id);
+
+        $('#reason').val(data.Reason);
+        $('#createdby').val(data.CreatedByName).show();
+
+        $('#datepicker').val(data.RevisedDate.toLocaleFormat('%m/%d/%Y'));
+
+        $('#updatedonpicker').val(data.UpdatedOn.toLocaleFormat('%d-%m-%Y'));
+
+        $("#ddsave").hide();
+        $("#cancel").show();
+        $("#ddedit").show();
+        $("#updated").show();
+        $('#created').show();
+        $("#ddupdate").hide();
+        $("label[for=updatelb]").show();
+        $("label[for=createlb]").show();
+        $('*', '#aaa').attr('disabled', 'disabled');
+
+    }
+    function DeleteDeadlineDetails(e) {
+
+        var detailsTemplate = kendo.template($("#DeleteDeadlineTemplate").html());
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+
+        var wnd = $("#DeleteDeadLine").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#ProjectDeadlineGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+            hideme();
+        })
+
+    }
+
+    function ddUpdateButton() {
+
+       
+
+        var uids = $("#dduid").val();
+        var reas = $('#reason').val();
+        var revised = $("#datepicker").val();
+
+     
+
+        var pid = @Model.ProjectId
+
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("UpdateDeadLinebyAjax", "ProjectsDeadline")',
+                dataType: 'json',
+                data: { id: pid, revisedate: revised, reason: reas, UId: uids },
+                async: true,
+                success: function (data) {
+
+                    $("#ProjectDeadlineGrid").data("kendoGrid").dataSource.read();
+                    hideme();
+                },
+                error: function (xhr) {
+                }
+            })
+    }
+
+    function ddEditButton(e) {
+
+        $("#ddsave").hide();
+        $("#cancel").show();
+        $("#ddedit").hide();
+        $("#updated").hide();
+        $('#created').hide();
+        $("#ddupdate").show();
+        $("label[for=updatelb]").hide();
+        $("label[for=createlb]").hide();
+        $('*', '#aaa').removeAttr('disabled', 'disabled');
+
+    }
+</script>

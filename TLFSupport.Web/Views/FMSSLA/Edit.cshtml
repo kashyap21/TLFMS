@@ -1,0 +1,530 @@
+﻿@model TLFSupport.Model.CustomeModel.SLAViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Edit FMSSLA";
+}
+
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid-delete .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 1px 1px 1px 1px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+
+    tr {
+        text-align: center;
+    }
+
+    text-area{
+        width:100% !important;
+        max-width:500px !important;
+    }
+</style>
+<body>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <h3>SLA</h3>
+        <hr />
+        @Html.HiddenFor(model => model.ProjId)
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-1"><b> @Html.LabelFor(model => model.CustName, "Customer:")</b></div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.CustName, new { @class = "k-textbox", disabled = "true", @data_value_primitive = "true", style = "width:100%;border:1px solid #ffffff; margin-top:-6px;font-weight:800;" })
+                </div>
+                <div class="col-md-1 col-lg-offset-0"> <b>@Html.LabelFor(model => model.ProjName, "Project:")</b> </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.ProjName, new { @class = "k-textbox", disabled = "true", @data_value_primitive = "true", style = "width:100%;border:1px solid #ffffff; margin-top:-6px;font-weight:800;" })
+                </div>
+            </div>
+            @*<div class="form-group">
+
+                    <div class="col-md-10">
+                        @Html.Kendo().Button().Name("priority").Content("Add Next Priority")
+                     </div>
+                </div>*@
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.PopupSLAViewModel>()
+        .Name("fmsslaGrid")
+        .Columns(column =>
+        {
+            column.Command(command =>
+            {
+                command.Edit().Text("<i class='fa fa-pencil' data-toggle='tooltip' title = 'Edit' data-placement='top' style = 'margin-left:-15px;font-size:16px;'></i>").HtmlAttributes(new { title = "Edit Row" });
+                command.Custom(" ").Text("<i class='fa fa-trash-o' data-placement='top' style = 'margin-left:-0px;font-size:16px;'></i>").Click("showDetails").HtmlAttributes(new { title = "Delete Row" }); ;
+            }).Width(95).Title("<center>Action</center>");
+            column.Bound(sla => sla.PriorityName);
+            column.Bound(sla => sla.SLAPriorityLevel).Title("<center>Priority Level</center>");
+            column.Bound(sla => sla.SLADescription).Title("<center>Description</center>");
+            column.Bound(sla => sla.tempResponse).EditorTemplateName("MaskedTextBoxEditor").Title("Max Response Time");
+            column.Bound(sla => sla.tempResolve).EditorTemplateName("MaskedTextBoxEditor").Title("Max Resolve Time");
+            column.Bound(sla => sla.tempEscalationTime).Title("<center>EscalationTime</center>");
+            column.Bound(sla => sla.IsDefaultPriority);
+        })
+        .ToolBar(toolbar => toolbar.Create().Text(Lable.FMSSLAAddNext))
+        .Editable(editable => editable.Mode(GridEditMode.PopUp).Window(w => w.Name("EditWindow").Width(550)))
+        .Events(ev => ev.Edit("OnEdit"))
+        .Sortable()
+        .DataSource(data => data.Ajax()
+                            .Model(model =>
+                            {
+                                model.Id(sla => sla.SLAId);
+                                model.Field(x => x.ProjId).DefaultValue(@Model.ProjId);
+                            })
+                            .Read(read => read.Action(ActionName.FMSSLAGetSLAByProjectId, ControllerName.FMSSLA, new { id = Model.ProjId }))
+                                .Create(update => update.Action(ActionName.FMSSLAInlineCreate, ControllerName.FMSSLA))
+                                .Update(update => update.Action(ActionName.FMSSLAInlineUpdate, ControllerName.FMSSLA))
+                                .Destroy(update => update.Action(ActionName.FMSSLAInlineDelete, ControllerName.FMSSLA))
+                    )
+            )
+        </div>
+
+        @(Html.Kendo().Window().Name("Details")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+        )
+        
+         @*@(Html.Kendo().Window().Name("displayAlert")
+            .Title("Alert")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+        )*@
+    }
+   
+</body>
+<script type="text/x-kendo-template" id="template">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete <strong>#= PriorityName #</strong> for Project ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+
+@*<script type="text/x-kendo-template" id="defaultCheckTemplate">
+
+    <div id="details-container">
+        <h6>True Priority Already Exist \n First set it as False</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="priorityCheckTemplate">
+
+    <div id="details-container">
+        <h6>Priority Name Already Exist!!</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="priorityLevelCheckTemplate">
+
+    <div id="details-container">
+        <h6>Priority Level Already Exist !!</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="ResponseTimeCheck">
+
+    <div id="details-container">
+        <h6>Wrong <b>response time</b> input!! It should follow: H < = 23, M < = 59</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="ResolveTimeCheck">
+
+    <div id="details-container">
+        <h6>Wrong <b>resolve time</b> input!! It should follow: H < = 23, M < = 59</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="EscalationTimeCheck">
+
+    <div id="details-container">
+        <h6>Wrong <b>escalation time</b> input!! It should follow: H < = 23, M < = 59</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="errorTemplate">
+
+    <div id="details-container">
+        <h6>Opps! something wrong.</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>*@
+
+<style>
+    #PriorityName {
+    }
+</style>
+
+<script type="text/javascript">
+
+    var detailsTemplate = kendo.template($("#template").html());
+
+    function showDetails(e) {
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+        var wnd = $("#Details").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#fmsslaGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+        })
+    }
+</script>
+
+<script type="text/javascript">
+
+    function HideLabels()
+    {
+        $(".editor-labelsdefaultpriority").hide();
+        $(".editor-labelspname").hide();
+        $(".editor-labelsplevel").hide();
+        $(".editor-labelsresponsetime").hide();
+        $(".editor-labelsresolvetime").hide();
+        $(".editor-labelsescalationtime").hide();
+        $(".editor-labelerror").hide();
+    }
+
+    function OnEdit(e) {
+        
+        $(".k-edit-form-container").prepend("<div class='editor-labelsdefaultpriority'>True Priority Already Exist \n First set it as False</label></div>");
+        $(".k-edit-form-container").prepend("<div class='editor-labelspname'>Priority name already exist.!!</label></div>");
+        $(".k-edit-form-container").prepend("<div class='editor-labelsplevel'>Priority level already exist.!!</label></div>");
+        $(".k-edit-form-container").prepend("<div class='editor-labelsresponsetime'>Wrong <b>response time</b> input!! It should follow: H < = 23, M < = 59</label></div>");
+        $(".k-edit-form-container").prepend("<div class='editor-labelsresolvetime'>Wrong <b>resolve time</b> input!! It should follow: H < = 23, M < = 59</label></div>");
+        $(".k-edit-form-container").prepend("<div class='editor-labelsescalationtime'>Wrong <b>escalation time</b> input!! It should follow: H < = 23, M < = 59</label></div>");
+        $(".k-edit-form-container").prepend("<div class='editor-labelerror'>Opps! something wrong.</label></div>");
+        
+
+        HideLabels();
+        
+        $(".multi-line").css("width", "235px");
+        $(".multi-line").css("height", "100px");
+        $(".multi-line").css("border-color", "#a3d0e4");
+        $(".multi-line").css("border-radius", "6px");
+        $(".check-box").css("border-color", "#a3d0e4");
+        $(".check-box").css("border-radius", "4px");
+
+        $(".k-grid-update").click(function () {
+            var isg = e.model.IsDefaultPriority;
+            var pname = e.model.PriorityName;
+            var pid = e.model.ProjId;
+            var sid = e.model.SLAId;
+            var priolevel = e.model.SLAPriorityLevel;
+            var respTime = e.model.tempResponse;
+            var resTime = e.model.tempResolve;
+            var escTime = e.model.tempEscalationTime;
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("checkTime", "FMSSLA")',
+                dataType: 'json',
+                data: { time: respTime },
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+                        //var priorityLevelTemplate = kendo.template($("#ResponseTimeCheck").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(priorityLevelTemplate);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+                        HideLabels();
+
+                        $(".k-edit-form-container").prepend("<div class='editor-labelsresponsetime' style='color:red'>Wrong <b>response time</b> input!! It should follow: H < = 23, M < = 59</label></div>").show();
+
+                       
+                    }
+
+                },
+                error: function (xhr) {
+                    //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                    //var alertWindow = $("#displayAlert").data("kendoWindow");
+                    //alertWindow.content(errorDataItem);
+                    //alertWindow.center().open();
+
+                    //$("#okButton").click(function () {
+                    //    alertWindow.close();
+                    //})
+                    HideLabels();
+
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Opps! something wrong.</label></div>").show();
+                }
+            })
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("checkTime", "FMSSLA")',
+                dataType: 'json',
+                data: { time: resTime },
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+                        //var priorityLevelTemplate = kendo.template($("#ResolveTimeCheck").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(priorityLevelTemplate);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+                        HideLabels();
+
+                        $(".k-edit-form-container").prepend("<div class='editor-labelsresolvetime' style='color:red'>Wrong <b>resolve time</b> input!! It should follow: H < = 23, M < = 59</label></div>").show();
+
+                    }
+
+                },
+                error: function (xhr) {
+                    //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                    //var alertWindow = $("#displayAlert").data("kendoWindow");
+                    //alertWindow.content(errorDataItem);
+                    //alertWindow.center().open();
+
+                    //$("#okButton").click(function () {
+                    //    alertWindow.close();
+                    //})
+
+                    HideLabels();
+
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Opps! something wrong.</label></div>").show();
+                }
+            })
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("checkTime", "FMSSLA")',
+                dataType: 'json',
+                data: { time: escTime },
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+                        //var priorityLevelTemplate = kendo.template($("#EscalationTimeCheck").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(priorityLevelTemplate);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+
+                        HideLabels();
+
+                        $(".k-edit-form-container").prepend("<div class='editor-labelsescalationtime' style='color:red'>Wrong <b>escalation time</b> input!! It should follow: H < = 23, M < = 59</label></div>").show();
+
+                    }
+
+                },
+                error: function (xhr) {
+                    //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                    //var alertWindow = $("#displayAlert").data("kendoWindow");
+                    //alertWindow.content(errorDataItem);
+                    //alertWindow.center().open();
+
+                    //$("#okButton").click(function () {
+                    //    alertWindow.close();
+                    //})
+                    
+                    HideLabels();
+
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Opps! something wrong.</label></div>").show();
+                }
+            })
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("checkPrioLevel", "FMSSLA")',
+                dataType: 'json',
+                data: { id: pid, slaid: sid, plevel: priolevel },
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+                        //var priorityLevelTemplate = kendo.template($("#priorityLevelCheckTemplate").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(priorityLevelTemplate);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+                        HideLabels();
+
+                        $(".k-edit-form-container").prepend("<div class='editor-labelsplevel' style='color:red'>Priority level already exist.!!</label></div>").show();
+                        $("label[for='SLAPriorityLevel']").append("<p style='color:red'>*</p>");
+
+                    }
+
+                },
+                error: function (xhr) {
+                    //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                    //var alertWindow = $("#displayAlert").data("kendoWindow");
+                    //alertWindow.content(errorDataItem);
+                    //alertWindow.center().open();
+
+                    //$("#okButton").click(function () {
+                    //    alertWindow.close();
+                    //})
+                    HideLabels();
+
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Opps! something wrong.</label></div>").show();
+                }
+            })           
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("checkPrioName", "FMSSLA")',
+                dataType: 'json',
+                data: { id: pid, slaid: sid, pn: pname },
+                async: true,
+                success: function (data) {
+                    if (data == true) {                       
+
+                        //var priorityNameTemplate = kendo.template($("#priorityCheckTemplate").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(priorityNameTemplate);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+                        HideLabels();
+
+                        $(".k-edit-form-container").prepend("<div class='editor-labelspname' style='color:red'>Priority name already exist.!!</label></div>").show();
+
+
+                    }
+
+                },
+                error: function (xhr) {
+                    //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                    //var alertWindow = $("#displayAlert").data("kendoWindow");
+                    //alertWindow.content(errorDataItem);
+                    //alertWindow.center().open();
+
+                    //$("#okButton").click(function () {
+                    //    alertWindow.close();
+                    //})
+                    HideLabels();
+
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Opps! something wrong.</label></div>").show();
+                }
+            })
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("checkDefault", "FMSSLA")',
+                dataType: 'json',
+                data: { id: pid, sig: isg, slaid: sid },
+                async: true,
+                success: function (data) {
+                    if (data == true) {
+
+                        //var defaultTemplate = kendo.template($("#defaultCheckTemplate").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(defaultTemplate);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+                        HideLabels();
+
+                        $(".k-edit-form-container").prepend("<div class='editor-labelsdefaultpriority' style='color:red'>True Priority Already Exist \n First set it as False</label></div>").show();
+                    }
+
+                },
+                error: function (xhr) {
+                    //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                    //var alertWindow = $("#displayAlert").data("kendoWindow");
+                    //alertWindow.content(errorDataItem);
+                    //alertWindow.center().open();
+
+                    //$("#okButton").click(function () {
+                    //    alertWindow.close();
+                    //})
+
+                    HideLabels();
+
+                    $(".k-edit-form-container").prepend("<div class='editor-labelerror' style='color:red'>Opps! something wrong.</label></div>").show();
+                }
+            })
+        });
+
+    }
+</script>

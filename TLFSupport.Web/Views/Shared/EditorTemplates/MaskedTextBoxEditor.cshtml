@@ -1,0 +1,7 @@
+﻿@model int?
+
+@(
+ Html.Kendo().MaskedTextBoxFor(model => model)
+                 .Mask("D:00 H:00 M:00").HtmlAttributes(new { style = "width:100%" })
+
+)

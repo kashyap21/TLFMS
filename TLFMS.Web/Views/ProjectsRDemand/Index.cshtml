@@ -1,0 +1,228 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectDemandViewModel
+@using Kendo.Mvc.UI
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Partial_Layout.cshtml";
+}
+
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0px;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        font-size: 16px;
+        margin: 0px 0px 0px 0px;
+        padding: 3px 1px 1px 1px;
+        min-width: 29px;
+        width: 34px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+<h4>index</h4>
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProjectId)
+
+    <div class="form-horizontal">
+        <div class="form-group col-md-12">
+            <div class="col-md-1 col-xs-1">
+                <b>@Html.LabelFor(model => model.ProjectRoleName, "Role")</b>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                @(Html.Kendo().DropDownListFor(model => model.ProjectRoleId)
+                     .Name("ProjectRoleId")
+                     .HtmlAttributes(new { @data_value_primitive = "true" })
+                     .OptionLabel(Lable.OptionLabel)
+                     .DataTextField("ProjectRoleName")
+                     .DataValueField("ProjectRoleId")
+                     .DataSource(source =>
+                    {
+                        source.Read(read =>
+                            {
+                                read.Action("ViewProjectRole", "ProjectsTeam");
+                            });
+                    })
+                    .HtmlAttributes(new { style = "width: 100%" })
+                )
+            </div>
+            <div class="col-md-1"><b><label>Exp. Start Week</label></b></div>
+            <div class="col-lg-1">
+                @Html.TextBoxFor(model => model.ExpectedStartWeek, new { @class = "k-textbox", id = "startwekk", style = "width:100%;" })
+            </div>
+            <div class="col-md-1"><b><label>Exp. Hours Per Week</label></b></div>
+            <div class="col-lg-1">
+                @Html.TextBoxFor(model => model.ExpectedHoursPerWeek, new { @class = "k-textbox", id = "hrweek", style = "width:100%;" })
+            </div>
+            <input id="Add" name="Add" type="button" value="Add" class="btn btn-primary" onclick="AddDemand()" />
+        </div>
+        <div class="form-group col-lg-12">
+            @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectDemandViewModel>()
+                        .Name("ProjectDemandGrid")
+                        .Columns(column =>
+                        {
+                            column.Command(command => command.Custom(" ").Text("<i class='fa fa-trash-o' data-placement='top' style = 'margin-left:-0px;font-size:16px;'></i>").Click("DeleteDemandRow").HtmlAttributes(new { title = "Delete Row" }));
+                            column.Command(command => command.Edit().Text("<i class='fa fa-pencil' data-placement='top' style = 'margin-left:-0px;font-size:16px;'></i>").UpdateText("save"));
+                            column.Bound(emp => emp.Id).Visible(false);
+                            column.Bound(emp => emp.ProjectRoleName);
+                            column.Bound(emp => emp.ExpectedStartWeek);
+                            column.Bound(emp => emp.ExpectedHoursPerWeek);
+                        })
+                        .Selectable()
+                        .Editable(edit => edit.Mode(GridEditMode.InLine))
+                        .Sortable()
+                        .Pageable()
+                        .Reorderable(reorderable => reorderable.Columns(true))
+                        .Resizable(resizable => resizable.Columns(true))
+                        .DataSource(data =>
+                         data.Ajax()
+                        .Model(model => model.Id(prjteam => prjteam.Id))
+                        .Read(read => read.Action("ViewProjectsDemandDetails", "ProjectsRDemand", new { id = Model.ProjectId }))
+                        .Update(update => update.Action("InlineEditProjectDemand", "ProjectsRDemand"))
+                        .Destroy(update => update.Action("ProjectDemandDestroy", "ProjectsRDemand"))
+
+                        ))
+        </div>
+    </div>
+
+}
+
+@(Html.Kendo()
+            .Window()
+            .Name("Demand")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)
+<script type="text/x-kendo-template" id="DemandDeleteTemplate">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete Project Demand ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+<script type="text/javascript">
+
+    var detailsTemplate = kendo.template($("#DemandDeleteTemplate").html());
+
+    function DeleteDemandRow(e) {
+        e.preventDefault();
+
+        var gview = $("#ProjectDemandGrid").data("kendoGrid");
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+
+        var wnd = $("#Demand").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#ProjectDemandGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+        })
+    }
+</script>
+<script type="text/javascript">
+    function AddDemand() {
+
+        var startw = $('#startwekk').val();
+        var prjRoleId = $("#ProjectRoleId").val();
+        var hrweek = $('#hrweek').val();
+
+        var pid = @Model.ProjectId
+
+        $.ajax({
+
+            type: 'POST',
+            url: '@Url.Action("AddDemandbyAjax", "ProjectsRDemand")',
+            dataType: 'json',
+            data: { id: pid, esw: startw, ProjectRId: prjRoleId, ehw: hrweek },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectDemandGrid").data("kendoGrid").dataSource.read();
+            },
+            error: function (xhr) {
+
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

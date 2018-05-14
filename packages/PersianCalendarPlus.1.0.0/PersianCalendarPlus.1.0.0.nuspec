@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>PersianCalendarPlus</id>
+    <version>1.0.0</version>
+    <title>PersianCalendarPlus</title>
+    <authors>Hamid Mosalla</authors>
+    <owners>Hamid Mosalla</owners>
+    <licenseUrl>https://github.com/HamidMosalla/PersianCalendarPlus/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/HamidMosalla/PersianCalendarPlus</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>PersianCalendarPlus is a simple wrapper around System.Globalization.PersianCalendar providing extra functionality such as different kind of date string in Persian and the ability to convert between them.</description>
+    <summary>A simple wrapper around System.Globalization.PersianCalendar providing extra funtionality.</summary>
+    <copyright>Copyright 2015</copyright>
+    <language>fa-IR</language>
+    <tags>Persian PersianDateTime Persian Calendar</tags>
+  </metadata>
+</package>

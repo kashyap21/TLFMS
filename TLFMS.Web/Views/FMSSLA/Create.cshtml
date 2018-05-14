@@ -1,0 +1,160 @@
+﻿@model TLFSupport.Model.CustomeModel.SLAViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Manage SLA Details";
+}
+<script src="http://kendo.cdn.telerik.com/2013.3.1324/js/cultures/kendo.culture.de-DE.min.js"></script>
+@*<title>Create FMSSLA - TLFCS</title>*@
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <h4>Create SLA</h4>
+        <hr />
+        <div class="form-group center_div">
+            <div class="col-md-offset-1 col-md-2 required"><b>Customer<span style="color:red;">*</span></b></div>
+            <div class="k-dropdown col-md-5">
+
+                @(Html.Kendo().DropDownListFor(model => model.CustId)
+              .Name("CustId")
+              .HtmlAttributes(new { @style = "width:170%;" })
+              .OptionLabel(Lable.OptionLabel)
+              .DataTextField("Name")
+              .DataValueField("Id")
+              .Filter(FilterType.Contains)
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action(ActionName.FMSSLAGetCustomer, ControllerName.FMSSLA).Data("filterCustomer");
+                  });
+              }))
+                @Html.ValidationMessageFor(model => model.CustId)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-2"><b>Project<span style="color:red;">*</span></b></div>
+            <div class="col-md-4 k-dropdown">
+
+                @(Html.Kendo().DropDownListFor(model => model.ProjId)
+              .Name("ProjId")
+              .HtmlAttributes(new { @style = "width:170%;" })
+              .OptionLabel(Lable.OptionLabel)
+              .DataTextField("ProjectName")
+              .DataValueField("Id")
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action(ActionName.FMSSLAGetCascadeProjects, ControllerName.FMSSLA)
+                          .Data("filterProjects");
+                  })
+                  .ServerFiltering(true);
+              })
+              .Enable(false)
+              .AutoBind(false)
+              .CascadeFrom("CustId")
+                )
+                @Html.ValidationMessageFor(model => model.ProjId)
+            </div>
+        </div>
+
+        <div class="col-md-2"><b> </b></div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+
+                <input type="submit" value="Create" class="btn btn-primary" style="margin-right:20px;" /><span></span>
+                <a href="Index" style="padding:0px;margin-left:0px;"><input type="button" value="Cancel" class="btn btn-danger"></a>
+            </div>
+        </div>
+        <div class="alert-info">
+            *You can only select Project having no SLA. To modify existing SLA, goto Previous Page.
+        </div>
+    </div>
+}
+<script>
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+
+    function Redirect(e) {
+        window.location.href = '@Url.Action(ActionName.FMSSLAIndex, ControllerName.FMSSLA)';
+    }
+
+    function filterProjects() {
+        return {
+            customer: $("#CustId").val()
+
+        };
+    }
+
+    function filterCustomer() {
+        return {
+            filter: $("#CustId").data("kendoDropDownList").filterInput.val()
+        };
+    }
+</script>
+
+<script>
+    function filterPri() {
+        return {
+            proj: $("#ProjId").val()
+        };
+    }
+</script>
+
+<style>
+    .k-readonly {
+        color: gray;
+    }
+</style>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

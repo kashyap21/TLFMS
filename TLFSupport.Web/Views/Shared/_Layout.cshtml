@@ -1,0 +1,66 @@
+﻿@using TLFSupport.Resources;
+@using TLFSupport.Common;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TLFMS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/bootstrap.min.css")" />*@
+    <link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/kendo.bootstrap.min.css")" />    
+    <link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/kendo.custom.css")" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="@Url.Content("~/Content/CustomTlf.css")" />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/KendoTheme/kendo")
+     
+    
+    <script src="@Url.Content("~/Scripts/KendoTheme/kendo.custom.js")"></script>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top custom-menu">
+        @*<div class="navbar navbar-inverse navbar-fixed-top k-widget k-header k-menu">*@
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink(Lable.ApplicationName, ActionName.TicketIndex, ControllerName.Ticket, null, new { @class = "navbar-brand" })                 
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav k-menu">
+                        <li>@Html.ActionLink(Lable.Ticket, ActionName.TicketIndex, ControllerName.Ticket)</li>
+                        <li>@Html.ActionLink(Lable.TicketGenerate, ActionName.TicketGenerate, ControllerName.Ticket)</li>
+                        <li>@Html.ActionLink(Lable.CallLog, ActionName.CallLogIndex, ControllerName.CallLog)</li>
+                        <li>@Html.ActionLink(Lable.FMSSLA, ActionName.FMSSLAIndex, ControllerName.FMSSLA)</li>
+                        <li>@Html.ActionLink(Lable.Configuration, ActionName.ConfigurationIndex, ControllerName.Configuration)</li>
+                    </ul>                 
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy;  All rights reserved @*The Logic Factory*@ <img src = "/Content/Img/logo.png" /></p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+  
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<style>
+    .navbar-nav :hover {
+        color: #fff !important;
+    }
+
+</style>

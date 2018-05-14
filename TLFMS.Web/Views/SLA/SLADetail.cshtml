@@ -1,0 +1,53 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+@model TLFSupport.Model.CustomeModel.TicketViewModel
+@using TLFSupport.Resources
+@using TLFSupport.Common
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "SLA View";
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SLADetail</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/kendo.bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/KendoTheme/kendo.custom.css")" />
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/KendoTheme/kendo")
+
+    <script src="@Url.Content("~/Scripts/KendoTheme/kendo.custom.js")"></script>
+</head>
+<body>
+
+    @Html.HiddenFor(model => model.ProjectId)
+    <div class="form-horizontal">
+
+        @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.TicketViewModel>()
+        .Name("slaGrid")
+        .Columns(column =>
+        {
+            column.Bound(sla => sla.Priority);
+            column.Bound(sla => sla.PriorityLevel).Visible(false);
+            column.Bound(sla => sla.MaximumResponseTime);
+            column.Bound(sla => sla.MaximumResolveTime);
+            column.Bound(sla => sla.Description);
+        })
+
+               .Sortable(sortable => sortable
+                    .AllowUnsort(true)
+                    )
+        .DataSource(data => data.Ajax()
+                           .Model(model => model.Id(sla => sla.IDSLA))
+                           .Read(read => read.Action(ActionName.SlaDetailView, ControllerName.SLA, new { id = Model.ProjectId }))
+
+                    )
+        )
+    </div>
+</body>
+</html>

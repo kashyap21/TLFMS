@@ -1,0 +1,356 @@
+﻿@model TLFSupport.Model.CustomeModel.ProjectPhaseViewModel
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Partial_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProjectId)
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        <div class="form-group col-lg-12">
+            <div class="form-group col-lg-6">
+                @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.ProjectPhaseViewModel>()
+              .Name("ProjectPhaseGrid")
+              .Columns(column =>
+              {
+                  column.Command(command =>
+                  {
+                      command.Custom("Edit").Text("<span class= 'k-icon k-i-note'></span>").Click("ShowPhaseDetail");
+                      command.Custom("Delete").Text("<span class= 'k-icon k-i-close'></span>").Click("deleteDetail");
+                  }).Width(80);
+                  column.Bound(emp => emp.PhaseId).Visible(false);
+                  column.Bound(emp => emp.PhaseName).Width(40);
+                  column.Bound(emp => emp.IsActive).Width(20).ClientTemplate("# if(IsActive) {# <center><i class='fa fa-circle' title='Attended' style = ' font-size:15px ;color:green;'></i></center>  #}  else {#  <center><i class='fa fa-circle' title='Attended' style = ' font-size:15px ;color:black;'></i></center> #}  #");
+                  column.Bound(emp => emp.IsCurrent).Width(20).ClientTemplate("# if(IsCurrent) {# <a onclick='changeStatus(#=Id #)'> <center><i class='fa fa-circle' title='Attended' style = ' font-size:15px ;color:green;'></i></center> </a> #}  else {# <a onclick='changeStatus(#=Id #)'> <center><i class='fa fa-circle' title='Attended' style = ' font-size:15px ;color:orange;'></i></center> </a> #}  #"); ;
+              })
+            .Selectable()
+            .Reorderable(reorderable => reorderable.Columns(true))
+            .Resizable(resizable => resizable.Columns(true))
+            .DataSource(data => data.Ajax()
+            .Model(model =>
+             model.Id(emp => emp.Id))
+            .Read(read => read.Action("ViewProjectsPhaseDetails", "ProjectsPhase", new { id = Model.ProjectId }))
+            .Destroy(del => del.Action("ProjectPhaseDestroy", "ProjectsPhase"))
+            )
+                )
+            </div>
+
+            <div class="col-lg-2">
+                <input id="Add" name="Add" type="button" value="Add" class="btn btn-primary" onclick="ShowmePhase()" />
+            </div>
+
+            <div id="phaseme" class="form-group col-lg-6">
+
+                <div class="container col-md-12">
+                    <div class="col-md-3">
+                        <label for="name"><b>Name</b><span style="color:red;">*</span></label>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.PhaseName, new { @class = "k-textbox s", id = "phasename", style = "width:100%;" })
+                    </div>
+                </div>
+
+                <div class="col-md-12 container">
+                    <div class="col-lg-3">
+                        <label for="active"><b>Is Active ?</b></label>
+                    </div>
+                    <div class="col-lg-1" style="text-align:left;">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "s k-checkbox", id = "isactive" })
+                    </div>
+                </div>
+
+                <div class="container col-md-12">
+                    <div class="col-lg-3">
+                        <label for="current"><b>Is Current ?</b></label>
+                    </div>
+                    <div class="col-lg-1">
+                        @Html.CheckBoxFor(model => model.IsCurrent, new { @class = "s k-checkbox", id = "iscurrent" })
+                        <input type="hidden" name="uid" id="uid">
+                    </div>
+                </div>
+
+                <div class="container col-md-12">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <input id="phasesave" name="phasesave" type="button" value="save" class="btn btn-primary" onclick="SaveButton()" />
+                        <input id="phaseupdate" name="phaseupdate" type="button" value="Update" class="btn btn-primary" onclick="Updatebutton()" />
+                        <input id="phaseedit" name="phaseedit" type="button" value="edit" class="btn btn-primary" onclick="EditButton()" />
+                        <input id="phaseAdds" name="Add" type="button" value="Add" class="btn btn-primary" onclick="ShowmePhase()" />
+                        <input id="phasecancel" name="save" type="button" value="cancel" class="btn btn-primary" onclick="hideme()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/x-kendo-template" id="DeletePhaseTemplate">
+
+    <div id="details-container">
+        <h6>Are you sure you want to delete Project Phase ?</h6>
+        <button class="k-button fa fa-check" id="yesButton" title="Yes"></button>
+        <button class="k-button fa fa-times-circle" id="noButton" title="No"></button>
+    </div>
+</script>
+@(Html.Kendo()
+            .Window()
+            .Name("DeletePhase")
+            .Title("Delete")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)
+<script>
+
+    function deleteDetail(e) {
+
+        var detailsTemplate = kendo.template($("#DeletePhaseTemplate").html());
+
+        e.preventDefault();
+
+        var dataItem1 = this.dataItem($(e.currentTarget).closest("tr"));
+
+        var wnd = $("#DeletePhase").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem1));
+
+        wnd.center().open();
+
+        $("#yesButton").click(function () {
+
+            var grid = $("#ProjectPhaseGrid").data("kendoGrid").dataSource;
+            grid.remove(dataItem1)  //prepare a "destroy" request
+            grid.sync()  //actually send the request (might be omitted if the autoSync option is enabled in the dataSource)
+
+            wnd.close();
+        })
+
+        $("#noButton").click(function () {
+            wnd.close();
+            hideme();
+        })
+
+    }
+    function changeStatus(Id) {
+
+        $.ajax({
+
+            type: 'POST',
+            url: '@Url.Action("ChnageStatusbyAjax", "ProjectsPhase")',
+            dataType: 'json',
+            data: { id: Id },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectPhaseGrid").data("kendoGrid").dataSource.read();
+
+            },
+            error: function (xhr) {
+
+            }
+        })
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("#phaseme").hide();
+        }
+
+        );
+    $(function () {
+        $("form").kendoValidator();
+    });
+    function ShowmePhase() {
+        $("#Add").hide();
+        $("#phaseme").show();
+        $("#phasesave").show();
+        $("#phasecancel").show();
+        $("#phaseedit").hide();
+        $("#phaseupdate").hide();
+        $("#phaseAdds").hide();
+        $('#phasename').val(" ");
+    }
+    function hideme() {
+        $("#Add").show();
+        $("#phaseme").hide();
+
+    }
+    function ShowPhaseDetail(e) {
+
+        var tr = $(e.target).closest("tr");
+
+        var data = this.dataItem(tr);
+
+        $("#uid").val(data.Id);
+        $('#phasename').val(data.PhaseName);
+        $('#isactive').prop("checked", data.IsActive).hide();
+        $('#iscurrent').prop("checked", data.IsCurrent).hide();
+
+        $("label[for=current]").hide();
+        $("label[for=active]").hide();
+
+        $("#Add").hide();
+        $("#phaseme").show();
+        $("#phasesave").hide();
+        $("#phasecancel").show();
+        $("#phaseedit").show();
+        $("#phaseupdate").hide();
+        $("#phaseAdds").show();
+
+    }
+    function SaveButton() {
+
+        var namephase = $('#phasename').val();
+        var isactive = $('#isactive').is(':checked');
+        var iscurrent = $('#iscurrent').is(':checked');
+        var pid = @Model.ProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddPhasebyAjax", "ProjectsPhase")',
+            dataType: 'json',
+            data: { id: pid, phasename: namephase, isActive: isactive, isCurrent: iscurrent },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectPhaseGrid").data("kendoGrid").dataSource.read();
+                hideme();
+            },
+            error: function (xhr) {
+            }
+        })
+
+    }
+    function EditButton() {
+
+        $('#isactive').show();
+        $('#iscurrent').show();
+
+        $("label[for=current]").show();
+        $("label[for=active]").show();
+
+        $("#Add").hide();
+        $("#phaseme").show();
+        $("#phasesave").hide();
+        $("#phasecancel").show();
+        $("#phaseedit").hide();
+        $("#phaseupdate").show();
+        $("#phaseAdds").hide();
+
+    }
+    function Updatebutton() {
+
+        var uid = $("#uid").val();
+        var namephase = $('#phasename').val();
+        var namephaseid = $('#phasename').val();
+        var isactive = $('#isactive').is(':checked');
+        var iscurrent = $('#iscurrent').is(':checked');
+        var pid = @Model.ProjectId
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdatePhasebyAjax", "ProjectsPhase")',
+            dataType: 'json',
+            data: { id: pid, phasename: namephase, isActive: isactive, isCurrent: iscurrent, UId: uid },
+            async: true,
+            success: function (data) {
+
+                $("#ProjectPhaseGrid").data("kendoGrid").dataSource.read();
+                hideme();
+            },
+            error: function (xhr) {
+            }
+        })
+    }
+</script>
+<style>
+    .k-textbox s {
+        max-width: 1000px;
+        min-height: 1000px;
+    }
+
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0;
+        padding: 1 1 1 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        margin: 0px 0px 0px 0px;
+        padding: 1px 1px 1px 1px;
+        min-width: 29px;
+        width: 36px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").kendoValidator();
+    });
+</script>
+<script>
+    $("form").kendoValidator({
+        errorTemplate: "",
+        validate: function (e) {
+
+            var dropDowns = $(".k-dropdown");
+
+            $.each(dropDowns, function (key, value) {
+                var input = $(value).find("input.k-invalid");
+                var span = $(this).find("span.k-dropdown-wrap");
+                if (input.size() > 0) {
+                    $(span).addClass("dropdown-validation-error");
+                } else {
+                    $(span).removeClass("dropdown-validation-error");
+                }
+            });
+        }
+    });</script>
+
+<style>
+    .k-tooltip-validation {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .k-widget > span.k-invalid,
+    input.k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .k-invalid {
+        border: 1px solid red !important;
+    }
+
+    .dropdown-validation-error {
+        border: 1px solid red !important;
+        background-color: #fee !important;
+    }
+</style>

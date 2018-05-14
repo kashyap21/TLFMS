@@ -1,0 +1,71 @@
+﻿@model TLFSupport.Model.CustomeModel.SLAViewModel
+@using TLFSupport.Resources
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>FMSSLATemplate</title>
+</head>
+<body>
+
+    <table>
+        <tr>
+            <td class="col-md-2">
+                @Html.LabelFor(model => model.ProjName, Lable.ProjectName)
+            </td>
+            <td class="col-md-7 col-md-offset-3">
+                @Html.TextBoxFor(model => model.ProjName, new { @class = "k-textbox", disabled = "true", style = "width: 800px;" })
+            </td>
+        </tr>
+       
+        <tr>
+            <td class="col-md-2">
+                @Html.LabelFor(model => model.CustName, Lable.CustomerName)
+            </td>
+            <td class="col-md-7 col-md-offset-3">
+                @Html.TextBoxFor(model => model.CustName, new { @class = "k-textbox", disabled = "true", style = "width: 800px;" })
+            </td>
+        </tr>
+         @*<tr>
+             
+            <td colspan="2" class="col-md-10 col-md-offset-3" align="right">
+                @Html.Kendo().Button().Name("priority").Content("Add next")
+            </td>
+        </tr>*@
+
+       <tr>
+           
+           <td colspan="2">
+               @(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.SLAViewModel>()
+                   .Name("fmsSlaGrid")
+                   .Columns(column =>
+                   {
+                       column.Bound(sla => sla.SLAId).Visible(false);
+                       column.Bound(sla => sla.ProjId).Visible(false);
+                   column.Bound(sla => sla.PriorityName);
+                   column.Bound(sla => sla.SLAPriorityLevel).Visible(false);
+                   column.Bound(sla => sla.MaximumResponseTime).ClientTemplate("#=kendo.toString(MaximumResponseTime.Hours, \"00\") #:#= kendo.toString(MaximumResponseTime.Minutes, \"00\") #");
+                   column.Bound(sla => sla.MaximumResolveTime).ClientTemplate("#=kendo.toString(MaximumResolveTime.Hours, \"00\") #:#= kendo.toString(MaximumResolveTime.Minutes, \"00\") #");
+                   column.Bound(sla => sla.SLADescription);
+                   column.Command(sla => { sla.Edit(); }).Width(250);
+                   })
+                    .ToolBar(toolbar => toolbar.Create())
+                   .Groupable()
+                   .Sortable()
+                   .Editable(ed => ed.Mode(GridEditMode.InLine))
+                   .DataSource(data => data.Ajax()
+                   .Model(model => model.Id(sla => sla.SLAId))
+                   .Create(create => create.Action("AddSLA","FMSSLA"))
+                   .Update(update => update.Action("UpdatingSLA","FMSSLA"))
+               ))
+</td>
+       </tr>
+
+    </table>
+</body>
+</html>

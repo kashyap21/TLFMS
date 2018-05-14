@@ -1,0 +1,199 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Session["User"] == null)
+{
+    @*using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log In</a></li>
+        </ul>*@
+    @*<ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Log In", "Login", "Authentication", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>*@
+
+    //}
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li id="error" style="color: yellow; font-size: 12px; margin-top: 16px; margin-right: 3px; "></li>
+        <li class="admin" style="margin-top:9px;">
+            @*  <form action="" class="search-form">*@
+            <div class="search-form modified">
+                <div class="form-group has-feedback search-form">
+                    <label for="search" class="sr-only">Search</label>
+                    <input type="text" class="form-control black-text" name="search" id="search ticket" placeholder="search" onkeypress="return runScript(event)" style="color:#333;">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+            </div>
+            @*</form>*@
+        </li>
+        <li style="margin-top:16px;font-size:14px;margin-left:9px; margin-right:4px;">Welcome @Session["userName"]</li>
+        <li>@Html.ActionLink(" ", "Logout", "Authentication", routeValues: null, htmlAttributes: new { @class = "fa fa-power-off", style = "font-size:23px;" })</li>
+        <li></li>
+    </ul>
+}
+
+@*@(Html.Kendo().Window().Name("displayAlert")
+            .Title("Alert")
+            .Visible(false)
+            .Modal(true)
+            .Draggable(true)
+            .Width(300)
+
+)*@
+<script type="text/javascript" id="errorTemplate">
+    function errormsg(){
+        document.getElementById("error").innerHTML = "Invalid Ticket Number !";
+    }
+    function errorAjax() {
+        document.getElementById("error").innerHTML = "Some thing went wrong! try again";
+    }
+</script>
+@*<script type="text/x-kendo-template" id="errorTemplate">
+
+    <div id="details-container">
+        <h6>Invalid Ticket Number !!!</h6>
+        <button class="k-button fa fa-check" id="okButton" title="Ok"></button>
+    </div>
+</script>*@
+<script type="text/javascript">
+    function runScript(e) {
+        var temp = e.keyCode;
+        if (temp == "13") {
+            var number = $('#search').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SearchTicket", "Ticket")',
+                dataType: 'json',
+                data: { id: number },
+                async: true,
+                success: function (result) {
+                    if (result != 0) {
+                        var url = window.location.href;
+                        var n = url.search("Edit");
+                        if (n == -1) {
+                            window.location = "../Ticket/Edit/" + result;
+                        }
+                        else {
+                            window.location = "../Edit/" + result;
+                        }
+                    }
+                    else {
+                        errormsg();
+                        //alert("Invalid Ticket Number");
+                        //var errorDataItem = kendo.template($("#errorTemplate").html());
+
+                        //var alertWindow = $("#displayAlert").data("kendoWindow");
+                        //alertWindow.content(errorDataItem);
+                        //alertWindow.center().open();
+
+                        //$("#okButton").click(function () {
+                        //    alertWindow.close();
+                        //})
+                    }
+                },
+                error: function (result) {
+                    //window.location.href = "Index2";
+                    //return result;
+                    errorAjax();
+                }
+            })
+        }
+    }
+</script>
+@*<script type="text/x-kendo-template" id="template">
+
+    <div id="details-container">
+        <h6>No Ticket Exist <strong></strong> for Given Number ?</h6>
+    </div>
+</script>*@
+
+<style>
+    /*.main-navigation li:hover > a {
+        background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .main-navigation ul ul *:hover > a {
+        background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .main-navigation ul ul a:hover {
+        background: none repeat scroll 0 0 rgba(255, 255, 255, 0.1);
+    }*/
+
+    .search-form .form-group {
+        float: right !important;
+        transition: all 0.35s, border-radius 0s;
+        width: 32px;
+        height: 32px;
+        background-color: #fff;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+        border-radius: 25px;
+        border: 1px solid #ccc;
+        color: #333 !important;
+    }
+
+        .search-form .form-group input.form-control {
+            padding-right: 20px;
+            border: 0 none;
+            background: transparent;
+            box-shadow: none;
+            display: block;
+            color: #333 !important;
+        }
+
+            .search-form .form-group input.form-control::-webkit-input-placeholder {
+                display: none;
+            }
+
+            .search-form .form-group input.form-control:-moz-placeholder {
+                /* Firefox 18- */
+                display: none;
+            }
+
+            .search-form .form-group input.form-control::-moz-placeholder {
+                /* Firefox 19+ */
+                display: none;
+            }
+
+            .search-form .form-group input.form-control:-ms-input-placeholder {
+                display: none;
+                background-color: white !important;
+            }
+
+        .search-form .form-group,
+        .search-form .form-group.hover {
+            width: 100%;
+            background-color: #fff !important;
+            border-radius: 4px 25px 25px 4px;
+        }
+
+        .search-form .form-group:focus,
+        .search-form .form-group.focus {
+            background-color: #fff !important;
+        }
+
+        .search-form .form-group span.form-control-feedback {
+            position: absolute;
+            top: -1px;
+            right: -2px;
+            z-index: 2;
+            display: block;
+            width: 34px;
+            height: 34px;
+            line-height: 34px;
+            text-align: center;
+            color: #3596e0;
+            left: initial;
+            font-size: 14px;
+        }
+
+    spam:focus {
+        background-color: #fff !important;
+    }
+</style>

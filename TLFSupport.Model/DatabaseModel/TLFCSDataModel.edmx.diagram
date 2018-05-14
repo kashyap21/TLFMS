@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="413788fc7d44486c98ded51e8251f0bc" Name="Diagram1" ZoomLevel="61">
+        <EntityTypeShape EntityType="TLFCSModel.CS_Priority" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TLFCSModel.Customer" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="TLFCSModel.Employee" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TLFCSModel.Projects" Width="1.5" PointX="8.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectTeam" Width="1.5" PointX="10.5" PointY="8.125" IsExpanded="true" />
+        <AssociationConnector Association="TLFCSModel.FK_Customer_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_Employee_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectLeader" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectOwner" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectsManager" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectTeam_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectTeam_Projects" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_EmailTicketLog" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_Status" Width="1.5" PointX="3" PointY="10.625" />
+        <EntityTypeShape EntityType="TLFCSModel.Users" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="TLFCSModel.FK_UserEmployee" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_Ticket" Width="1.5" PointX="12.875" PointY="8.75" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Ticket_CS_Status1" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Ticket_Customer" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Ticket_Employee" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Ticket_Projects1" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_Log" Width="1.5" PointX="15.5" PointY="9.125" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Log_CS_Status" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Log_CS_Ticket" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Log_Customer" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Log_Employee" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_CallLog" Width="1.5" PointX="5.375" PointY="3.75" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Ticket_Employee1" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_CustomerEmployeeInfo" Width="1.5" PointX="5.25" PointY="15.5" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_CustomerEmployeeInfo_Customer" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_EmailLink" Width="1.5" PointX="15.125" PointY="13.25" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_EmailLink_CS_Ticket" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectGroup" Width="1.5" PointX="6" PointY="9.5" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectStatus" Width="1.5" PointX="6" PointY="7.125" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectGroup" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectStatus" />
+        <EntityTypeShape EntityType="TLFCSModel.Technology" Width="1.5" PointX="6" PointY="12.375" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_Technology" />
+        <EntityTypeShape EntityType="TLFCSModel.ActivityType" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TLFCSModel.Phases" Width="1.5" PointX="8.75" PointY="11.75" />
+        <EntityTypeShape EntityType="TLFCSModel.TimeSheet" Width="1.5" PointX="13.875" PointY="3.375" />
+        <AssociationConnector Association="TLFCSModel.FK_TimeSheet_Employee" />
+        <AssociationConnector Association="TLFCSModel.FK_TimeSheet_Projects" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectActivityLink" Width="1.5" PointX="16.5" PointY="4.375" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectPhases" Width="1.5" PointX="11" PointY="14.125" />
+        <EntityTypeShape EntityType="TLFCSModel.Task" Width="1.5" PointX="3" PointY="6.625" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectActivityLink_CreatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectActivityLink_UpdatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectPhases_CreatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectPhases_UpdatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_Task_AssignedTo" />
+        <AssociationConnector Association="TLFCSModel.FK_Task_CreatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectPhases_Phases" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectActivityLink_Projects" />
+        <AssociationConnector Association="TLFCSModel.FK_TimeSheet_ProjectActivityLink" />
+        <AssociationConnector Association="TLFCSModel.FK__TimeSheet__Proje__194BA7E5" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectPhases_Projects" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_Configuration" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TLFCSModel.Country" Width="1.5" PointX="0.75" PointY="9.875" />
+        <AssociationConnector Association="TLFCSModel.FK_Customer_Country" />
+        <AssociationConnector Association="TLFCSModel.FK_Employee_CountryBirth" />
+        <AssociationConnector Association="TLFCSModel.FK_Employee_CountryPermanent" />
+        <AssociationConnector Association="TLFCSModel.FK_Employee_CountryPresent" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectType" Width="1.5" PointX="12.375" PointY="0.875" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectType" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectCategory" Width="1.5" PointX="14.375" PointY="0.875" />
+        <AssociationConnector Association="TLFCSModel.FK_Projects_ProjectCategory" />
+        <EntityTypeShape EntityType="TLFCSModel.UserRole" Width="1.5" PointX="3" PointY="1.375" />
+        <AssociationConnector Association="TLFCSModel.FK_UserRole_User" />
+        <EntityTypeShape EntityType="TLFCSModel.EmployeeDesignation" Width="1.5" PointX="3.25" PointY="20.5" />
+        <AssociationConnector Association="TLFCSModel.FK_EmployeeDesignation_Employee" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectActivity" Width="1.5" PointX="14.25" PointY="22.375" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectCR" Width="1.5" PointX="18.5" PointY="9.25" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectDeadline" Width="1.5" PointX="13.5" PointY="15.875" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectResourceDemand" Width="1.5" PointX="17.5" PointY="0.875" />
+        <EntityTypeShape EntityType="TLFCSModel.ProjectRole" Width="1.5" PointX="15.25" PointY="19.375" />
+        <EntityTypeShape EntityType="TLFCSModel.TlfmsJiraLink" Width="1.5" PointX="17.5" PointY="13.5" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectActivity_ActivityType" />
+        <AssociationConnector Association="TLFCSModel.FK__ProjectCR__Appro__75035A77" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectDeadline_Employee" />
+        <AssociationConnector Association="TLFCSModel.FK_TlfmsJiraLink_CreatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_TlfmsJiraLink_UpdatedBy" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectActivityLink_ProjectActivity" />
+        <AssociationConnector Association="TLFCSModel.FK_TimeSheet_ProjectActivity" />
+        <AssociationConnector Association="TLFCSModel.FK__ProjectCR__Creat__75F77EB0" />
+        <AssociationConnector Association="TLFCSModel.FK__ProjectCR__Proje__4E739D3B" />
+        <AssociationConnector Association="TLFCSModel.FK__ProjectCR__Proje__6C6E1476" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectDeadline_Project" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectResourceDemand_ProjectRole" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectResourceDemand_Projects" />
+        <AssociationConnector Association="TLFCSModel.FK_ProjectTeam_ProjectRole" />
+        <AssociationConnector Association="TLFCSModel.FK_TlfmsJiraLink_Projects" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_CallLog_CS_Ticket" />
+        <EntityTypeShape EntityType="TLFCSModel.CS_SLA" Width="1.5" PointX="10.625" PointY="3.75" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_SLA_Projects" />
+        <AssociationConnector Association="TLFCSModel.FK_CS_Ticket_CS_SLA" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,107 @@
+﻿@model IEnumerable<TLFSupport.Model.CustomeModel.SLAViewModel>
+@using Kendo.Mvc.UI
+@using TLFSupport.Common
+@using TLFSupport.Resources
+@{
+    ViewBag.Title = "View FMSSLA";
+}
+<style>
+    .k-grid-edit .k-icon {
+        font-size: 1em;
+        color: transparent; /* Fix for Firefox */
+        border-style: none;
+        border-width: 0px;
+        padding: 0 0 0 16px !important;
+        text-align: left;
+        width: 0px;
+        height: 13px;
+        line-height: 1 !important;
+        background: transparent no-repeat scroll 0 0;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .k-grid tbody .k-button {
+        height: 25px;
+        font-size: 16px;
+        margin: 0px 0px 0px 0px;
+        padding: 3px 1px 1px 1px;
+        min-width: 29px;
+        width: 34px;
+    }
+
+    tr {
+        text-align: center;
+    }
+</style>
+<h3>Projects SLA</h3>
+
+@(Html.Kendo().Grid<TLFSupport.Model.CustomeModel.SLAViewModel>()
+        .Name("slaGrid")
+        .ToolBar(toolBar => toolBar.Template("<a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Create", "FMSSLA") + "'>Add new SLA</a>"))
+
+        .Columns(column =>
+        {
+            column.Template(x => { }).ClientTemplate("<a class='k-button fa fa-eye' href='" + Url.Action(ActionName.FMSSLAEdit, ControllerName.FMSSLA) + "/#= ProjId #'" + "></a>").Width(50).HtmlAttributes(new { title = "View SLA Detail" });
+            column.Bound(sla => sla.CustName).Title(Lable.CustomerName).Filterable(filterable => filterable.UI("customerNameFilter"));
+            column.Bound(sla => sla.ProjName).Title(Lable.ProjectName).Filterable(filterable => filterable.UI("projectNameFilter"));
+            column.Bound(sla => sla.CreatedOn).ClientTemplate("#=kendo.toString(CreatedOn,'dd-MM-yyyy')#").Filterable(filterable => filterable.UI("createdOnFilter")).Width(50);
+            column.Bound(sla => sla.LastModified).ClientTemplate("#=kendo.toString(LastModified,'dd-MM-yyyy')#").Filterable(filterable => filterable.UI("lastModifiedOnFilter")).Width(50);
+            column.Bound(sla => sla.ProjId).Visible(false);
+
+        })
+        .Sortable()
+        .Pageable()
+        .Reorderable(reorderable => reorderable.Columns(true))
+        .Resizable(resizable => resizable.Columns(true))
+        .Filterable(filterable => filterable.Extra(false)
+                                           .Operators(operators => operators
+                                                .ForString(str => str.Clear()
+                                                   .StartsWith("Starts with")
+                                                   .IsEqualTo("Is equal to")
+                                                       .Contains("Contains")
+                                                   .IsNotEqualTo("Is not equal to")
+                                                 )
+                                             )
+                              )
+        .DataSource(data => data.Ajax()
+                            .Model(model => model.Id(sla => sla.ProjId))
+                            .Read(read => read.Action(ActionName.FMSSLAViewSLA, ControllerName.FMSSLA))
+
+                    )
+)
+
+<script type="text/javascript">
+
+    function customerNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.FMSSLAFilterByCustomerName, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+
+        });
+    }
+
+    function projectNameFilter(element) {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action(ActionName.TicketFilterByProject, ControllerName.Common)"
+                }
+            },
+            optionLabel: "--Select Value--"
+        });
+    }
+
+    function createdOnFilter(element) {
+        element.kendoDatePicker();
+    }
+
+    function lastModifiedOnFilter(element) {
+        element.kendoDatePicker();
+
+    }
+</script>

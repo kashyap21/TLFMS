@@ -1,0 +1,114 @@
+﻿@model TLFSupport.Model.CustomeModel.ConfigurationViewModel
+@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = "Configuration";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    
+</head>
+<body>
+   @using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h3>Configuration<br><br></h3>*@
+        
+        <div>
+            @Html.HiddenFor(model => model.Id)
+        </div>
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PBX_IP, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PBX_IP)
+                @Html.ValidationMessageFor(model => model.PBX_IP)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PBX_Port, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @Html.Kendo().IntegerTextBoxFor(model => model.PBX_Port).Min(1025).Max(65535).HtmlAttributes(new { style = "width:30%" })
+                @Html.ValidationMessageFor(model => model.PBX_Port)               
+           </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SupportEmailAddress, new { @class = "control-label col-md-2  ", @style = "font-weight: bold;" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.SupportEmailAddress, new { @class = "k-textbox", @style ="width:100%;" })
+                @Html.ValidationMessageFor(model => model.SupportEmailAddress)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Password, new {@class = "k-textbox", @style = "width:100%", @type = "password" })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SLABreachEmailAddress, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.SLABreachEmailAddress, new { @class = "k-textbox", @style = "width:100%;" })
+                @Html.ValidationMessageFor(model => model.SLABreachEmailAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SMTPHost, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @*@Html.TextBoxFor(model => model.SMTPHost, new { @class = "k-textbox", @style = "width:100%", disabled = "true" })*@
+                @Html.TextBoxFor(model => model.SMTPHost, new { @class = "k-textbox", @style = "width:100%" })
+                @Html.ValidationMessageFor(model => model.SMTPHost)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SMTPPort, new { @class = "control-label col-md-2",@style = "font-weight: bold" })
+            <div class="col-md-10">
+                @*@Html.Kendo().IntegerTextBoxFor(model => model.SMTPPort).HtmlAttributes(new { style = "width:30%" }).Enable(false)*@
+                @Html.Kendo().IntegerTextBoxFor(model => model.SMTPPort).HtmlAttributes(new { style = "width:30%" })
+                @Html.ValidationMessageFor(model => model.SMTPPort)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MIMEHost, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @*@Html.TextBoxFor(model => model.MIMEHost, new { @class = "k-textbox", @style = "width:100%", disabled = "true" })*@
+                @Html.TextBoxFor(model => model.MIMEHost, new { @class = "k-textbox", @style = "width:100%"})
+                @Html.ValidationMessageFor(model => model.MIMEHost)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MIMEPort, new { @class = "control-label col-md-2", @style = "font-weight: bold" })
+            <div class="col-md-10">
+                @*@Html.Kendo().IntegerTextBoxFor(model => model.MIMEPort).HtmlAttributes(new { style = "width:30%" }).Enable(false)*@
+                @Html.Kendo().IntegerTextBoxFor(model => model.MIMEPort).HtmlAttributes(new { style = "width:30%" })
+                @Html.ValidationMessageFor(model => model.MIMEPort)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Update" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+</body>
+</html>

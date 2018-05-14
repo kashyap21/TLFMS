@@ -1,0 +1,7 @@
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\bin\Release\TLFSupport.Resources.dll
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\bin\Release\TLFSupport.Resources.pdb
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\obj\Release\TLFSupport.Resources.csprojResolveAssemblyReference.cache
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\obj\Release\TLFSupport.Resources.Lable.resources
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\obj\Release\TLFSupport.Resources.csproj.GenerateResource.Cache
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\obj\Release\TLFSupport.Resources.dll
+C:\Users\kashyap\Desktop\SVN\Code\TLFSupport.Resources\obj\Release\TLFSupport.Resources.pdb
